@@ -3,10 +3,10 @@ from fastapi import APIRouter, status
 
 from BE.lib.utils.rest_models import Post, NewPost
 
-feed_router = APIRouter()
+router = APIRouter()
 
 
-@feed_router.get(
+@router.get(
     "/feed",
     name="Get all existing post. Sorted by BE algorithm",
     description="This is the user main page (after Login)",
@@ -17,7 +17,7 @@ def get_all_posts():
     pass
 
 
-@feed_router.post(
+@router.post(
     "/feed/new",
     name="Write new post",
     description="After writing post - (state should be updated). BackEnd Notice: Likes amount should be 0",
@@ -32,7 +32,7 @@ def new_post(
 
 
 
-@feed_router.patch(
+@router.patch(
     "/feed/like",
     name="Like a post",
     description="Like unlike a post. We determain if user like or not according to the Likes set n Post scheme."
@@ -47,7 +47,7 @@ def like_post(
     pass
 
 
-@feed_router.delete(
+@router.delete(
     "/feed/{post_id}",
     name="Delete a post",
     status_code=status.HTTP_200_OK,

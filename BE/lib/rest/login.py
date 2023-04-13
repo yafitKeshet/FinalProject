@@ -2,13 +2,13 @@ from fastapi import APIRouter, status
 
 from BE.lib.utils.rest_models import Login
 
-login_router = APIRouter()
+router = APIRouter()
 
 
 # 1 - Login Page:
     # 200 - Success
     # 404 - Not Found
-@login_router.get(
+@router.get(
     "/userValidation",
     name="Check that user email exists - Should be done before login & before signup",
     description="Check that user email exists - Should be done before login & before signup",
@@ -24,7 +24,7 @@ def login_check_user_exists(
 # Login into profile
     # 200 - Success
     # 400 - Bad input (Wrong Password)
-@login_router.post(
+@router.post(
     "/login",
     name="Login to profile page. You'll get a JWT Token (Transfer it in AUTH Header)",
     description="THIS IS THE APP MAIN PAGE. This endpoint happens ONLY if user exists",
@@ -38,7 +38,7 @@ def login_to_profile(
     pass
 
 
-@login_router.post(
+@router.post(
     "/resetPassword1Step",
     name="User Forgot password",
     description="In this case, we send email with a temporary code, the user need to insert it in change password page",
@@ -49,7 +49,7 @@ def reset_password_first_step():
     pass
 
 
-@login_router.post(
+@router.post(
     "/resetPassword2Step",
     name="User Forgot password",
     description="User insert the temp code he got in email & update the password (need to insert it twice",
@@ -60,7 +60,7 @@ def reset_password_second_step():
     pass
 
 
-@login_router.post(
+@router.post(
     "/login/updatePassword",
     name="update the user password",
     description="In this case, we send email with a temporary code, the user need to insert it in change password page",

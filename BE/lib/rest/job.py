@@ -4,10 +4,10 @@ from fastapi import APIRouter, status
 
 from BE.lib.utils.rest_models import Job, Company
 
-job_router = APIRouter()
+router = APIRouter()
 
 
-@job_router.get(
+@router.get(
     "/jobs",
     name="Get existing jobs",
     description="Frontend Notice: You get all jobs and need to filter the relevance according to the User faculty ",
@@ -18,7 +18,7 @@ def get_jobs():
     pass
 
 
-@job_router.post(
+@router.post(
     "/jobs",
     name="Post a new job",
     status_code=status.HTTP_200_OK,

@@ -2,10 +2,10 @@ from fastapi import APIRouter, status
 
 from BE.lib.utils.rest_models import UserProfile, UpdateUserProfile
 
-profile_router = APIRouter()
+router = APIRouter()
 
 
-@profile_router.get(
+@router.get(
     "/profile",
     name="Get user profile",
     status_code=status.HTTP_200_OK,
@@ -18,7 +18,7 @@ def get_profile():
 # 200 - Success
 # 400 - invalid structure
 # 404 - User was not found
-@profile_router.patch(
+@router.patch(
     "/profile",
     name="Update user profile",
     description="User can update any fields he wants (according to Scheme) -"
@@ -32,7 +32,7 @@ def update_profile(
     pass
 
 
-@profile_router.get(
+@router.get(
     "/profile/resume",
     name="Generate User resume (Random template). Return URL",
     description="TBD: This one is currently not going to be implemented",

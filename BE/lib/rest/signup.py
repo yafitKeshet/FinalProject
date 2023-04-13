@@ -3,13 +3,13 @@ from fastapi import APIRouter, status
 
 from BE.lib.utils.rest_models import Login, UserProfile
 
-signup_router = APIRouter()
+router = APIRouter()
 
 
 # Register new user
 # 200 - Success
 # 409 - User already exist
-@signup_router.post(
+@router.post(
     "/signUp/firstStep",
     name="Sign up new profile. Send code to user email (in order to be submitted in second step",
     description="This endpoint should happen only after validate DO NOT already exists",
@@ -24,7 +24,7 @@ def sign_up_new_profile_first_step(
 
 # 400 - temp code is not correct
 # 404 - User email does not exists in this "step" (Creation)
-@signup_router.post(
+@router.post(
     "/signUp/secondStep",
     name="Sign up new profile",
     description="This step happens after First step - The user should enter a temp code (got by email). By doing this"
@@ -42,7 +42,7 @@ def sign_up_new_profile_second_step(
 # 201 - Created
 # 409 - User already exists
 # 400 - missing details
-@signup_router.post(
+@router.post(
     "/signUp",
     name="Sign up new profile",
     description="After second login step successfully happen, and temp code is correct - we sign up the user",
@@ -58,7 +58,7 @@ def sign_up_new_profile_third_step(
     pass
 
 
-@signup_router.post(
+@router.post(
     "/onBoarding",
     name="First time - fill details",
     description="The user should fill params (Some are mandatory, check UserProfile Scheme)",
