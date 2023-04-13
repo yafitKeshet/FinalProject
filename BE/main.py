@@ -16,14 +16,13 @@ logger = logging.getLogger(__name__)
 
 def prepare_app():
     app = FastAPI()
-    app.include_router(course.course_router)
-    app.include_router(rest.router)
-    app.include_router(rest.router)
-    app.include_router(rest.router)
-    app.include_router(rest.router)
-    app.include_router(rest.router)
-    app.include_router(rest.router)
-    app.include_router(rest.router)
+    app.include_router(course.router)
+    app.include_router(feed.router)
+    app.include_router(general.router)
+    app.include_router(job.router)
+    app.include_router(login.router)
+    app.include_router(profile.router)
+    app.include_router(signup.router)
     return app
 
 
