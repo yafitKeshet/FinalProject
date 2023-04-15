@@ -5,7 +5,7 @@ from .database import Base
 from ...enums import Faculty, Year
 
 
-class User(Base):
+class Users(Base):
     __tablename__ = "users"
 
 
@@ -15,9 +15,10 @@ class User(Base):
     last_name = Column(String)
     faculty = Column(Enum(Faculty))
     year = Column(Enum(Year))
-
-    hashed_password = Column(String)
+    birthday_date = Column(datetime)
+    password = Column(String)
     is_active = Column(Boolean, default=True)
+
 
     items = relationship("Item", back_populates="owner")
 
