@@ -2,3 +2,7 @@ uvicorn
 fastapi
 pydantic
 enum34
+python-multipart
+python-jose
+passlib[bcrypt]
+sqlalchemy
