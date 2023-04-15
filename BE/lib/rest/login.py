@@ -1,8 +1,12 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from typing_extensions import Annotated
 
 from BE.lib.utils.rest_models import Login
 
 router = APIRouter()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 # 1 - Login Page:
@@ -32,11 +36,16 @@ def login_check_user_exists(
     response_model=Login
 )
 def login_to_profile(
-        user_email: str,
-        password: str
+        form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):
-    pass
+    print(5)
 
+# ToDO: autorizer should be in /login endpoint
+@router.post("/token", response_model=dict)
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+):
+    print(6)
 
 @router.post(
     "/resetPassword1Step",

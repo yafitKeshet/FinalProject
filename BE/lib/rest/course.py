@@ -1,7 +1,9 @@
 from typing import List
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
+from typing_extensions import Annotated
 
+from BE.lib.rest.login import oauth2_scheme
 from BE.lib.utils.rest_models import Course, CourseUpdate
 
 router = APIRouter()
@@ -13,7 +15,9 @@ router = APIRouter()
     status_code=status.HTTP_200_OK,
     response_model=List[Course]
 )
-def get_courses():
+def get_courses(
+        token: Annotated[str, Depends(oauth2_scheme)]
+):
     pass
 
 
