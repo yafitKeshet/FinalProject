@@ -10,7 +10,7 @@ from ...enums import Faculty, Year
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     user_email = Column(String, primary_key=True)
     password = Column(String)
