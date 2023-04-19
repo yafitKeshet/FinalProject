@@ -25,6 +25,7 @@ def prepare_app():
     app.include_router(signup.router)
     return app
 
+logging.basicConfig(level=logging.DEBUG)
 
 app = prepare_app()
 

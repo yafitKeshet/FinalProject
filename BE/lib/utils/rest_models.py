@@ -6,29 +6,27 @@ from fastapi import UploadFile
 from BE.lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
 
 
-class Work(BaseModel):
-    start_year: int
-    company: str
-    description: str
-
 
 class UserProfile(BaseModel):
     user_email: str
-    user_name: str
     private_name: str
     last_name: str
-    faculty: str
+    birthday_date: str
+    faculty: Faculty
     year: Year
-    current_work: Optional[Work]
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
     user_image: Optional[str]  # URL to image
     cv_resume: Optional[str]  # URL to the cv resume
 
 
 class UpdateUserProfile(BaseModel):
-    user_name: Optional[str]
     faculty: Optional[str]
     year: Optional[Year]
-    current_work: Optional[Work]
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
     user_image: Optional[str]  # URL to image
     cv_resume: Optional[str]  # URL to the cv resume
 
