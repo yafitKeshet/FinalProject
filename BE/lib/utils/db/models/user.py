@@ -1,34 +1,30 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum
-from sqlalchemy.orm import relationship
+from datetime import datetime
 
-from .database import Base
+from sqlalchemy import Boolean, Column, String, Enum, DateTime, Integer
+
+from BE.lib.utils.db.base import Base
 from ...enums import Faculty, Year
 
 
-class Users(Base):
+# CRUD pydantic models - will be used on crud endpoints
+
+
+class User(Base):
     __tablename__ = "users"
 
-
-    email = Column(String, primary_key=True, unique=True, index=True)
-    user_name = Column(String)
-    private_name = Column(String)
-    last_name = Column(String)
-    faculty = Column(Enum(Faculty))
-    year = Column(Enum(Year))
-    birthday_date = Column(datetime)
+    user_email = Column(String, primary_key=True)
     password = Column(String)
-    is_active = Column(Boolean, default=True)
-
-
-    items = relationship("Item", back_populates="owner")
-
-
-class Item(Base):
-    __tablename__ = "items"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-
-    owner = relationship("User", back_populates="items")
+    # private_name = Column(String)
+    # last_name = Column(String)
+    # faculty = Column(Enum(Faculty), nullable=True)
+    # year = Column(Enum(Year), nullable=True)
+    # birthday_date = Column(DateTime, nullable=True)
+    # job_company_name = Column(String, nullable=True)
+    # job_start_year = Column(Integer, nullable=True)
+    # job_description = Column(String, nullable=True)
+    # user_image = Column(String, nullable=True)  # URL to image
+    # cv_resume = Column(String, nullable=True)  # URL to the cv resume
+    # is_active = Column(Boolean, default=True)
+    # # Should be in all tables
+    # created_date = Column(DateTime, default=datetime.utcnow)
+    # updated_date = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

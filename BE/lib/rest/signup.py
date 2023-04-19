@@ -1,9 +1,13 @@
 from datetime import datetime
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
+from sqlalchemy.orm import Session
 
+from BE.lib.utils.db.models.user import User
+from BE.lib.utils.db.user_db import get_db_session
 from BE.lib.utils.rest_models import Login, UserProfile
 
 router = APIRouter()
+
 
 
 # Register new user
@@ -45,17 +49,22 @@ def sign_up_new_profile_second_step(
 @router.post(
     "/signUp",
     name="Sign up new profile",
-    description="After second login step successfully happen, and temp code is correct - we sign up the user",
+    description="After second login step successfully happen, and temp code is correct - we signup the user",
     status_code=status.HTTP_200_OK,
     response_model=Login
 )
-def sign_up_new_profile_third_step(
+async def sign_up_new_profile_third_step(
         user_email: str,
         password: str,
-        birthday_date: datetime,
-        user_profile: UserProfile
+        # user_profile: UserProfile,
+        db: Session = Depends(get_db_session)
 ):
-    pass
+    # new_user = User(password=password, **user_profile.dict())
+    new_user = User(user_email=user_email, password=password)
+
+    db.add(new_user)
+    db.commit()
+    db.close()
 
 
 @router.post(

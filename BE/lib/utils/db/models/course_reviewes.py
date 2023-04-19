@@ -1,8 +1,7 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String
 
-from .database import Base
-from ...enums import Faculty, Year
+from BE.lib.utils.db.user_db import Base
+
 
 # ToDo: Foregin Key must be course
 class CourseReviews(Base):
