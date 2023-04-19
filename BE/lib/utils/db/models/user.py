@@ -14,17 +14,17 @@ class User(Base):
 
     user_email = Column(String, primary_key=True)
     password = Column(String)
-    # private_name = Column(String)
-    # last_name = Column(String)
-    # faculty = Column(Enum(Faculty), nullable=True)
-    # year = Column(Enum(Year), nullable=True)
-    # birthday_date = Column(DateTime, nullable=True)
-    # job_company_name = Column(String, nullable=True)
-    # job_start_year = Column(Integer, nullable=True)
-    # job_description = Column(String, nullable=True)
-    # user_image = Column(String, nullable=True)  # URL to image
-    # cv_resume = Column(String, nullable=True)  # URL to the cv resume
-    # is_active = Column(Boolean, default=True)
-    # # Should be in all tables
-    # created_date = Column(DateTime, default=datetime.utcnow)
-    # updated_date = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    private_name = Column(String)
+    last_name = Column(String)
+    faculty = Column(Enum(Faculty), nullable=True)
+    year = Column(Integer, nullable=True)
+    birthday_date = Column(String, nullable=True)
+    job_company_name = Column(String, nullable=True)
+    job_start_year = Column(Integer, nullable=True)
+    job_description = Column(String, nullable=True)
+    user_image = Column(String, nullable=True)  # URL to image
+    cv_resume = Column(String, nullable=True)  # URL to the cv resume
+    is_active = Column(Boolean, default=True)
+    # Should be in all tables
+    created_date = Column(DateTime, default=datetime.utcnow)
+    updated_date = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

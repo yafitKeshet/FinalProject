@@ -24,11 +24,11 @@ class Faculty(Enum):
 
 
 class Year(Enum):
-    FIRST = 1
-    SECOND = 2
-    THIRD = 3
-    FOURTH = 4
-    GRADUATED = 5
+    FIRST = "First"
+    SECOND = "Second"
+    THIRD = "Third"
+    FOURTH = "Fourth"
+    GRADUATED = "Fifth"
 
 
 class Rating(Enum):

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session
-from BE.lib.utils.rest_models import Login, UserProfile
+from BE.lib.utils.rest_models import Login, UserProfile, SignUpUserProfile
 
 router = APIRouter()
 
@@ -54,17 +54,18 @@ def sign_up_new_profile_second_step(
     response_model=Login
 )
 async def sign_up_new_profile_third_step(
-        user_email: str,
-        password: str,
-        # user_profile: UserProfile,
+        signup_user_profile: SignUpUserProfile,
         db: Session = Depends(get_db_session)
 ):
-    # new_user = User(password=password, **user_profile.dict())
-    new_user = User(user_email=user_email, password=password)
+    new_user = User(**signup_user_profile.dict())
 
     db.add(new_user)
     db.commit()
     db.close()
+    return Login(
+        jwt_token="",
+        user_info=UserProfile(**signup_user_profile.dict())
+    )
 
 
 @router.post(
