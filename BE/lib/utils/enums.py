@@ -5,38 +5,38 @@ from pydantic import BaseModel
 
 
 class JobTime(Enum):
-    FULL_TIME: 1
-    PART_TIME: 2
-    STUDENT: 3
+    FullTime = "FullTime"
+    PartTime = "PartTime"
+    Studnet = "Student"
 
 
 class Experience(Enum):
-    JUNIOR: 1
-    SENIOR: 2
-    NON_RELEVANT: 3
+    Junior = "Junior"
+    Senior = "Senior"
+    NonRelevant = "NotRelevant"
 
 
 class Faculty(Enum):
-    COMPUTER_SCIENCE = 'ComputerScience'
-    ECONOMY = 'Economy'
-    Psychology = 'Ps'
-    Social = ''
+    ComputerScience = 'ComputerScience'
+    Economy = 'Economy'
+    Psychology = 'Psychology'
+    Social = 'Social'
 
 
 class Year(Enum):
-    FIRST = 1
-    SECOND = 2
-    THIRD = 3
-    FOURTH = 4
-    GRADUATED = 5
+    First = "First"
+    Second = "Second"
+    Third = "Third"
+    Fourth = "Fourth"
+    Fifth = "Fifth"
 
 
 class Rating(Enum):
-    NOT_RECOMMENDED = 1
-    POOR = 2
-    OK = 3
-    GOOD = 4
-    GREAT = 5
+    NotRecommended = "NotRecommended"
+    Poor = "Poor"
+    Ok = "Ok"
+    Good = "Good"
+    Great = "Great"
 
 
 class EnumsResponse(BaseModel):

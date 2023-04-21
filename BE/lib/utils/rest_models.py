@@ -6,40 +6,83 @@ from fastapi import UploadFile
 from BE.lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
 
 
-class Work(BaseModel):
-    start_year: int
-    company: str
-    description: str
+class ProjectBaseModel(BaseModel):
+    class Config:
+        use_enum_values = True
 
 
-class UserProfile(BaseModel):
+# User:
+class SignUpUserProfile(ProjectBaseModel):
     user_email: str
-    user_name: str
+    password: str
     private_name: str
     last_name: str
-    faculty: str
+    birthday_date: Optional[str]
+    faculty: Optional[Faculty]
+    year: Optional[Year]
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
+    user_image: Optional[str]  # URL to image
+
+
+class OnBoardingUserProfile(ProjectBaseModel):
+    user_email: str
+    private_name: str
+    last_name: str
+    birthday_date: str
+    faculty: Faculty
     year: Year
-    current_work: Optional[Work]
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
+    user_image: Optional[str]  # URL to image
+
+
+class UserProfileIn(BaseModel):
+    user_email: str
+    private_name: str
+    last_name: str
+    birthday_date: str
+    faculty: Faculty
+    year: Year
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
+    user_image: Optional[str]  # URL to image
+
+
+class UserProfileOut(BaseModel):
+    user_email: str
+    private_name: str
+    last_name: str
+    birthday_date: str
+    faculty: Faculty
+    year: Year
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
     user_image: Optional[str]  # URL to image
     cv_resume: Optional[str]  # URL to the cv resume
 
 
 class UpdateUserProfile(BaseModel):
-    user_name: Optional[str]
     faculty: Optional[str]
     year: Optional[Year]
-    current_work: Optional[Work]
+    job_company_name: Optional[str]
+    job_start_year: Optional[int]
+    job_description: Optional[str]
     user_image: Optional[str]  # URL to image
-    cv_resume: Optional[str]  # URL to the cv resume
 
+############################################################
 
 class Login(BaseModel):
     jwt_token: str
-    user_info: UserProfile
+    user_info: UserProfileOut
 
 
 class Post(BaseModel):
-    author: UserProfile
+    author: UserProfileOut
     post_id: str
     content: str
     title: str
