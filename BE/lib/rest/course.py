@@ -3,8 +3,8 @@ from typing import List
 from fastapi import APIRouter, status, Depends
 from typing_extensions import Annotated
 
-from BE.lib.rest.login import oauth2_scheme
-from BE.lib.utils.rest_models import Course, CourseUpdate
+from lib.rest.login import oauth2_scheme
+from lib.utils.rest_models import Course, CourseUpdate
 
 router = APIRouter()
 

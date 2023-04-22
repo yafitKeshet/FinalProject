@@ -2,9 +2,9 @@ from datetime import datetime
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from BE.lib.utils.db.models.user import User
-from BE.lib.utils.db.user_db import get_db_session
-from BE.lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile
+from lib.utils.db.models.user import User
+from lib.utils.db.user_db import get_db_session
+from lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile
 
 router = APIRouter()
 

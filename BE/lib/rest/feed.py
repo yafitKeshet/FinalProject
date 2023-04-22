@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, status
 
-from BE.lib.utils.rest_models import Post, NewPost
+from lib.utils.rest_models import Post, NewPost
 
 router = APIRouter()
 

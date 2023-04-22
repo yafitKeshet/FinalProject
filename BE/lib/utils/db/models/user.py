@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, Column, String, Enum, DateTime, Integer
 
-from BE.lib.utils.db.base import Base
+from lib.utils.db.base import Base
 from ...enums import Faculty, Year
 
 

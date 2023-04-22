@@ -3,9 +3,9 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from typing_extensions import Annotated
 
-from BE.lib.utils.db.models.user import User
-from BE.lib.utils.db.user_db import get_db_session
-from BE.lib.utils.rest_models import Login
+from lib.utils.db.models.user import User
+from lib.utils.db.user_db import get_db_session
+from lib.utils.rest_models import Login
 
 router = APIRouter()
 
