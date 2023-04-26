@@ -4,9 +4,11 @@ from sqlalchemy.orm import Session
 from typing_extensions import Annotated
 
 from BE.lib.utils.auth.decode_token import get_current_active_user
+from BE.lib.utils.auth.generate_access_token import login_for_access_token
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile
+from BE.lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile, \
+    UserLogin
 
 router = APIRouter()
 
@@ -57,17 +59,14 @@ router = APIRouter()
 )
 async def sign_up_new_profile_third_step(
         signup_user_profile: SignUpUserProfile,
-        db: Session = Depends(get_db_session)
+        db: UserDBSession = Depends(get_db_session)
 ):
     new_user = User(**signup_user_profile.dict())
 
     db.add(new_user)
     db.commit()
     db.close()
-    return Login(
-        jwt_token="",
-        user_info=UserProfileOut(**signup_user_profile.dict())
-    )
+    return login_for_access_token(db, UserLogin(**signup_user_profile.dict()))
 
 
 @router.post(
