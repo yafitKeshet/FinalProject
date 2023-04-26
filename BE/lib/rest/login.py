@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 
 
-from BE.lib.utils.auth import login_for_access_token
+from BE.lib.utils.auth.generate_access_token import login_for_access_token
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
 from BE.lib.utils.rest_models import UserLogin, Login
