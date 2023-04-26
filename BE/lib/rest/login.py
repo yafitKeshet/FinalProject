@@ -3,9 +3,10 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from typing_extensions import Annotated
 
+from BE.lib.utils.auth import login_for_access_token
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session
-from BE.lib.utils.rest_models import Login
+from BE.lib.utils.rest_models import UserLogin, Login
 
 router = APIRouter()
 
@@ -37,7 +38,7 @@ def login_check_user_exists(
 
 # Login into profile
     # 200 - Success
-    # 400 - Bad input (Wrong Password)
+    # 401 - Bad input (Wrong Password)
 @router.post(
     "/login",
     name="Login to profile page. You'll get a JWT Token (Transfer it in AUTH Header)",
@@ -46,16 +47,11 @@ def login_check_user_exists(
     response_model=Login
 )
 def login_to_profile(
-        form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+        user_login: UserLogin,
+        db: Session = Depends(get_db_session)
 ):
-    print(5)
+    return login_for_access_token(db, user_login)
 
-# ToDO: autorizer should be in /login endpoint
-@router.post("/token", response_model=dict)
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-):
-    print(6)
 
 @router.post(
     "/resetPassword1Step",

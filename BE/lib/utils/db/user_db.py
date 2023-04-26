@@ -52,6 +52,6 @@ def get_db_session():
     try:
         yield db
     except Exception as error:
-        logging.getLogger(__name__).error("ERROR in get_db_session")
+        raise error
     finally:
         db.close()
