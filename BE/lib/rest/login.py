@@ -1,16 +1,14 @@
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends, HTTPException, Body
 from fastapi.security import OAuth2PasswordBearer
+from typing_extensions import Annotated
 
-
+from BE.lib.utils.auth.decode_token import get_current_active_user
 from BE.lib.utils.auth.generate_access_token import login_for_access_token
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
 from BE.lib.utils.rest_models import UserLogin, Login
 
 router = APIRouter()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
 
 # 1 - Login Page:
     # 200 - Success
@@ -73,18 +71,24 @@ def reset_password_second_step():
     pass
 
 
-@router.post(
+@router.patch(
     "/login/updatePassword",
     name="update the user password",
-    description="In this case, we send email with a temporary code, the user need to insert it in change password page",
+    description="User logged in & want to change password",
     status_code=status.HTTP_200_OK,
-    response_model=Login
+    response_model=bool
 )
-def login_to_profile(
-        user_email: str,
-        password: str
+def update_password(
+        user: Annotated[User, Depends(get_current_active_user)],
+        new_password,
+        db: UserDBSession = Depends(get_db_session)
 ):
-    pass
+    existing_user = db.get_user_query(user.user_email).first()
+    if existing_user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
+    db.get_user_query(user.user_email).update({"password": new_password})
+    db.commit()
+    return True
 
 
 

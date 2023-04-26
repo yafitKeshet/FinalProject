@@ -34,9 +34,15 @@ def verify_password(given_password: str, user_password: str) -> bool:
 def authenticate_user(db: UserDBSession, user_email: str, password: str) -> User:
     user = db.get_user_query(user_email).first()
     if not user:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User does not exist",
+        )
     if not verify_password(password, user.password):
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect password",
+        )
     return user
 
 
@@ -45,12 +51,6 @@ def login_for_access_token(
     form_data: UserLogin
 ) -> Login:
     user = authenticate_user(db, form_data.user_email, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.dict()}, expires_delta=access_token_expires
