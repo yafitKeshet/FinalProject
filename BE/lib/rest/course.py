@@ -18,7 +18,7 @@ router = APIRouter()
 def get_courses(
         token: Annotated[str, Depends(oauth2_scheme)]
 ):
-    pass
+    print(5)
 
 
 @router.patch(

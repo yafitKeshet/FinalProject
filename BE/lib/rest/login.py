@@ -1,11 +1,10 @@
 from fastapi import APIRouter, status, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from sqlalchemy.orm import Session
-from typing_extensions import Annotated
+from fastapi.security import OAuth2PasswordBearer
+
 
 from BE.lib.utils.auth import login_for_access_token
 from BE.lib.utils.db.models.user import User
-from BE.lib.utils.db.user_db import get_db_session
+from BE.lib.utils.db.user_db import get_db_session, UserDBSession
 from BE.lib.utils.rest_models import UserLogin, Login
 
 router = APIRouter()
@@ -25,7 +24,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 )
 def login_check_user_exists(
         user_email: str,
-        db: Session = Depends(get_db_session)
+        db: UserDBSession = Depends(get_db_session)
 ):
     user = db.query(User).filter(User.email == user_email).first()
     db.close()
@@ -33,7 +32,6 @@ def login_check_user_exists(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
 
     return True
-
 
 
 # Login into profile
@@ -48,7 +46,7 @@ def login_check_user_exists(
 )
 def login_to_profile(
         user_login: UserLogin,
-        db: Session = Depends(get_db_session)
+        db: UserDBSession = Depends(get_db_session)
 ):
     return login_for_access_token(db, user_login)
 
