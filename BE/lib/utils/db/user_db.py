@@ -4,14 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
 from .base import Base
-
 from .models.user import User
-
-
-#
-# # ToDo: Make abstract interface class in order to inherit from it (all db types will implement it)
-# class GenericDB(abc.ABC):
-#     pass
 
 
 class UserDBSession(Session):
