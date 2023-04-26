@@ -4,6 +4,7 @@ from sqlalchemy import Boolean, Column, String, Enum, DateTime, Integer
 
 from BE.lib.utils.db.base import Base
 from ...enums import Faculty, Year
+from ...rest_models import UserProfileOut
 
 
 # CRUD pydantic models - will be used on crud endpoints
@@ -28,3 +29,6 @@ class User(Base):
     # Should be in all tables
     created_date = Column(DateTime, default=datetime.utcnow)
     updated_date = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def dict(self):
+        return UserProfileOut(**self.__dict__).dict()

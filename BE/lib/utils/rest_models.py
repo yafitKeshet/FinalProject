@@ -52,7 +52,7 @@ class UserProfileIn(BaseModel):
     user_image: Optional[str]  # URL to image
 
 
-class UserProfileOut(BaseModel):
+class UserProfileOut(ProjectBaseModel):
     user_email: str
     private_name: str
     last_name: str
@@ -76,9 +76,15 @@ class UpdateUserProfile(BaseModel):
 
 ############################################################
 
+# Login:
+class UserLogin(BaseModel):
+    user_email: str
+    password: str
+
+
 class Login(BaseModel):
     jwt_token: str
-    user_info: UserProfileOut
+    token_type: str
 
 
 class Post(BaseModel):
