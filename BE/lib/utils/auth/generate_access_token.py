@@ -2,12 +2,9 @@ from datetime import timedelta, datetime
 from typing import Optional
 
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt, JWTError
-from sqlalchemy.orm import Session
-from typing_extensions import Annotated
+from jose import jwt
 
-# from BE.lib.rest.login import oauth2_scheme
+
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
 from BE.lib.utils.rest_models import UserLogin, Login
@@ -59,41 +56,3 @@ def login_for_access_token(
         data={"sub": user.dict()}, expires_delta=access_token_expires
     )
     return Login(jwt_token=access_token, token_type="bearer")
-
-
-
- # # Auth with existing token
-# def get_user(db, user_email: str):
-#
-#     if username in db:
-#         user_dict = db[username]
-#         return UserInDB(**user_dict)
-#
-# async def get_current_user(
-#         token: Annotated[str, Depends(oauth2_scheme)],
-#         db: Session = Depends(get_db_session)
-# ):
-#     credentials_exception = HTTPException(
-#         status_code=status.HTTP_401_UNAUTHORIZED,
-#         detail="Could not validate credentials",
-#         headers={"WWW-Authenticate": "Bearer"},
-#     )
-#     try:
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         user_email: str = payload.get("sub", {}).get("user_email")
-#         if user_email is None:
-#             raise credentials_exception
-#     except JWTError:
-#         raise credentials_exception
-#     user = get_user(db, user_email=user_email)
-#     if user is None:
-#         raise credentials_exception
-#     return user
-#
-#
-# def get_current_active_user(
-#     current_user: Annotated[User, Depends(get_current_user)]
-# ):
-#     if current_user.disabled:
-#         raise HTTPException(status_code=400, detail="Inactive user")
-#     return current_user
