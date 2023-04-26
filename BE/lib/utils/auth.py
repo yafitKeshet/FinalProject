@@ -35,7 +35,7 @@ def verify_password(given_password: str, user_password: str) -> bool:
 
 
 def authenticate_user(db: UserDBSession, user_email: str, password: str) -> User:
-    user = db.get_user(user_email)
+    user = db.get_user_query(user_email).first()
     if not user:
         return False
     if not verify_password(password, user.password):

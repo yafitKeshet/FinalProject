@@ -23,8 +23,8 @@ class UserDBSession(Session):
             return self.__dict__.get(name)
         return getattr(self.session, name)
 
-    def get_user(self, user_email):
-        return self.query(User).filter(User.user_email == user_email).first()
+    def get_user_query(self, user_email):
+        return self.query(User).filter(User.user_email == user_email)
 
 
 class DBManager:
