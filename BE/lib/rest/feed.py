@@ -1,7 +1,13 @@
 from typing import List
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
+from typing_extensions import Annotated
 
-from lib.utils.rest_models import Post, NewPost
+from BE.lib.bussiness_logic.posts_manager import PostsManager
+from BE.lib.utils.auth.decode_token import get_current_active_user
+from BE.lib.utils.db.models.user import User
+from BE.lib.utils.db.user_db import get_db_session, UserDBSession
+from BE.lib.utils.rest_models import PostOut, NewPost
+
 
 router = APIRouter()
 
@@ -11,10 +17,14 @@ router = APIRouter()
     name="Get all existing post. Sorted by BE algorithm",
     description="This is the user main page (after Login)",
     status_code=status.HTTP_200_OK,
-    response_model=List[Post]
+    response_model=List[PostOut]
 )
-def get_all_posts():
-    pass
+def get_all_posts(
+        user: Annotated[User, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session)
+):
+    return PostsManager(db).get_user_feed(user)
+
 
 
 @router.post(
@@ -22,13 +32,15 @@ def get_all_posts():
     name="Write new post",
     description="After writing post - (state should be updated). BackEnd Notice: Likes amount should be 0",
     status_code=status.HTTP_200_OK,
-    response_model=NewPost
+    response_model=PostOut
 )
 def new_post(
-        new_post: NewPost
-):
-    pass
+    post: NewPost,
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: UserDBSession = Depends(get_db_session)
 
+):
+    return PostsManager(db).create_new_post(user, post)
 
 
 

@@ -39,7 +39,7 @@ class OnBoardingUserProfile(ProjectBaseModel):
     user_image: Optional[str]  # URL to image
 
 
-class UserProfileIn(BaseModel):
+class UserProfileIn(ProjectBaseModel):
     user_email: str
     private_name: str
     last_name: str
@@ -52,7 +52,7 @@ class UserProfileIn(BaseModel):
     user_image: Optional[str]  # URL to image
 
 
-class UserProfileOut(BaseModel):
+class UserProfileOut(ProjectBaseModel):
     user_email: str
     private_name: str
     last_name: str
@@ -66,7 +66,7 @@ class UserProfileOut(BaseModel):
     cv_resume: Optional[str]  # URL to the cv resume
 
 
-class UpdateUserProfile(BaseModel):
+class UpdateUserProfile(ProjectBaseModel):
     faculty: Optional[str]
     year: Optional[Year]
     job_company_name: Optional[str]
@@ -76,34 +76,39 @@ class UpdateUserProfile(BaseModel):
 
 ############################################################
 
-class Login(BaseModel):
+# Login:
+class UserLogin(ProjectBaseModel):
+    user_email: str
+    password: str
+
+
+class Login(ProjectBaseModel):
     jwt_token: str
-    user_info: UserProfileOut
+    token_type: str
 
 
-class Post(BaseModel):
+class PostOut(ProjectBaseModel):
     author: UserProfileOut
     post_id: str
     content: str
     title: str
     faculty: Faculty
-    likes: Set[str]
+    likes: Set[str] = set()
 
 
-class NewPost(BaseModel):
-    post_id: str
+class NewPost(ProjectBaseModel):
     content: str
     title: str
     faculty: Faculty
 
 
-class Company(BaseModel):
+class Company(ProjectBaseModel):
     name: str
     logo: str  # URL to the logo
     number_of_employees: Tuple[int, int]
 
 
-class Job(BaseModel):
+class Job(ProjectBaseModel):
     job_id: str
     publisher_email: str
     published_time: datetime
@@ -116,7 +121,7 @@ class Job(BaseModel):
     experience: Optional[Experience]
 
 
-class NewJob(BaseModel):
+class NewJob(ProjectBaseModel):
     publisher_email: str
     published_time: datetime
     applies: int = 0
@@ -128,13 +133,13 @@ class NewJob(BaseModel):
     experience: Optional[Experience]
 
 
-class Recommend(BaseModel):
+class Recommend(ProjectBaseModel):
     title: str
     description: str
     rating: Rating
 
 
-class Course(BaseModel):
+class Course(ProjectBaseModel):
     course_id: str
     name: str
     teachers: List[str]
@@ -147,7 +152,7 @@ class Course(BaseModel):
     recommendations: List[Recommend]
 
 
-class CourseUpdate(BaseModel):
+class CourseUpdate(ProjectBaseModel):
     rate: Optional[Rating]
     tests: Optional[List[UploadFile]]
     tests_solution: Optional[List[UploadFile]]

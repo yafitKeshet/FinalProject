@@ -1,16 +1,14 @@
-from fastapi import APIRouter, status, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, status, Depends, HTTPException, Body
+from fastapi.security import OAuth2PasswordBearer
 from typing_extensions import Annotated
 
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import get_db_session
-from lib.utils.rest_models import Login
+from BE.lib.utils.auth.decode_token import get_current_active_user
+from BE.lib.utils.auth.generate_access_token import login_for_access_token
+from BE.lib.utils.db.models.user import User
+from BE.lib.utils.db.user_db import get_db_session, UserDBSession
+from BE.lib.utils.rest_models import UserLogin, Login
 
 router = APIRouter()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
 
 # 1 - Login Page:
     # 200 - Success
@@ -24,7 +22,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 )
 def login_check_user_exists(
         user_email: str,
-        db: Session = Depends(get_db_session)
+        db: UserDBSession = Depends(get_db_session)
 ):
     user = db.query(User).filter(User.email == user_email).first()
     db.close()
@@ -34,10 +32,9 @@ def login_check_user_exists(
     return True
 
 
-
 # Login into profile
     # 200 - Success
-    # 400 - Bad input (Wrong Password)
+    # 401 - Bad input (Wrong Password)
 @router.post(
     "/login",
     name="Login to profile page. You'll get a JWT Token (Transfer it in AUTH Header)",
@@ -46,16 +43,11 @@ def login_check_user_exists(
     response_model=Login
 )
 def login_to_profile(
-        form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+        user_login: UserLogin,
+        db: UserDBSession = Depends(get_db_session)
 ):
-    print(5)
+    return login_for_access_token(db, user_login)
 
-# ToDO: autorizer should be in /login endpoint
-@router.post("/token", response_model=dict)
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-):
-    print(6)
 
 @router.post(
     "/resetPassword1Step",
@@ -79,18 +71,24 @@ def reset_password_second_step():
     pass
 
 
-@router.post(
+@router.patch(
     "/login/updatePassword",
     name="update the user password",
-    description="In this case, we send email with a temporary code, the user need to insert it in change password page",
+    description="User logged in & want to change password",
     status_code=status.HTTP_200_OK,
-    response_model=Login
+    response_model=bool
 )
-def login_to_profile(
-        user_email: str,
-        password: str
+def update_password(
+        user: Annotated[User, Depends(get_current_active_user)],
+        new_password,
+        db: UserDBSession = Depends(get_db_session)
 ):
-    pass
+    existing_user = db.get_user_query(user.user_email).first()
+    if existing_user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
+    db.get_user_query(user.user_email).update({"password": new_password})
+    db.commit()
+    return True
 
 
 

@@ -1,10 +1,14 @@
 from datetime import datetime
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing_extensions import Annotated
 
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import get_db_session
-from lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile
+from BE.lib.utils.auth.decode_token import get_current_active_user
+from BE.lib.utils.auth.generate_access_token import login_for_access_token
+from BE.lib.utils.db.models.user import User
+from BE.lib.utils.db.user_db import get_db_session, UserDBSession
+from BE.lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile, \
+    UserLogin
 
 router = APIRouter()
 
@@ -55,17 +59,14 @@ router = APIRouter()
 )
 async def sign_up_new_profile_third_step(
         signup_user_profile: SignUpUserProfile,
-        db: Session = Depends(get_db_session)
+        db: UserDBSession = Depends(get_db_session)
 ):
     new_user = User(**signup_user_profile.dict())
 
     db.add(new_user)
     db.commit()
     db.close()
-    return Login(
-        jwt_token="",
-        user_info=UserProfileOut(**signup_user_profile.dict())
-    )
+    return login_for_access_token(db, UserLogin(**signup_user_profile.dict()))
 
 
 @router.post(
@@ -76,16 +77,15 @@ async def sign_up_new_profile_third_step(
     response_model=UserProfileOut
 )
 def sign_up_new_profile(
+        auth: Annotated[User, Depends(get_current_active_user)],
         updated_user_profile: OnBoardingUserProfile,
-        db: Session = Depends(get_db_session)
+        db: UserDBSession = Depends(get_db_session)
 ):
-    user_email = updated_user_profile.user_email
-    existing_user = db.query(User).filter(User.user_email == user_email).first()
+    existing_user = db.get_user_query(updated_user_profile.user_email).first()
     if existing_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
 
-    existing_user = db.query(User).filter(User.user_email == user_email).update(
+    db.get_user_query(updated_user_profile.user_email).update(
         updated_user_profile.dict())
     db.commit()
-    db.close()
     return UserProfileOut(**updated_user_profile.dict())
