@@ -61,6 +61,9 @@ async def sign_up_new_profile_third_step(
         signup_user_profile: SignUpUserProfile,
         db: UserDBSession = Depends(get_db_session)
 ):
+    existing_user = db.get_user_query(signup_user_profile.user_email).first()
+    if existing_user:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
     new_user = User(**signup_user_profile.dict())
 
     db.add(new_user)
