@@ -1,7 +1,6 @@
 from sqlalchemy import Column, String, JSON
-from sqlalchemy.ext.mutable import MutableDict
 
-from lib.utils.db.user_db import Base
+from BE.lib.utils.db.user_db import Base
 
 
 class Course(Base):

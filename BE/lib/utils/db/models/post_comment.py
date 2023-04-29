@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 
-from lib.utils.db.user_db import Base
+from BE.lib.utils.db.user_db import Base
 
 
 # ToDo: Foreign key must be post id
