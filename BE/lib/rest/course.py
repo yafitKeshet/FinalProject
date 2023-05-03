@@ -4,6 +4,8 @@ from fastapi import APIRouter, status, Depends
 from typing_extensions import Annotated
 
 from BE.lib.utils.auth.decode_token import get_current_active_user
+from BE.lib.utils.db.models.course import Course as CourseTable
+from BE.lib.utils.db.user_db import get_db_session, UserDBSession
 from BE.lib.utils.rest_models import Course, CourseUpdate
 
 router = APIRouter()
@@ -16,9 +18,10 @@ router = APIRouter()
     response_model=List[Course]
 )
 def get_courses(
-        user: Annotated[str, Depends(get_current_active_user)]
+        user: Annotated[str, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session)
 ):
-    print(5)
+    return db.query(CourseTable).all()
 
 
 @router.patch(

@@ -17,6 +17,7 @@ class PostsManager:
 
         # Enrich User profile
         posts_enriched = []
+
         for p in all_posts:
             user_profile = self.db_session.get_user_query(p.author_email).first()
             if not user_profile:

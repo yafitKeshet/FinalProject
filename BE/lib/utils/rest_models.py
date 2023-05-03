@@ -56,9 +56,9 @@ class UserProfileOut(ProjectBaseModel):
     user_email: str
     private_name: str
     last_name: str
-    birthday_date: str
-    faculty: Faculty
-    year: Year
+    birthday_date: Optional[str]
+    faculty: Optional[Faculty]
+    year: Optional[Year]
     job_company_name: Optional[str]
     job_start_year: Optional[int]
     job_description: Optional[str]

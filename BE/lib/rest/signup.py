@@ -65,7 +65,6 @@ async def sign_up_new_profile_third_step(
 
     db.add(new_user)
     db.commit()
-    db.close()
     return login_for_access_token(db, UserLogin(**signup_user_profile.dict()))
 
 

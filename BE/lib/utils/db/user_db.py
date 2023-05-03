@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker, Session
 
 from .base import Base
 from .models.user import User
+from .models.course import Course
 
 
 class UserDBSession(Session):
@@ -19,6 +20,8 @@ class UserDBSession(Session):
     def get_user_query(self, user_email):
         return self.query(User).filter(User.user_email == user_email)
 
+    def get_course_query(self, course_name):
+        return self.query(Course).filter(Course.name == course_name)
 
 class DBManager:
 
@@ -42,17 +45,13 @@ class DBManager:
     def get_db(self) -> UserDBSession:
         return UserDBSession(self._session_maker())
 
-
 db = None
-
 
 def initialize_db():
     global db
     if not db:
         db = DBManager()
     return db
-
-
 def get_db_session() -> UserDBSession:
     db_session = initialize_db().get_db()
     try:
@@ -61,3 +60,4 @@ def get_db_session() -> UserDBSession:
         raise error
     finally:
         db_session.close()
+
