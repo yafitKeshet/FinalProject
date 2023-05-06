@@ -40,6 +40,8 @@ class Rating(Enum):
 
 
 class EnumsResponse(BaseModel):
+    JobTime: List[JobTime]
+    Experience: List[Experience]
     Faculty: List[Faculty]
     Year: List[Year]
-    JobTime: List[JobTime]
+    Rating: List[Rating]
