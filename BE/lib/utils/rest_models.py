@@ -97,6 +97,7 @@ class SignupSecondStep(ProjectBaseModel):
     user_email: str
     temp_password: str
 
+
 # Post
 class PostOut(ProjectBaseModel):
     author: UserProfileOut
