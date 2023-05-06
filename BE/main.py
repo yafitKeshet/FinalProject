@@ -9,6 +9,12 @@ from fastapi import FastAPI, Request
 
 # Internal imports
 from lib.rest import course, feed, general, job, login, profile, signup
+from dotenv import load_dotenv
+
+# Load variables from .env file
+load_dotenv()
+
+
 
 # Initialize logger
 logger = logging.getLogger(__name__)

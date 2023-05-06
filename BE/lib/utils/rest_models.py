@@ -76,6 +76,7 @@ class UpdateUserProfile(ProjectBaseModel):
 
 ############################################################
 
+
 # Login:
 class UserLogin(ProjectBaseModel):
     user_email: str
@@ -87,6 +88,17 @@ class Login(ProjectBaseModel):
     token_type: str
 
 
+class ResetPasswordBody(ProjectBaseModel):
+    temp_password: str
+    new_password: str
+
+
+class SignupSecondStep(ProjectBaseModel):
+    user_email: str
+    temp_password: str
+
+
+# Post
 class PostOut(ProjectBaseModel):
     author: UserProfileOut
     post_id: str

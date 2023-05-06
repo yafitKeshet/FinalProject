@@ -3,11 +3,8 @@ from datetime import datetime
 from sqlalchemy import Boolean, Column, String, Enum, DateTime, Integer
 
 from BE.lib.utils.db.base import Base
-from ...enums import Faculty, Year
+from ...enums import Faculty
 from ...rest_models import UserProfileOut
-
-
-# CRUD pydantic models - will be used on crud endpoints
 
 
 class User(Base):
