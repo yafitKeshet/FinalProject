@@ -3,7 +3,7 @@ from sqlalchemy import Column, String
 from BE.lib.utils.db.user_db import Base
 
 
-class Cours(Base):
+class Course(Base):
     __tablename__ = "course"
 
 
