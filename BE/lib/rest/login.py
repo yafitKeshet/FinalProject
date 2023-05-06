@@ -84,8 +84,10 @@ def reset_password_second_step(
     if not existing_user_temp_password:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"The user {user.user_email} is not in reset password process")
 
-    if existing_user_temp_password != body.temp_password:
+    if existing_user_temp_password.temp_password != body.temp_password:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, f"The temp password is incorrect for user {user.user_email}")
+
+    db.delete(existing_user_temp_password)
 
     # Assign the new password to the User entry in User table
     existing_user = db.get_user_query(user.user_email).first()
@@ -94,6 +96,7 @@ def reset_password_second_step(
 
     # Committing changes
     db.commit()
+    return True
 
 
 @router.patch(

@@ -24,7 +24,7 @@ class UserDBSession(Session):
         return self.query(User).filter(User.user_email == user_email)
 
     def get_user_temp_password_entry(self, user_email) -> Optional[Type[UserTempPassword]]:
-        return self.query(UserTempPassword).filter(UserTempPassword == user_email).first()
+        return self.query(UserTempPassword).filter(UserTempPassword.user_email == user_email).first()
 
 
 class DBManager:

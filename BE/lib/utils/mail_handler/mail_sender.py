@@ -66,7 +66,7 @@ class EmailSender:
     def send_mail_to_user(self, user_email: str):
         temp_password = self._send_email(user_email)
 
-        current_user = self.db_session.get_user_temp_password_entry()
+        current_user = self.db_session.get_user_temp_password_entry(user_email)
         if current_user:
             # User exists. Need to update the DB temp password
             current_user.temp_password = temp_password
