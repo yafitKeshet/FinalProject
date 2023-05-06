@@ -1,14 +1,15 @@
-from fastapi import APIRouter, status, Depends, HTTPException, Body
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter, status, Depends, HTTPException
 from typing_extensions import Annotated
 
 from BE.lib.utils.auth.decode_token import get_current_active_user
 from BE.lib.utils.auth.generate_access_token import login_for_access_token
 from BE.lib.utils.db.models.user import User
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.rest_models import UserLogin, Login
+from BE.lib.utils.mail_handler.mail_sender import EmailSender
+from BE.lib.utils.rest_models import UserLogin, Login, ResetPasswordBody
 
 router = APIRouter()
+
 
 # 1 - Login Page:
     # 200 - Success
@@ -52,23 +53,47 @@ def login_to_profile(
 @router.post(
     "/resetPassword1Step",
     name="User Forgot password",
-    description="In this case, we send email with a temporary code, the user need to insert it in change password page",
+    description="In this case, we send email with a temporary code, the user need to insert it in change password page."
+                "Return value is whether the email has been sent successfully or not",
     status_code=status.HTTP_200_OK,
-    response_model=Login
+    response_model=bool
 )
-def reset_password_first_step():
-    pass
+def reset_password_first_step(
+        user: Annotated[User, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session),
+):
+    EmailSender(db).send_mail_to_user(user.user_email)
+    return True
 
 
 @router.post(
     "/resetPassword2Step",
     name="User Forgot password",
-    description="User insert the temp code he got in email & update the password (need to insert it twice",
+    description="User insert the temp code he got in email & update the password (need to insert it twice."
+                "Return value is True if password has been successfully reset",
     status_code=status.HTTP_200_OK,
-    response_model=Login
+    response_model=bool
 )
-def reset_password_second_step():
-    pass
+def reset_password_second_step(
+        body: ResetPasswordBody,
+        user: Annotated[User, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session),
+):
+    # First Assert that temp password is correct & delete the temp password entry from DB
+    existing_user_temp_password = db.get_user_temp_password_entry(user.user_email)
+    if not existing_user_temp_password:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"The user {user.user_email} is not in reset password process")
+
+    if existing_user_temp_password != body.temp_password:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"The temp password is incorrect for user {user.user_email}")
+
+    # Assign the new password to the User entry in User table
+    existing_user = db.get_user_query(user.user_email).first()
+    existing_user.password = body.new_password
+    db.add(existing_user)
+
+    # Committing changes
+    db.commit()
 
 
 @router.patch(
