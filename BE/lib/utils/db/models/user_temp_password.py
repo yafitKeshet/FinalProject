@@ -1,13 +1,6 @@
-from datetime import datetime
-
-from sqlalchemy import Boolean, Column, String, Enum, DateTime, Integer
+from sqlalchemy import Column, String
 
 from BE.lib.utils.db.base import Base
-from ...enums import Faculty, Year
-from ...rest_models import UserProfileOut
-
-
-# CRUD pydantic models - will be used on crud endpoints
 
 
 class UserTempPassword(Base):
