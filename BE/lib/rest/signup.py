@@ -1,5 +1,5 @@
 from datetime import datetime
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends, HTTPException, Body
 from sqlalchemy.orm import Session
 from typing_extensions import Annotated
 
@@ -25,9 +25,12 @@ router = APIRouter()
     response_model=bool
 )
 def sign_up_new_profile_first_step(
-        user_email: str,
+        user_email: str = Body(...),
         db: UserDBSession = Depends(get_db_session),
 ):
+    if db.get_user_query(user_email).first():
+        raise HTTPException(status.HTTP_409_CONFLICT, "User already registered")
+
     EmailSender(db).send_mail_to_user(user_email)
     return True
 
