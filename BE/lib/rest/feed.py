@@ -43,7 +43,6 @@ def new_post(
     return PostsManager(db).create_new_post(user, post)
 
 
-
 @router.patch(
     "/feed/like",
     name="Like a post",

@@ -142,14 +142,12 @@ class Recommend(ProjectBaseModel):
 class Course(ProjectBaseModel):
     course_id: str
     name: str
-    teachers: List[str]
+    teachers: str
     rating_avg: float
     description: str
-    summary_documents: List[str]  # List of URLs
+    summary_documents: Optional[List[str]]  # List of URLs
     tests: Optional[List[str]]
     tests_solution: Optional[List[str]]
-    avg: Optional[List[str]]
-    recommendations: List[Recommend]
 
 
 class CourseUpdate(ProjectBaseModel):

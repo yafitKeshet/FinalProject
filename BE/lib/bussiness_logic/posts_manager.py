@@ -17,7 +17,6 @@ class PostsManager:
 
         # Enrich User profile
         posts_enriched = []
-
         for p in all_posts:
             user_profile = self.db_session.get_user_query(p.author_email).first()
             if not user_profile:
@@ -38,7 +37,6 @@ class PostsManager:
             Post.post_id.name: str(uuid.uuid4())
         }
         post_to_add_dict.update(new_post.dict())
-
         post_to_add = Post(**post_to_add_dict)
         self.db_session.add(Post(**post_to_add_dict))
         self.db_session.commit()
