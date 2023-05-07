@@ -23,6 +23,9 @@ class UserDBSession(Session):
     def get_course_query(self, course_name):
         return self.query(Course).filter(Course.name == course_name)
 
+    def get_course_by_id(self, course_id):
+        return self.query(Course).filter(Course.course_id == course_id)
+
 class DBManager:
 
     DATABASE_URL = "sqlite:///./server_db.db"

@@ -74,6 +74,7 @@ class UpdateUserProfile(ProjectBaseModel):
     job_description: Optional[str]
     user_image: Optional[str]  # URL to image
 
+
 ############################################################
 
 # Login:
@@ -139,11 +140,20 @@ class Recommend(ProjectBaseModel):
     rating: Rating
 
 
-class Course(ProjectBaseModel):
+class CourseOut(ProjectBaseModel):
     course_id: str
     name: str
     teachers: str
     rating_avg: float
+    description: str
+    summary_documents: Optional[List[str]]  # List of URLs
+    tests: Optional[List[str]]
+    tests_solution: Optional[List[str]]
+
+
+class CourseIn(ProjectBaseModel):
+    name: str
+    teachers: str
     description: str
     summary_documents: Optional[List[str]]  # List of URLs
     tests: Optional[List[str]]
