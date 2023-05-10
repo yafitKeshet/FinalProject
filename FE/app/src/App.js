@@ -1,18 +1,27 @@
 import "./App.css";
+import React, { useState } from "react";
 import Menu from "./components/header/Menu";
 
 const INITIAL_MENU = [
   {
     onclick: {},
-    data: "מידע כללי",
+    data: "פקולטות",
   },
   {
     onclick: {},
-    data: "פקולטות",
+    data: "מידע כללי",
   },
 ];
 
 const App = () => {
+  const [menu, setMenu] = useState(INITIAL_MENU);
+
+  const addButtonToMenu = (newButton) => {
+    setMenu((prevMenu) => {
+      return [newButton, ...prevMenu];
+    });
+  };
+
   return (
     <div className="App">
       <Menu items={INITIAL_MENU} />
