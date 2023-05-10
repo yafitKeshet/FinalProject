@@ -1,6 +1,6 @@
 .form-card {
   padding: 1rem 3rem;
-  width: 40%;
+  width: fit-content;
   display: flex;
   gap: 1rem;
   flex-direction: column;
