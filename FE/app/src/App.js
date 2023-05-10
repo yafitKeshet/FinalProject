@@ -1,15 +1,16 @@
 import "./App.css";
 import React, { useState } from "react";
 import Menu from "./components/header/Menu";
+import LoginForm from "./components/login/LoginForm";
 
 const INITIAL_MENU = [
   {
     onclick: {},
-    data: "פקולטות",
+    data: "מידע כללי",
   },
   {
     onclick: {},
-    data: "מידע כללי",
+    data: "פקולטות",
   },
 ];
 
@@ -24,7 +25,8 @@ const App = () => {
 
   return (
     <div className="App">
-      <Menu items={INITIAL_MENU} />
+      <Menu items={menu} />
+      <LoginForm></LoginForm>
     </div>
   );
 };
