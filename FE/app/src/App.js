@@ -16,6 +16,7 @@ const INITIAL_MENU = [
 
 const App = () => {
   const [menu, setMenu] = useState(INITIAL_MENU);
+  const [isLogin, setIsLogIn] = useState(false);
 
   const addButtonToMenu = (newButton) => {
     setMenu((prevMenu) => {
@@ -26,7 +27,7 @@ const App = () => {
   return (
     <div className="App">
       <Menu items={menu} />
-      <LoginForm></LoginForm>
+      {!isLogin && <LoginForm onLogIn={setIsLogIn} />}
     </div>
   );
 };
