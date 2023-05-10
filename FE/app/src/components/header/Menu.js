@@ -5,7 +5,9 @@ const Menu = (props) => {
   return (
     <ul className="menu-list">
       {props.items.map((btn) => (
-        <Button onClick={btn.onClick}>{btn.data}</Button>
+        <Button onClick={btn.onClick} key={Math.random().toString()}>
+          {btn.data}
+        </Button>
       ))}
     </ul>
   );
