@@ -1,0 +1,41 @@
+.form-card {
+  padding: 1rem 3rem;
+  width: 40%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-control {
+  text-align: right;
+  display: flex;
+
+  flex-direction: column;
+}
+
+.login-control label {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.login-control input {
+  font: inherit;
+  padding: 0.5rem 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  max-width: 100%;
+}
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.register-btn {
+  padding: 0 1rem;
+  display: block;
+  align-self: flex-start;
+}
