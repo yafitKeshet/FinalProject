@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, status
 
-from BE.lib.utils.rest_models import Job, Company
+from lib.utils.rest_models import Job, Company
 
 router = APIRouter()
 

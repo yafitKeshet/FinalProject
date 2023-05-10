@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 
-from BE.lib.utils.enums import JobTime, Experience, Faculty, Year, Rating, EnumsResponse
+from lib.utils.enums import JobTime, Experience, Faculty, Year, Rating, EnumsResponse
 
 router = APIRouter()
 

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 
-from BE.lib.utils.db.base import Base
+from lib.utils.db.base import Base
 
 
 class UserTempPassword(Base):

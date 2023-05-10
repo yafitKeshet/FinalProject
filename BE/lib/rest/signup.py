@@ -3,12 +3,12 @@ from fastapi import APIRouter, status, Depends, HTTPException, Body
 from sqlalchemy.orm import Session
 from typing_extensions import Annotated
 
-from BE.lib.utils.auth.decode_token import get_current_active_user
-from BE.lib.utils.auth.generate_access_token import login_for_access_token
-from BE.lib.utils.db.models.user import User
-from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.mail_handler.mail_sender import EmailSender
-from BE.lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile, \
+from lib.utils.auth.decode_token import get_current_active_user
+from lib.utils.auth.generate_access_token import login_for_access_token
+from lib.utils.db.models.user import User
+from lib.utils.db.user_db import get_db_session, UserDBSession
+from lib.utils.mail_handler.mail_sender import EmailSender
+from lib.utils.rest_models import Login, UserProfileIn, SignUpUserProfile, UserProfileOut, OnBoardingUserProfile, \
     UserLogin, SignupSecondStep
 
 router = APIRouter()
