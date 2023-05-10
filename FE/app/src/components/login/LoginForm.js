@@ -21,16 +21,17 @@ const LoginForm = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    const userData = {
-      mail: enteredMail,
-      pass: enteredPass,
-    };
+    // const userData = {
+    //   mail: enteredMail,
+    //   pass: enteredPass,
+    // };
 
     setEnteredMail("");
     setEnteredPass("");
     setEnteredConfirmPass("");
 
-    props.onSaveUser(userData);
+    props.onLogIn(true);
+    // props.onSaveUser(userData);
   };
 
   return (
@@ -64,7 +65,7 @@ const LoginForm = (props) => {
         </div>
 
         <div className="login-actions">
-          <Button classname="login-btn" type="submit">
+          <Button className="login-btn" type="submit">
             התחברות
           </Button>
           <Button className="register-btn">
