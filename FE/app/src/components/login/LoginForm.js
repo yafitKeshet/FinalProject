@@ -35,49 +35,56 @@ const LoginForm = (props) => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <Card className="form-card">
-        <div className="login-controls">
-          <div className="login-control">
-            <label>מייל</label>
-            <input
-              type="text"
-              value={enteredMail}
-              onChange={mailChangeHandler}
-            ></input>
+    <div className="login-page">
+      <img
+        className="login-img"
+        src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
+        alt="תמונה של האקדמית"
+      ></img>
+      <form onSubmit={submitHandler}>
+        <Card className="form-card">
+          <div className="login-controls">
+            <div className="login-control">
+              <label>מייל</label>
+              <input
+                type="text"
+                value={enteredMail}
+                onChange={mailChangeHandler}
+              ></input>
+            </div>
+            <div className="login-control">
+              <label>סיסמא</label>
+              <input
+                type="text"
+                value={enteredPass}
+                onChange={passChangeHandler}
+              ></input>
+            </div>
+            <div className="login-control">
+              <label>אימות סיסמא</label>
+              <input
+                type="text"
+                value={enteredConfirmPass}
+                onChange={confirmPassChangeHandler}
+              ></input>
+            </div>
           </div>
-          <div className="login-control">
-            <label>סיסמא</label>
-            <input
-              type="text"
-              value={enteredPass}
-              onChange={passChangeHandler}
-            ></input>
-          </div>
-          <div className="login-control">
-            <label>אימות סיסמא</label>
-            <input
-              type="text"
-              value={enteredConfirmPass}
-              onChange={confirmPassChangeHandler}
-            ></input>
-          </div>
-        </div>
 
-        <div className="login-actions">
-          <Button className="login-btn" type="submit">
-            התחברות
-          </Button>
-          <Button className="register-btn">
-            <p>
-              אין לך משתמש?
-              <br />
-              לחץ להרשמה
-            </p>{" "}
-          </Button>
-        </div>
-      </Card>
-    </form>
+          <div className="login-actions">
+            <Button className="login-btn" type="submit">
+              התחברות
+            </Button>
+            <Button className="register-btn">
+              <p>
+                אין לך משתמש?
+                <br />
+                לחץ להרשמה
+              </p>{" "}
+            </Button>
+          </div>
+        </Card>
+      </form>
+    </div>
   );
 };
 
