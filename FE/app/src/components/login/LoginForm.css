@@ -54,6 +54,7 @@
   align-self: flex-start;
 }
 .register-btn {
+  background-color: green !important ;
   font-weight: 400 !important ;
   font-size: 10px !important ;
   padding: 0 1rem !important ;
