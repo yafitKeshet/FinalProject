@@ -2,6 +2,7 @@ import "./LoginForm.css";
 import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
+import Separator from "../UI/Separator";
 
 const LoginForm = (props) => {
   // Input Colors
@@ -66,11 +67,16 @@ const LoginForm = (props) => {
 
   return (
     <div className="login-page">
-      <img
-        className="login-img"
-        src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
-        alt="תמונה של האקדמית"
-      ></img>
+      <div>
+        <div>
+          <p>אתר הבוגרים, האקדמית תל אביב יפו</p>
+        </div>
+        <img
+          className="login-img"
+          src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
+          alt="תמונה של האקדמית"
+        ></img>
+      </div>
       <form onSubmit={submitHandler}>
         <Card className="form-card">
           <div className="login-controls">
@@ -121,16 +127,18 @@ const LoginForm = (props) => {
           </div>
 
           <div className="login-actions">
-            <Button className="login-btn" type="submit">
+            <Button className="login-btn btn" type="submit">
               התחברות
             </Button>
 
             {/* TODO */}
-            <Button className="register-btn">
+            <Button className="forgotPass-btn btn">שכחתי סיסמא</Button>
+            <Separator />
+            <Button className="register-btn btn">
               <p>
                 אין לך משתמש?
                 <br />
-                לחץ להרשמה
+                <b> הירשם</b>
               </p>
             </Button>
           </div>
