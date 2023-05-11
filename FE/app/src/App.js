@@ -15,9 +15,13 @@ const INITIAL_MENU = [
 ];
 
 const App = () => {
+  // HEADER - Menu
   const [menu, setMenu] = useState(INITIAL_MENU);
+
+  // BODY
   const [isLogin, setIsLogIn] = useState(false);
 
+  // TODO
   const addButtonToMenu = (newButton) => {
     setMenu((prevMenu) => {
       return [newButton, ...prevMenu];
@@ -26,9 +30,15 @@ const App = () => {
 
   return (
     <div className="App">
+      {/* HEADER */}
       <Menu items={menu} />
 
-      {!isLogin && <LoginForm onLogIn={setIsLogIn} />}
+      {/* BODY */}
+      {/* lOGIN-PAGE */}
+      {!isLogin && <LoginForm /* TODO*/ onLogIn={setIsLogIn} />}
+      {/* REGISTER */}
+      {/* FEED */}
+      {/* PROFIL */}
     </div>
   );
 };
