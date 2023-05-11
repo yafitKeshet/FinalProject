@@ -66,83 +66,75 @@ const LoginForm = (props) => {
   // TODO
 
   return (
-    <div className="login-page">
-      <div className="title">
-        <p>אתר הבוגרים, האקדמית תל אביב יפו</p>
-      </div>
-      <img
-        className="login-img"
-        src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
-        alt="תמונה של האקדמית"
-      ></img>
-      <form className="login-form" onSubmit={submitHandler}>
-        <Card className="form-card">
-          <div className="login-controls">
-            <div className="login-control">
-              <label>מייל</label>
-              <input
-                type="text"
-                value={enteredMail}
-                onChange={mailChangeHandler}
-                placeholder="some@mta.ac.il"
-                pattern="[a-z0-9._%+-]+@mta.ac.il"
-                title="The email should be of the Academic Tel-Aviv Yafo."
-                style={{
-                  border: `2px solid ${mailBorderColor}`,
-                  backgroundColor: `${mailBackgroundColor}`,
-                }}
-                required
-              ></input>
-            </div>
-            <div className="login-control">
-              <label>סיסמא</label>
-              <input
-                type="password"
-                value={enteredPass}
-                onChange={passChangeHandler}
-                style={{
-                  border: `2px solid ${passBorderColor}`,
-                  backgroundColor: `${passBackgroundColor}`,
-                }}
-                required
-              ></input>
-            </div>
-            <div className="login-control">
-              <label>אימות סיסמא</label>
-              <input
-                type="password"
-                value={enteredConfirmPass}
-                onChange={confirmPassChangeHandler}
-                pattern={enteredPass.toString()}
-                style={{
-                  border: `2px solid ${confirmPassBorderColor}`,
-                  backgroundColor: `${confirmPassBackgroundColor}`,
-                }}
-                title="Password not match."
-                required
-              ></input>
-            </div>
+    <form className="login-form" onSubmit={submitHandler}>
+      <Card className="form-card">
+        <div className="login-controls">
+          <div className="login-control">
+            <label>מייל</label>
+            <input
+              type="text"
+              value={enteredMail}
+              onChange={mailChangeHandler}
+              placeholder="some@mta.ac.il"
+              pattern="[a-z0-9._%+-]+@mta.ac.il"
+              title="The email should be of the Academic Tel-Aviv Yafo."
+              style={{
+                border: `2px solid ${mailBorderColor}`,
+                backgroundColor: `${mailBackgroundColor}`,
+              }}
+              required
+            ></input>
           </div>
-
-          <div className="login-actions">
-            <Button className="login-btn btn" type="submit">
-              התחברות
-            </Button>
-
-            {/* TODO */}
-            <Button className="forgotPass-btn btn">שכחתי סיסמא</Button>
-            <Separator />
-            <Button className="register-btn btn">
-              <p>
-                אין לך משתמש?
-                <br />
-                <b> הירשם</b>
-              </p>
-            </Button>
+          <div className="login-control">
+            <label>סיסמא</label>
+            <input
+              type="password"
+              value={enteredPass}
+              onChange={passChangeHandler}
+              style={{
+                border: `2px solid ${passBorderColor}`,
+                backgroundColor: `${passBackgroundColor}`,
+              }}
+              required
+            ></input>
           </div>
-        </Card>
-      </form>
-    </div>
+          <div className="login-control">
+            <label>אימות סיסמא</label>
+            <input
+              type="password"
+              value={enteredConfirmPass}
+              onChange={confirmPassChangeHandler}
+              pattern={enteredPass.toString()}
+              style={{
+                border: `2px solid ${confirmPassBorderColor}`,
+                backgroundColor: `${confirmPassBackgroundColor}`,
+              }}
+              title="Password not match."
+              required
+            ></input>
+          </div>
+        </div>
+
+        <div className="login-actions">
+          {/* TODO: onClick */}
+          <Button className="login-btn btn" type="submit">
+            התחברות
+          </Button>
+
+          {/* TODO: onClick */}
+          <Button className="forgotPass-btn btn">שכחתי סיסמא</Button>
+          <Separator />
+          {/* TODO: onClick */}
+          <Button className="register-btn btn">
+            <p>
+              אין לך משתמש?
+              <br />
+              <b> הירשם</b>
+            </p>
+          </Button>
+        </div>
+      </Card>
+    </form>
   );
 };
 

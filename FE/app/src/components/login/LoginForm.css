@@ -1,4 +1,4 @@
-.login-page {
+/* .login-page {
   display: grid;
   grid-template-columns: 3fr 2fr;
   grid-template-rows: auto 2fr;
@@ -6,13 +6,13 @@
   justify-content: center;
 
   height: 500px;
-}
+} */
 .login-form {
   grid-row-start: 2;
   grid-column-start: 2;
   justify-self: center;
 }
-
+/* 
 .title {
   color: #0a416e;
   text-align: start;
@@ -36,7 +36,7 @@
   justify-self: center;
   padding-right: 4rem;
   border-radius: 1%;
-}
+} */
 
 .form-card {
   padding: 1rem 3rem;
