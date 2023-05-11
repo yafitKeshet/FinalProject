@@ -48,17 +48,17 @@ const LoginForm = (props) => {
     event.preventDefault();
 
     // TODO
-    // const userData = {
-    //   mail: enteredMail,
-    //   pass: enteredPass,
-    // };
+    const userData = {
+      mail: enteredMail,
+      pass: enteredPass,
+    };
 
     setEnteredMail("");
     setEnteredPass("");
     setEnteredConfirmPass("");
 
     // TODO
-    props.onLogIn(true);
+    props.onLogIn({ userData: userData });
     // props.onSaveUser(userData);
   };
 
@@ -76,7 +76,7 @@ const LoginForm = (props) => {
               value={enteredMail}
               onChange={mailChangeHandler}
               placeholder="some@mta.ac.il"
-              pattern="[a-z0-9._%+-]+@mta.ac.il"
+              pattern="[a-zA-Z0-9._%+-]+@mta.ac.il"
               title="The email should be of the Academic Tel-Aviv Yafo."
               style={{
                 border: `2px solid ${mailBorderColor}`,
