@@ -1,11 +1,16 @@
 import React from "react";
 import Button from "../UI/Button";
+import "./Menu.css";
 
 const Menu = (props) => {
   return (
     <ul className="menu-list">
       {props.items.map((btn) => (
-        <Button onClick={btn.onClick} key={Math.random().toString()}>
+        <Button
+          className="menu-item"
+          onClick={btn.onClick}
+          key={Math.random().toString()}
+        >
           {btn.data}
         </Button>
       ))}

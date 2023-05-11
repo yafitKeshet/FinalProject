@@ -67,17 +67,15 @@ const LoginForm = (props) => {
 
   return (
     <div className="login-page">
-      <div>
-        <div>
-          <p>אתר הבוגרים, האקדמית תל אביב יפו</p>
-        </div>
-        <img
-          className="login-img"
-          src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
-          alt="תמונה של האקדמית"
-        ></img>
+      <div className="title">
+        <p>אתר הבוגרים, האקדמית תל אביב יפו</p>
       </div>
-      <form onSubmit={submitHandler}>
+      <img
+        className="login-img"
+        src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
+        alt="תמונה של האקדמית"
+      ></img>
+      <form className="login-form" onSubmit={submitHandler}>
         <Card className="form-card">
           <div className="login-controls">
             <div className="login-control">

@@ -1,9 +1,19 @@
 .header {
   display: flex;
   justify-content: space-between;
+  padding: 0 3rem 0 0;
+  height: 100px;
 }
 
-.logo-header {
+.menu-header {
+  display: flex;
+  padding-right: 3rem;
+  /* align-items: center; */
+  /* align-content: center; */
+  justify-content: flex-start;
+  align-content: center;
+
+  width: 80%;
 }
 
 .logo-header img {
