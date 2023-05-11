@@ -1,7 +1,8 @@
 import "./App.css";
 import React, { useState } from "react";
-import Menu from "./components/header/Menu";
+// import Menu from "./components/header/Menu";
 import LoginForm from "./components/login/LoginForm";
+import Header from "./components/header/Header";
 
 const INITIAL_MENU = [
   {
@@ -31,12 +32,13 @@ const App = () => {
   return (
     <div className="App">
       {/* HEADER */}
-      <Menu items={menu} />
+      <Header menu={menu} />
 
       {/* BODY */}
       {/* lOGIN-PAGE */}
       {!isLogin && <LoginForm /* TODO*/ onLogIn={setIsLogIn} />}
       {/* REGISTER */}
+      {/* FORGOT PASSWORD */}
       {/* FEED */}
       {/* PROFIL */}
     </div>
