@@ -25,7 +25,7 @@ const App = () => {
   // TODO
   const addButtonToMenu = (newButton) => {
     setMenu((prevMenu) => {
-      return [newButton, ...prevMenu];
+      return [...prevMenu, ...newButton];
     });
   };
 
@@ -36,7 +36,9 @@ const App = () => {
 
       {/* BODY */}
       {/* lOGIN-PAGE */}
-      {!isLogin && <Login /* TODO*/ onLogIn={setIsLogIn} />}
+      {!isLogin && (
+        <Login /* TODO*/ login={setIsLogIn} addButtonToMenu={addButtonToMenu} />
+      )}
       {/* REGISTER */}
       {/* FORGOT PASSWORD */}
       {/* FEED */}
