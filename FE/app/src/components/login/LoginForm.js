@@ -50,6 +50,10 @@ const LoginForm = (props) => {
                 type="text"
                 value={enteredMail}
                 onChange={mailChangeHandler}
+                placeholder="some@mta.ac.il"
+                pattern="[a-z0-9._%+-]+@mta.ac.il"
+                title="The email should be of the Academic Tel-Aviv Yafo."
+                required
               ></input>
             </div>
             <div className="login-control">
@@ -58,6 +62,7 @@ const LoginForm = (props) => {
                 type="text"
                 value={enteredPass}
                 onChange={passChangeHandler}
+                required
               ></input>
             </div>
             <div className="login-control">
@@ -66,6 +71,7 @@ const LoginForm = (props) => {
                 type="text"
                 value={enteredConfirmPass}
                 onChange={confirmPassChangeHandler}
+                required
               ></input>
             </div>
           </div>
