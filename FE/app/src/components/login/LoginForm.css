@@ -1,47 +1,12 @@
-/* .login-page {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  grid-template-rows: auto 2fr;
-  margin: 0 3rem;
-  justify-content: center;
-
-  height: 500px;
-} */
 .login-form {
-  grid-row-start: 2;
-  grid-column-start: 2;
   justify-self: center;
 }
-/* 
-.title {
-  color: #0a416e;
-  text-align: start;
-  font-size: 50px;
-  grid-row: 1;
-  grid-column: 1/ -1;
-  justify-self: flex-start;
-}
-
-.title p {
-  margin-block-start: 0;
-  margin-block-end: 0;
-}
-.login-img {
-  overflow: hidden;
-  grid-row-start: 2;
-  grid-column: 1;
-  width: 100%;
-  height: 70%;
-  align-self: center;
-  justify-self: center;
-  padding-right: 4rem;
-  border-radius: 1%;
-} */
-
 .form-card {
-  padding: 1rem 3rem;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 1rem 2rem;
   display: flex;
-  gap: 1rem;
+  gap: 0.3rem;
   flex-direction: column;
   align-items: center;
 }
@@ -54,41 +19,49 @@
 }
 
 .login-control label {
-  font-weight: bold;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
   display: block;
 }
 
 .login-control input {
   text-align: center;
   font: inherit;
-  padding: 0.5rem 0;
+  padding: 0.3rem 0;
   border-radius: 6px;
-  max-width: 100%;
 }
 
 .login-actions {
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .btn {
-  width: fit-content;
   font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
   border-radius: 5px;
 }
 
 .login-btn {
+  background-color: brown;
   align-self: center;
-  font-size: 15px;
 }
 .forgotPass-btn {
-  align-self: flex-start;
+  background-color: rgb(172, 124, 124);
+  font-weight: 400;
   font-size: 10px;
+  align-self: flex-start;
 }
 .register-btn {
+  font-weight: 400;
+  font-size: 10px;
   padding: 0 1rem;
   align-self: flex-end;
+}
+
+.separator {
+  align-self: flex-start;
+  margin: 0.5rem 0;
 }

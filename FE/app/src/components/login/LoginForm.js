@@ -123,7 +123,7 @@ const LoginForm = (props) => {
 
           {/* TODO: onClick */}
           <Button className="forgotPass-btn btn">שכחתי סיסמא</Button>
-          <Separator />
+          <Separator className="separator" />
           {/* TODO: onClick */}
           <Button className="register-btn btn">
             <p>
