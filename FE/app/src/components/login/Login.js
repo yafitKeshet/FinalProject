@@ -3,6 +3,23 @@ import React from "react";
 import "./Login.css";
 
 const Login = (props) => {
+  const loginHandler = (userData) => {
+    props.addButtonToMenu([
+      {
+        onclick: {},
+        data: "FEED",
+      },
+      {
+        onclick: {},
+        data: "משרות",
+      },
+      {
+        onclick: {},
+        data: "פרופיל",
+      },
+    ]);
+    props.login(true);
+  };
   return (
     <div className="login-page">
       <div className="title">
@@ -21,7 +38,7 @@ const Login = (props) => {
         src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
         alt="תמונה של האקדמית"
       />
-      <LoginForm className="login-form" onLogIn={props.onLogIn} />
+      <LoginForm className="login-form" onLogIn={loginHandler} />
     </div>
   );
 };
