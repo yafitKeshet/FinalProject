@@ -6,11 +6,11 @@ from ...enums import Rating
 
 # ToDo: Foreign key must be post id
 class Recommendation(Base):
-    __tablename__ = "recommendation"
+    __tablename__ = "recommendations"
 
     id = Column(Integer, primary_key=True, unique=True, index=True)
     title = Column(String)
     description = Column(String)
     rating = Column(Enum(Rating))
 
-    course_id = Column(String, ForeignKey('course.id'))
+    course_id = Column(Integer, ForeignKey('course.id'))

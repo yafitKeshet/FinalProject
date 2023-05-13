@@ -1,10 +1,16 @@
 from typing import List
-from fastapi import APIRouter, status, Depends,HTTPException
+from fastapi import APIRouter, status, Depends, HTTPException
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.rest_models import CourseOut,CourseIn, CourseUpdate
+from BE.lib.utils.rest_models import CourseOut, CourseIn, CourseUpdate, RecommendationIn, RecommendationOut
 from BE.lib.utils.db.models.course import Course as CourseTable
-unique_course_id = 1
+from BE.lib.utils.db.models.recommendations import Recommendation as RecommendationTable
+
+
+unique_course_id = 0
+unique_recommendation_id = 0
 router = APIRouter()
+
+
 @router.get(
     "/courses",
     name="Get courses data",
@@ -14,7 +20,36 @@ router = APIRouter()
 def get_courses(
         db: UserDBSession = Depends(get_db_session)
 ):
-    return [c.__dict__ for c in db.query(CourseTable).all()]
+    result = []
+    for c in db.query(CourseTable).all():
+        result.append(c.__dict__)
+    return result
+
+
+@router.post(
+    "/courses/{course_id}/recommendations",
+    name="Get courses data",
+    status_code=status.HTTP_200_OK,
+    response_model=RecommendationOut
+)
+def add_recommendation(
+        course_id,
+        recommendation: RecommendationIn,
+        db: UserDBSession = Depends(get_db_session)
+):
+    existing_course = db.get_course_by_id(course_id).first()
+    if existing_course is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course was not found")
+    recommendation_to_add = {
+        'id': ++unique_recommendation_id,
+        'title': recommendation.title,
+        'description': recommendation.description,
+        'rating': recommendation.description,
+        'course_id': course_id
+    }
+    db.add(RecommendationTable(**recommendation_to_add))
+    db.commit()
+    return recommendation_to_add
 
 
 @router.post(
@@ -48,7 +83,7 @@ def post_courses(
     "/courses/{course_id}",
     name="Insert new data related course",
     status_code=status.HTTP_200_OK,
-    response_model=dict
+    response_model=bool
 )
 def update_course_data(
         course_id,
@@ -58,10 +93,8 @@ def update_course_data(
     existing_course = db.get_course_by_id(course_id).first()
     if existing_course is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course was not found")
-    course_data_dict = CourseUpdate.dict(exclude_unset=True)
-    for key, value in course_data_dict.items():
-        setattr(existing_course, key, value)
-    db.get_course_by_id(course_id).update(existing_course)
+    non_null_props = {prop: value for prop, value in course_data.dict(exclude_unset=True).items()}
+    db.get_course_by_id(course_id).update(non_null_props)
     db.commit()
     db.refresh(existing_course)
     return True

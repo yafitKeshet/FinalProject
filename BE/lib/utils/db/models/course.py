@@ -1,4 +1,6 @@
-from sqlalchemy import Column, String, Float, Integer
+from sqlalchemy import Column, String, Float, Integer, JSON
+from sqlalchemy.orm import relationship
+
 from BE.lib.utils.db.user_db import Base
 
 
@@ -13,4 +15,7 @@ class Course(Base):
     summary_documents = Column(String, nullable=True)
     tests = Column(String, nullable=True)
     tests_solution = Column(String, nullable=True)
+    recommendations = Column(JSON, nullable=True)
 
+    # Add this line to create a relationship with the Recommendation table
+    recommendation = relationship("Recommendation", backref="courses")

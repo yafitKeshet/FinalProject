@@ -134,21 +134,30 @@ class NewJob(ProjectBaseModel):
     experience: Optional[Experience]
 
 
-class Recommend(ProjectBaseModel):
+class RecommendationIn(ProjectBaseModel):
     title: str
     description: str
-    rating: Rating
+    rating: int
+
+
+class RecommendationOut(ProjectBaseModel):
+    id: int
+    title: str
+    description: str
+    rating: int
+    course_id: int
 
 
 class CourseOut(ProjectBaseModel):
-    course_id: str
+    course_id: int
     name: str
     teachers: str
     rating_avg: float
     description: str
-    summary_documents: Optional[List[str]]  # List of URLs
-    tests: Optional[List[str]]
-    tests_solution: Optional[List[str]]
+    summary_documents: Optional[str]  # List of URLs
+    tests: Optional[str]
+    tests_solution: Optional[str]
+    recommendations: Optional[List[RecommendationIn]]
 
 
 class CourseIn(ProjectBaseModel):
@@ -161,7 +170,7 @@ class CourseIn(ProjectBaseModel):
 
 
 class CourseUpdate(ProjectBaseModel):
-    rate: Optional[Rating]
+    rating_avg: Optional[float]
     tests: Optional[List[UploadFile]]
     tests_solution: Optional[List[UploadFile]]
     summary_documents: Optional[List[UploadFile]]
