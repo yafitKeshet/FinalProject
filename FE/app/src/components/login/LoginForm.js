@@ -61,12 +61,13 @@ const LoginForm = (props) => {
       })
 
       .catch(function (error) {
-        // handle error
-
         console.log(error);
+        if (error.response.status === 404) {
+          console.log("user ");
+        }
       });
 
-    console.log(response);
+    console.log(response + "shhh");
 
     setEnteredMail("");
     setEnteredPass("");
