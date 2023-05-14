@@ -34,20 +34,20 @@ def prepare_app():
 
 logging.basicConfig(level=logging.DEBUG)
 
-# origins = [
-#     "http://localhost",
-#     "http://localhost:8080",
-#     "http://localhost:3000",
-# ]
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:3000",
+]
 
 app = prepare_app()
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
