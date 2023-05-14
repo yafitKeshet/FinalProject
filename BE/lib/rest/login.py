@@ -25,7 +25,7 @@ def login_check_user_exists(
         user_email: str,
         db: UserDBSession = Depends(get_db_session)
 ):
-    user = db.query(User).filter(User.email == user_email).first()
+    user = db.query(User).filter(User.user_email == user_email).first()
     db.close()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
