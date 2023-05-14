@@ -44,7 +44,7 @@
   border-radius: 5px;
 }
 .login-btn {
-  background-color: brown !important ;
+  background-color: #a52a2a !important ;
   align-self: center;
 }
 .forgotPass-btn {
@@ -54,7 +54,7 @@
   align-self: flex-start;
 }
 .register-btn {
-  background-color: green !important ;
+  background-color: #008000 !important ;
   font-weight: 400 !important ;
   font-size: 10px !important ;
   padding: 0 1rem !important ;
