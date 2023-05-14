@@ -1,0 +1,17 @@
+//COLORS:
+
+// Buttons:
+    #008000
+    rgb(172, 124, 124)
+    #a52a2a
+    #0a416e
+
+// Backgroud:
+    #ffffff
+
+// Separator:
+    #ccc
+
+// Text:
+    #0a416e - Title
+ 
