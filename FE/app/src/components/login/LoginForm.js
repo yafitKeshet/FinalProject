@@ -5,8 +5,6 @@ import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
 
-//TODO
-
 const LoginForm = (props) => {
   // Input Colors
   const [passBorderColor, setPassBorderColor] = useState("#ccc");
