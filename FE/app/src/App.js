@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import Menu from "./components/header/Menu";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
@@ -20,7 +20,35 @@ const App = () => {
   const [menu, setMenu] = useState(INITIAL_MENU);
 
   // BODY
-  const [isLogin, setIsLogIn] = useState(false);
+  const [isLogeddin, setIsLogeddIn] = useState(false);
+
+  // Runs when the apps start
+  useEffect(() => {
+    const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
+    if (storedUserLoggedINInformation === "1") {
+      setIsLogeddIn(true);
+    }
+  }, []);
+  // Login handler
+  const loginHandler = (userData) => {
+    addButtonToMenu([
+      {
+        onclick: {},
+        data: "FEED",
+      },
+      {
+        onclick: {},
+        data: "משרות",
+      },
+      {
+        onclick: {},
+        data: "פרופיל",
+      },
+    ]);
+
+    localStorage.setItem("isLoggedIn", "1");
+    setIsLogeddIn(true);
+  };
 
   // TODO
   const addButtonToMenu = (newButton) => {
@@ -36,9 +64,7 @@ const App = () => {
 
       {/* BODY */}
       {/* lOGIN-PAGE */}
-      {!isLogin && (
-        <Login /* TODO*/ login={setIsLogIn} addButtonToMenu={addButtonToMenu} />
-      )}
+      {!isLogeddin && <Login /* TODO*/ login={loginHandler} />}
       {/* REGISTER */}
       {/* FORGOT PASSWORD */}
       {/* FEED */}

@@ -74,7 +74,7 @@ const LoginForm = (props) => {
     setEnteredConfirmPass("");
 
     // TODO
-    props.onLogIn({ userData: userData });
+    props.onLogIn(userData);
     // props.onSaveUser(userData);
   };
 
