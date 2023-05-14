@@ -5,7 +5,7 @@ from datetime import datetime
 from uuid import uuid4
 import uvicorn as uvicorn
 from fastapi import FastAPI, Request
-
+from starlette.middleware.cors import CORSMiddleware
 
 # Internal imports
 from lib.rest import course, feed, general, job, login, profile, signup
@@ -29,11 +29,26 @@ def prepare_app():
     app.include_router(login.router)
     app.include_router(profile.router)
     app.include_router(signup.router)
+
     return app
 
 logging.basicConfig(level=logging.DEBUG)
 
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:3000",
+]
+
 app = prepare_app()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 
 @app.middleware("http")
