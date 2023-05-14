@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
-import axios from "axios";
+// import axios from "axios";
 
 const LoginForm = (props) => {
   // Input Colors
@@ -54,20 +54,20 @@ const LoginForm = (props) => {
       pass: enteredPass,
     };
 
-    const response = await axios
-      .get(`http://localhost:8080/userValidation?user_email=${enteredMail}`)
-      .then(function (response) {
-        return response;
-      })
+    // const response = await axios
+    //   .get(`http://localhost:8080/userValidation?user_email=${enteredMail}`)
+    //   .then(function (response) {
+    //     return response;
+    //   })
 
-      .catch(function (error) {
-        console.log(error);
-        if (error.response.status === 404) {
-          console.log("user ");
-        }
-      });
+    // .catch(function (error) {
+    //   console.log(error);
+    //   if (error.response.status === 404) {
+    //     console.log("user ");
+    //   }
+    // });
 
-    console.log(response + "shhh");
+    // console.log(response + "shhh");
 
     setEnteredMail("");
     setEnteredPass("");

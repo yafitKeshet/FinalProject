@@ -18,19 +18,31 @@ const INITIAL_MENU = [
 const App = () => {
   // HEADER - Menu
   const [menu, setMenu] = useState(INITIAL_MENU);
-
+  const [user, setUser] = useState([]);
   // BODY
-  const [isLogeddin, setIsLogeddIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Runs when the apps start
   useEffect(() => {
     const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
-      setIsLogeddIn(true);
+      setIsLoggedIn(true);
     }
   }, []);
   // Login handler
   const loginHandler = (userData) => {
+    const response = fetch(
+      `http://localhost:8080/userValidation?user_email=${userData.user_email}`
+    ).then((response) => {
+      if (response.status === 200) {
+      }
+      if (response.status === 422) {
+      }
+      if (response.status === 404) {
+        console.log("user ");
+      }
+    });
+
     addButtonToMenu([
       {
         onclick: {},
@@ -47,7 +59,7 @@ const App = () => {
     ]);
 
     localStorage.setItem("isLoggedIn", "1");
-    setIsLogeddIn(true);
+    setIsLoggedIn(true);
   };
 
   // TODO
@@ -64,11 +76,11 @@ const App = () => {
 
       {/* BODY */}
       {/* lOGIN-PAGE */}
-      {!isLogeddin && <Login /* TODO*/ login={loginHandler} />}
+      {!isLoggedIn && <Login /* TODO*/ login={loginHandler} />}
       {/* REGISTER */}
       {/* FORGOT PASSWORD */}
       {/* FEED */}
-      {/* PROFIL */}
+      {/* PROFILE */}
     </div>
   );
 };
