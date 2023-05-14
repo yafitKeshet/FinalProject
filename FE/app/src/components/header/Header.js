@@ -6,8 +6,24 @@ const Header = (props) => {
   return (
     <div className="header">
       <div className="menu-header">
-        <Menu items={props.menu}></Menu>
+        {props.isLoggedIn && (
+          <div className="user-menu">
+            <Menu
+              items={[
+                { onClick: props.onLogOut, data: "התנתק" },
+                {
+                  onClick: {},
+                  data: `שלום ${localStorage.getItem("userName")}`,
+                },
+              ]}
+            />{" "}
+          </div>
+        )}
+        <div className="buttons-menu">
+          <Menu items={props.menu}></Menu>
+        </div>
       </div>
+
       <div className="logo-header">
         <img
           src="https://yt3.googleusercontent.com/ytc/AGIKgqM4YckxkigCs1Cjc9XDeyZp3e7Gn9I_AlhLusiteA=s900-c-k-c0x00ffffff-no-rj"

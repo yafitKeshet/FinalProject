@@ -1,17 +1,28 @@
 .header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   height: 70px;
+  align-items: center;
 }
-
 .menu-header {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.buttons-menu,
+.user-menu {
+  display: flex;
+
   width: 80%;
   padding-bottom: 10px;
 }
 
+.buttons-menu {
+  justify-content: flex-end;
+}
+.logo-header {
+  justify-self: end;
+}
 .logo-header img {
   height: 100px;
 }

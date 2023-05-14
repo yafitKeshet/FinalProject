@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
-// import axios from "axios";
 
 const LoginForm = (props) => {
   // Input Colors
@@ -49,25 +48,32 @@ const LoginForm = (props) => {
     event.preventDefault();
 
     // TODO
+    // 1. Check if mail existing- userValidation.
+    if (enteredMail !== "a@mta.ac.il") {
+      props.onError({
+        title: "ההתחברות נכשלה",
+        message: "מייל זה לא קיים, אנא נסה מייל אחר.",
+      });
+      return;
+    }
+    // TODO
+    // 2. Check if mail and password existing- login.
+    if (enteredPass !== "1") {
+      props.onError({
+        title: "ההתחברות נכשלה",
+        message: `סיסמא לא נכונה, אנא נסה סיסמא אחרת.
+        אם שכחת סיסמא- אנא לחץ על שכחתי סיסמא.
+        `,
+      });
+      return;
+    }
+    // TODO
+    // 3. Get user data.
     const userData = {
       mail: enteredMail,
       pass: enteredPass,
+      name: "חנה",
     };
-
-    // const response = await axios
-    //   .get(`http://localhost:8080/userValidation?user_email=${enteredMail}`)
-    //   .then(function (response) {
-    //     return response;
-    //   })
-
-    // .catch(function (error) {
-    //   console.log(error);
-    //   if (error.response.status === 404) {
-    //     console.log("user ");
-    //   }
-    // });
-
-    // console.log(response + "shhh");
 
     setEnteredMail("");
     setEnteredPass("");
@@ -75,7 +81,6 @@ const LoginForm = (props) => {
 
     // TODO
     props.onLogIn(userData);
-    // props.onSaveUser(userData);
   };
 
   // Register handler

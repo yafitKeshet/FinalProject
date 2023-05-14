@@ -21,7 +21,11 @@ const Login = (props) => {
         src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
         alt="תמונה של האקדמית"
       />
-      <LoginForm className="login-form" onLogIn={props.login} />
+      <LoginForm
+        className="login-form"
+        onLogIn={props.login}
+        onError={props.onError}
+      />
     </div>
   );
 };

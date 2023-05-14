@@ -1,8 +1,8 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-// import Menu from "./components/header/Menu";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
+import ErrorModal from "./components/UI/ErrorModal";
 
 const INITIAL_MENU = [
   {
@@ -16,6 +16,12 @@ const INITIAL_MENU = [
 ];
 
 const App = () => {
+  //ERRORS
+  const [error, setError] = useState();
+
+  const onConfirmError = () => {
+    setError();
+  };
   // HEADER - Menu
   const [menu, setMenu] = useState(INITIAL_MENU);
   const [user, setUser] = useState([]);
@@ -28,38 +34,41 @@ const App = () => {
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
     }
-  }, []);
-  // Login handler
-  const loginHandler = (userData) => {
-    const response = fetch(
-      `http://localhost:8080/userValidation?user_email=${userData.user_email}`
-    ).then((response) => {
-      if (response.status === 200) {
-      }
-      if (response.status === 422) {
-      }
-      if (response.status === 404) {
-        console.log("user ");
-      }
-    });
 
+    // const storedMenu = localStorage.getItem("menu").split(",");
+    // if (storedMenu) setMenu(storedMenu);
+  }, []);
+
+  // Login handler
+  const loginHandler = async (userData) => {
+    // Save data of the user TODO
+    localStorage.setItem("userName", userData.name);
+    // Add  buttons to the menu
     addButtonToMenu([
       {
-        onclick: {},
+        onClick: {},
         data: "FEED",
       },
       {
-        onclick: {},
+        onClick: {},
         data: "משרות",
       },
       {
-        onclick: {},
+        onClick: {},
         data: "פרופיל",
       },
     ]);
 
+    // Update user as LoggedIN
     localStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
+  };
+
+  // LogOut handler
+  const onLogOut = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("user");
+    setMenu(INITIAL_MENU);
   };
 
   // TODO
@@ -67,20 +76,31 @@ const App = () => {
     setMenu((prevMenu) => {
       return [...prevMenu, ...newButton];
     });
+
+    localStorage.setItem("menu", { menu });
   };
 
   return (
-    <div className="App">
-      {/* HEADER */}
-      <Header menu={menu} />
+    <div>
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          onConfirm={onConfirmError}
+        />
+      )}
+      <div className="App">
+        {/* HEADER */}
+        <Header menu={menu} isLoggedIn={isLoggedIn} onLogOut={onLogOut} />
 
-      {/* BODY */}
-      {/* lOGIN-PAGE */}
-      {!isLoggedIn && <Login /* TODO*/ login={loginHandler} />}
-      {/* REGISTER */}
-      {/* FORGOT PASSWORD */}
-      {/* FEED */}
-      {/* PROFILE */}
+        {/* BODY */}
+        {/* lOGIN-PAGE */}
+        {!isLoggedIn && <Login login={loginHandler} onError={setError} />}
+        {/* REGISTER-PAGE */}
+        {/* FORGOT PASSWORD */}
+        {/* FEED */}
+        {/* PROFILE */}
+      </div>
     </div>
   );
 };
