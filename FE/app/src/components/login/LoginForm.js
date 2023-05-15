@@ -64,7 +64,7 @@ const LoginForm = (props) => {
                                   {user_email: enteredMail,
                                   password: enteredPass});
           if (passwordExists.status === 200){ // good to go (mail and password are correct)
-              // TAFIT TODO: move user to main page
+              // YAFIT TODO: move user to main page
               console.log("good to go (mail and password are correct)");
           } 
         }
