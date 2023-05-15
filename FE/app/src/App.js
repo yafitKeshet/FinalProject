@@ -42,7 +42,7 @@ const App = () => {
       {/* REGISTER */}
       {/* FORGOT PASSWORD */}
       {/* FEED */}
-      {/* PROFIL */}
+      {/* PROFILE */}
     </div>
   );
 };
