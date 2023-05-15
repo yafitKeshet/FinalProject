@@ -23,7 +23,7 @@ const Login = (props) => {
       />
       <LoginForm
         className="login-form"
-        onLogIn={props.login}
+        onLogIn={props.onLogin}
         onError={props.onError}
       />
     </div>

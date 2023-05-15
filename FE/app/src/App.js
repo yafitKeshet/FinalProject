@@ -6,11 +6,22 @@ import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 
 const App = () => {
+  const INITIAL_MENU = [
+    {
+      onclick: {},
+      data: "מידע כללי",
+    },
+    {
+      onclick: {},
+      data: "פקולטות",
+    },
+  ];
+
   // Pages
   const [pages, setPages] = useState({
     isLoginPage: true,
     isRegisterPage: false,
-    isInformationPage: false,
+    isGeneralInformationPage: false,
     isFacultyPage: false,
     isFeedPage: false,
     isProfilePage: false,
@@ -44,6 +55,7 @@ const App = () => {
   // HEADER - Menu
   const [menu, setMenu] = useState(INITIAL_MENU);
   const [user, setUser] = useState([]);
+
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -61,12 +73,13 @@ const App = () => {
   const loginHandler = async (userData) => {
     // Save data of the user TODO
     localStorage.setItem("userName", userData.name);
+
     // Add  buttons to the menu
     addButtonsToMenu();
 
-    // Update user as LoggedIN
+    // Update user as LoggedIn
     localStorage.setItem("isLoggedIn", "1");
-    // setIsLoggedIn(true);
+    setIsLoggedIn(true);
     // setIsLoginPage(false);
     // setGeneralInformationPage(false);
   };
@@ -94,7 +107,7 @@ const App = () => {
           data: "משרות",
         },
         {
-          onclicks: {},
+          onclick: {},
           data: "פרופיל",
         },
       ];
@@ -119,7 +132,9 @@ const App = () => {
         {/* GENERAL INFORMATION-PAGE */}
         {pages.isGeneralInformationPage && <GeneralInformation />}
         {/* lOGIN-PAGE */}
-        {pages.isLoginPage && <Login login={loginHandler} onError={setError} />}
+        {pages.isLoginPage && (
+          <Login onLogin={loginHandler} onError={setError} />
+        )}
         {/* REGISTER-PAGE */}
         {/* FORGOT PASSWORD */}
         {/* FEED */}
