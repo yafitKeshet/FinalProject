@@ -80,8 +80,17 @@ const App = () => {
     // Update user as LoggedIn
     localStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
-    // setIsLoginPage(false);
-    // setGeneralInformationPage(false);
+
+    setPages((prevState) => {
+      return {
+        isRegisterPage: false,
+        isGeneralInformationPage: false,
+        isFacultyPage: false,
+        isFeedPage: false,
+        isLoginPage: false,
+        isProfilePage: true,
+      };
+    });
   };
 
   // LogOut handler
@@ -90,10 +99,19 @@ const App = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("user");
     setMenu(INITIAL_MENU);
+    setPages((prevState) => {
+      return {
+        isRegisterPage: false,
+        isGeneralInformationPage: false,
+        isFacultyPage: false,
+        isFeedPage: false,
+        isLoginPage: true,
+        isProfilePage: false,
+      };
+    });
   };
 
   // Add button to menu header- on login
-
   const addButtonsToMenu = () => {
     setMenu((prevMenu) => {
       return [
