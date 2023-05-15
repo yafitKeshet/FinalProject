@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
 from .base import Base
+from .models.recommendations import Recommendation
 from .models.user import User
 from .models.course import Course
 
@@ -25,6 +26,9 @@ class UserDBSession(Session):
 
     def get_course_by_id(self, course_id):
         return self.query(Course).filter(Course.course_id == course_id)
+
+    def get_recommendation_by_id(self, course_id):
+        return self.query(Recommendation).filter(Recommendation.course_id == course_id)
 
 class DBManager:
 

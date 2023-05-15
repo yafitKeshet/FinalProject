@@ -1,10 +1,11 @@
 from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException
+import json
+
 from BE.lib.utils.db.user_db import get_db_session, UserDBSession
 from BE.lib.utils.rest_models import CourseOut, CourseIn, CourseUpdate, RecommendationIn, RecommendationOut
 from BE.lib.utils.db.models.course import Course as CourseTable
 from BE.lib.utils.db.models.recommendations import Recommendation as RecommendationTable
-
 
 unique_course_id = 0
 unique_recommendation_id = 0
@@ -22,13 +23,18 @@ def get_courses(
 ):
     result = []
     for c in db.query(CourseTable).all():
+        recommendations = db.get_recommendation_by_id(c.course_id).all()
+        recommendations_json = []
+        for rec in recommendations:
+            recommendations_json.append(RecommendationOut(**rec.__dict__))
+        c.recommendations = recommendations_json
         result.append(c.__dict__)
     return result
 
 
 @router.post(
     "/courses/{course_id}/recommendations",
-    name="Get courses data",
+    name="Add recommendations",
     status_code=status.HTTP_200_OK,
     response_model=RecommendationOut
 )
@@ -44,7 +50,7 @@ def add_recommendation(
         'id': ++unique_recommendation_id,
         'title': recommendation.title,
         'description': recommendation.description,
-        'rating': recommendation.description,
+        'rating': recommendation.rating,
         'course_id': course_id
     }
     db.add(RecommendationTable(**recommendation_to_add))
@@ -73,6 +79,7 @@ def post_courses(
         'summary_documents': course.summary_documents,
         'tests': course.tests,
         'tests_solution': course.tests_solution,
+        'recommendations': []
     }
     db.add(CourseTable(**course_to_add))
     db.commit()

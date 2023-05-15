@@ -5,9 +5,9 @@ from BE.lib.utils.db.user_db import Base
 
 
 class Course(Base):
-    __tablename__ = 'courses'
+    __tablename__ = 'course'
 
-    course_id = Column(Integer, primary_key=True, index=True, nullable=False)
+    course_id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     teachers = Column(String, nullable=False)
     rating_avg = Column(Float, nullable=False)
@@ -15,7 +15,4 @@ class Course(Base):
     summary_documents = Column(String, nullable=True)
     tests = Column(String, nullable=True)
     tests_solution = Column(String, nullable=True)
-    recommendations = Column(JSON, nullable=True)
-
-    # Add this line to create a relationship with the Recommendation table
-    recommendation = relationship("Recommendation", backref="courses")
+    recommendations = relationship("Recommendation", back_populates="course")

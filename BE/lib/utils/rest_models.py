@@ -141,11 +141,11 @@ class RecommendationIn(ProjectBaseModel):
 
 
 class RecommendationOut(ProjectBaseModel):
-    id: int
-    title: str
-    description: str
-    rating: int
     course_id: int
+    description: str
+    id: int
+    rating: int
+    title: str
 
 
 class CourseOut(ProjectBaseModel):
@@ -157,7 +157,7 @@ class CourseOut(ProjectBaseModel):
     summary_documents: Optional[str]  # List of URLs
     tests: Optional[str]
     tests_solution: Optional[str]
-    recommendations: Optional[List[RecommendationIn]]
+    recommendations: Optional[List[RecommendationOut]]
 
 
 class CourseIn(ProjectBaseModel):

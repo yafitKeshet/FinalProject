@@ -1,5 +1,6 @@
 from typing import List
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, HTTPException
+from pydantic import BaseModel
 from typing_extensions import Annotated
 
 from BE.lib.bussiness_logic.posts_manager import PostsManager
@@ -10,6 +11,8 @@ from BE.lib.utils.rest_models import PostOut, NewPost
 
 
 router = APIRouter()
+class Message(BaseModel):
+    message: str
 
 
 @router.get(
@@ -49,7 +52,10 @@ def new_post(
     description="Like unlike a post. We determain if user like or not according to the Likes set n Post scheme."
                 "FrontEnd - Notice: Update State OR Get request (on post) should happen in order to update state) ",
     status_code=status.HTTP_200_OK,
-    response_model=dict
+    responses={
+        401: {"description": "Unauthorized", "model": Message},
+        404: {"description": "Post not found", "model": Message},
+    },
 )
 def like_post(
         like_status: bool,
