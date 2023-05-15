@@ -12,14 +12,14 @@ const Header = (props) => {
               items={[
                 { onClick: props.onLogOut, data: "התנתק" },
                 {
-                  onClick: {},
+                  onclick: {},
                   data: `שלום ${localStorage.getItem("userName")}`,
                 },
               ]}
             />{" "}
           </div>
         )}
-        <div className="buttons-menu">
+        <div className={`${props.isLoggedIn && "buttons-menu"}`}>
           <Menu items={props.menu}></Menu>
         </div>
       </div>
