@@ -1,11 +1,13 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 
 const App = () => {
+  // HEADER
+  //    Menu
   const INITIAL_MENU = [
     {
       onclick: {},
@@ -17,101 +19,8 @@ const App = () => {
     },
   ];
 
-  // Pages
-  const [pages, setPages] = useState({
-    isLoginPage: true,
-    isRegisterPage: false,
-    isGeneralInformationPage: false,
-    isFacultyPage: false,
-    isFeedPage: false,
-    isProfilePage: false,
-  });
-
-  // const onGeneralInformationClick = () => {
-  //   setGeneralInformationPage(true);
-  //   setIsLoginPage(false);
-  // };
-
-  // const onMainPageClick = () => {
-  //   setGeneralInformationPage(false);
-  //   setIsLoginPage(true);
-  // };
-
-  // const saveCurrentPage = () => {
-  //   menu.forEach((page) => {
-  //     if (page.page === "true") {
-  //       localStorage.setItem("page", page.page);
-  //     }
-  //   });
-  // };
-
-  //ERRORS
-  const [error, setError] = useState();
-
-  const onConfirmError = () => {
-    setError();
-  };
-
-  // HEADER - Menu
   const [menu, setMenu] = useState(INITIAL_MENU);
-  const [user, setUser] = useState([]);
-
-  // BODY
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // Runs when the apps start
-  // useEffect(() => {
-  //   const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
-  //   if (storedUserLoggedINInformation === "1") {
-  //     setIsLoggedIn(true);
-  //     setIsLoginPage(true);
-  //     setGeneralInformationPage(false);
-  //   }
-  // }, []);
-
-  // Login handler
-  const loginHandler = async (userData) => {
-    // Save data of the user TODO
-    localStorage.setItem("userName", userData.name);
-
-    // Add  buttons to the menu
-    addButtonsToMenu();
-
-    // Update user as LoggedIn
-    localStorage.setItem("isLoggedIn", "1");
-    setIsLoggedIn(true);
-
-    setPages((prevState) => {
-      return {
-        isRegisterPage: false,
-        isGeneralInformationPage: false,
-        isFacultyPage: false,
-        isFeedPage: false,
-        isLoginPage: false,
-        isProfilePage: true,
-      };
-    });
-  };
-
-  // LogOut handler
-  const onLogOut = () => {
-    localStorage.setItem("isLoggedIn", "0");
-    setIsLoggedIn(false);
-    localStorage.removeItem("user");
-    setMenu(INITIAL_MENU);
-    setPages((prevState) => {
-      return {
-        isRegisterPage: false,
-        isGeneralInformationPage: false,
-        isFacultyPage: false,
-        isFeedPage: false,
-        isLoginPage: true,
-        isProfilePage: false,
-      };
-    });
-  };
-
-  // Add button to menu header- on login
+  //    Add button to menu header- on login
   const addButtonsToMenu = () => {
     setMenu((prevMenu) => {
       return [
@@ -130,6 +39,100 @@ const App = () => {
         },
       ];
     });
+  };
+
+  //    Pages
+  const [pages, setPages] = useState({
+    isLoginPage: false,
+    isRegisterPage: false,
+    isGeneralInformationPage: false,
+    isFacultyPage: false,
+    isFeedPage: false,
+    isProfilePage: false,
+  });
+
+  //ERRORS
+  const [error, setError] = useState();
+
+  const onConfirmError = () => {
+    setError();
+  };
+
+  const [user, setUser] = useState([]);
+
+  // BODY
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLoggedIn = useRef(false);
+
+  // Runs when the apps start
+  useEffect(() => {
+    const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
+    if (storedUserLoggedINInformation === "1") {
+      isLoggedIn.current = true;
+    }
+
+    const storedCurrentPage = localStorage.getItem("currentPage");
+    if (storedCurrentPage) setPages({ ...pages, [storedCurrentPage]: true });
+    else setPages({ ...pages, isLoginPage: true });
+
+    console.log(`starting in page: ${storedCurrentPage}`);
+  }, []);
+
+  // Login-PAGE
+
+  //    Login handler
+  const loginHandler = async (userData) => {
+    // Save data of the user TODO
+    localStorage.setItem("userName", userData.name);
+
+    // Add buttons to the menu
+    addButtonsToMenu();
+
+    // Update user as LoggedIn
+    localStorage.setItem("isLoggedIn", "1");
+    isLoggedIn.current = true;
+
+    // Update current page
+    setPages({
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isFacultyPage: false,
+      isFeedPage: false,
+      isLoginPage: false,
+      isProfilePage: true,
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isProfilePage");
+
+    console.log(`page after login: ${localStorage.getItem("currentPage")}`);
+  };
+
+  //    LogOut handler
+  const onLogOut = () => {
+    // Update user as LogOut
+    localStorage.setItem("isLoggedIn", "0");
+    isLoggedIn.current = false;
+
+    // Remove data of the user TODO
+    localStorage.removeItem("user");
+
+    // Remove buttons from the menu
+    setMenu(INITIAL_MENU);
+
+    // Update current page
+    setPages({
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isFacultyPage: false,
+      isFeedPage: false,
+      isLoginPage: true,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isLoginPage");
+    console.log(`page after logout: ${localStorage.getItem("currentPage")}`);
   };
 
   return (
