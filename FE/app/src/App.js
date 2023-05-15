@@ -16,13 +16,22 @@ const INITIAL_MENU = [
 ];
 
 const App = () => {
+  // Pages
+  const [pages, setPages] = useState({
+    isLoginPage: true,
+    isRegisterPage: false,
+    isInformationPage: false,
+    isFacultyPage: false,
+    isFeedPage: false,
+    isProfilePage: false,
+  });
+
   // HEADER - Menu
   const [menu, setMenu] = useState(INITIAL_MENU);
 
   // BODY
   const [isLogin, setIsLogIn] = useState(false);
 
-  // TODO
   const addButtonToMenu = (newButton) => {
     setMenu((prevMenu) => {
       return [...prevMenu, ...newButton];
