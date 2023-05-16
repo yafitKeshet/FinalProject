@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
-import axios from 'axios';
+import axios from "axios";
 
 const LoginForm = (props) => {
   // Input Colors
@@ -55,42 +55,45 @@ const LoginForm = (props) => {
     // 2. Check if mail and password existing- login.
     let mailExists = null;
     try {
-      mailExists = await axios.get("http://localhost:8080/userValidation?user_email=" + enteredMail);
-      if (mailExists.status === 200) // user mail exists, need to check password
-      {
+      mailExists = await axios.get(
+        "http://localhost:8080/userValidation?user_email=" + enteredMail
+      );
+      if (mailExists.status === 200) {
+        // user mail exists, need to check password
         console.log("user mail exists, checking password");
         try {
-          let passwordExists = await axios.post("http://localhost:8080/login", 
-                                  {user_email: enteredMail,
-                                  password: enteredPass});
-          if (passwordExists.status === 200){ // good to go (mail and password are correct)
-              // YAFIT TODO: move user to main page
-              console.log("good to go (mail and password are correct)");
-          } 
-        }
-        catch (err) {
-            if (err.response.status === 401){ // Unauthorized - password doesn't exists
-              console.log("failed to connect - password doesn't exists");
-              props.onError({
-                    title: "ההתחברות נכשלה",
-                    message: `סיסמא לא נכונה, אנא נסה סיסמא אחרת.
-                    אם שכחת סיסמא- אנא לחץ על שכחתי סיסמא.`,
-                  });
-                  return;
-            }
-          }
-      } 
-    }
-    catch (err) {
-        if (err.response.status === 404){
-          console.log("failed to connect - user mail doesn't exists");
-          props.onError({
-            title: "ההתחברות נכשלה",
-            message: "מייל זה לא קיים, אנא נסה מייל אחר.",
+          let passwordExists = await axios.post("http://localhost:8080/login", {
+            user_email: enteredMail,
+            password: enteredPass,
           });
-          return;
+          if (passwordExists.status === 200) {
+            // good to go (mail and password are correct)
+            // YAFIT TODO: move user to main page
+            console.log("good to go (mail and password are correct)");
+          }
+        } catch (err) {
+          if (err.response.status === 401) {
+            // Unauthorized - password doesn't exists
+            console.log("failed to connect - password doesn't exists");
+            props.onError({
+              title: "ההתחברות נכשלה",
+              message: `סיסמא לא נכונה, אנא נסה סיסמא אחרת.
+                    אם שכחת סיסמא- אנא לחץ על שכחתי סיסמא.`,
+            });
+            return;
+          }
         }
-      } 
+      }
+    } catch (err) {
+      if (err.response.status === 404) {
+        console.log("failed to connect - user mail doesn't exists");
+        props.onError({
+          title: "ההתחברות נכשלה",
+          message: "מייל זה לא קיים, אנא נסה מייל אחר.",
+        });
+        return;
+      }
+    }
 
     // TODO
     // 3. Get user data.
