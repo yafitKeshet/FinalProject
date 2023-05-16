@@ -47,16 +47,32 @@
 .login-btn {
   background-color: #a52a2a !important ;
 }
-.forgotPass-btn {
+.login-btn:hover,
+.login-btn:active {
+  background: #b94343 !important ;
+  border-color: #b94343 !important ;
+}
+
+.forgetPass-btn {
   background-color: rgb(172, 124, 124) !important ;
   font-weight: 400 !important ;
   font-size: 10px !important ;
+}
+.forgetPass-btn:hover,
+.forgetPass-btn:active {
+  background: rgb(172, 134, 134) !important ;
+  border-color: rgb(172, 134, 134) !important ;
 }
 .register-btn {
   background-color: #008000 !important ;
   font-weight: 400 !important ;
   font-size: 10px !important ;
   padding: 0 1rem !important ;
+}
+.register-btn:hover,
+.register-btn:active {
+  background: #2cae2c !important ;
+  border-color: #2cae2c !important ;
 }
 
 .separator {

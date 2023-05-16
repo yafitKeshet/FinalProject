@@ -1,12 +1,13 @@
 //COLORS:
 
 // Buttons:
-    #008000
-    rgb(172, 124, 124)
-    #a52a2a
-    #0a416e
+    #008000 hover: #2cae2c 
+    rgb(172, 124, 124) hover: rgb(172, 134, 134) 
+    #a52a2a hover: #b94343
+    #0a416e hover: #164f7e
+    #ccc hover: #e5e5e5
 
-// Backgroud:
+// Background:
     #ffffff
 
 // Separator:

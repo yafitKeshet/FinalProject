@@ -23,7 +23,7 @@ const LoginForm = (props) => {
   // Input fields handlers
   const mailChangeHandler = (event) => {
     let isValid =
-      event.target.value.endsWith("@mta.ac.il") &&
+      event.target.value.match("[a-z0-9._%+-]+@mta.ac.il") &&
       event.target.value.length > 10;
     setEnteredMail(event.target.value);
     setMailBorderColor(isValid ? "green" : "red");
@@ -125,14 +125,14 @@ const LoginForm = (props) => {
               value={enteredMail}
               onChange={mailChangeHandler}
               placeholder="some@mta.ac.il"
-              pattern="[a-zA-Z0-9._%+-]+@mta.ac.il"
+              pattern="[a-z0-9._%+-]+@mta.ac.il"
               title="The email should be of the Academic Tel-Aviv Yafo."
               style={{
                 border: `2px solid ${mailBorderColor}`,
                 backgroundColor: `${mailBackgroundColor}`,
               }}
               required
-            ></input>
+            />
           </div>
           <div className="login-control">
             <label>סיסמא</label>
@@ -171,7 +171,12 @@ const LoginForm = (props) => {
           </Button>
 
           {/* TODO: onClick */}
-          <Button className="forgotPass-btn btn">שכחתי סיסמא</Button>
+          <Button
+            className="forgetPass-btn btn"
+            onClick={props.onForgetPassword}
+          >
+            שכחתי סיסמא
+          </Button>
           <Separator className="separator" />
           {/* TODO: onClick */}
           <Button className="register-btn btn">

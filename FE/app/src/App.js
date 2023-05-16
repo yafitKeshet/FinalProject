@@ -4,6 +4,7 @@ import Login from "./components/login/Login";
 import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
+import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 
 const App = () => {
   // HEADER
@@ -59,6 +60,17 @@ const App = () => {
   };
 
   const [user, setUser] = useState([]);
+
+  // Forget password
+  const [forgetPass, setForgetPass] = useState(false);
+
+  const forgetPasswordHandler = () => {
+    console.log("Forget password was clicking.");
+    setForgetPass(true);
+  };
+  const onCancelForgetPassword = () => {
+    setForgetPass(false);
+  };
 
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -143,6 +155,7 @@ const App = () => {
           onConfirm={onConfirmError}
         />
       )}
+      {forgetPass && <ForgetPassword onCancel={onCancelForgetPassword} />}
 
       <div className="App">
         {/* HEADER */}
@@ -153,7 +166,11 @@ const App = () => {
         {pages.isGeneralInformationPage && <GeneralInformation />}
         {/* lOGIN-PAGE */}
         {pages.isLoginPage && (
-          <Login onLogin={loginHandler} onError={setError} />
+          <Login
+            onLogin={loginHandler}
+            onError={setError}
+            onForgetPassword={forgetPasswordHandler}
+          />
         )}
         {/* REGISTER-PAGE */}
         {/* FORGOT PASSWORD */}

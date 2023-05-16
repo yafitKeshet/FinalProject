@@ -24,6 +24,7 @@ const Login = (props) => {
       <LoginForm
         className="login-form"
         onLogIn={props.onLogin}
+        onForgetPassword={props.onForgetPassword}
         onError={props.onError}
       />
     </div>
