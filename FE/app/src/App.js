@@ -61,14 +61,13 @@ const App = () => {
   const [user, setUser] = useState([]);
 
   // BODY
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const isLoggedIn = useRef(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Runs when the apps start
   useEffect(() => {
     const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
-      isLoggedIn.current = true;
+      setIsLoggedIn(true);
     }
 
     const storedCurrentPage = localStorage.getItem("currentPage");
@@ -90,7 +89,7 @@ const App = () => {
 
     // Update user as LoggedIn
     localStorage.setItem("isLoggedIn", "1");
-    isLoggedIn.current = true;
+    setIsLoggedIn(true);
 
     // Update current page
     setPages({
@@ -112,7 +111,7 @@ const App = () => {
   const onLogOut = () => {
     // Update user as LogOut
     localStorage.setItem("isLoggedIn", "0");
-    isLoggedIn.current = false;
+    setIsLoggedIn(false);
 
     // Remove data of the user TODO
     localStorage.removeItem("user");
