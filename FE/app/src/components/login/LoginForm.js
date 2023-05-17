@@ -53,26 +53,42 @@ const LoginForm = (props) => {
     // 1. Check if mail existing- userValidation.
     // & DONE ↓
     // 2. Check if mail and password existing- login.
-    let mailExists = null;
+    let checkMailRequest = null;
+    let userName = "";
+    let token = "";
+
     try {
-      mailExists = await axios.get(
+      checkMailRequest = await axios.get(
         "http://localhost:8080/userValidation?user_email=" + enteredMail
       );
-      if (mailExists.status === 200) {
+      if (checkMailRequest !== undefined && checkMailRequest.status === 200) {
         // user mail exists, need to check password
         console.log("user mail exists, checking password");
         try {
-          let passwordExists = await axios.post("http://localhost:8080/login", {
+          let checkPasswordRequest = await axios.post("http://localhost:8080/login", {
             user_email: enteredMail,
             password: enteredPass,
           });
-          if (passwordExists.status === 200) {
+
+          if (checkPasswordRequest !== undefined && checkPasswordRequest.status === 200) {
             // good to go (mail and password are correct)
+            console.log("good to go (mail and password are correct)  -  " + token);
+
             // YAFIT TODO: move user to main page
-            console.log("good to go (mail and password are correct)");
+            // here: send request to get user's data and token
+            // token = checkPasswordRequest.data["jwt_token"];
+            // const config = {headers: { Authorization: `Bearer ${token}` }};
+            // console.log(token);
+            // let userDataRequest = await axios.get('http://localhost:8080/profile',
+            //                                       {}, config)
+            //                                   .then(console.log("made it to profile")).catch(console.log);
+            // if (userDataRequest.response !== undefined && userDataRequest.response.status === 200) {
+            // // we got user profile data
+            //   console.log("we got user profile data " + userDataRequest.data);
+            // }
           }
         } catch (err) {
-          if (err.response.status === 401) {
+          if (err.response !== undefined && err.response.status === 401) {
             // Unauthorized - password doesn't exists
             console.log("failed to connect - password doesn't exists");
             props.onError({
@@ -85,7 +101,7 @@ const LoginForm = (props) => {
         }
       }
     } catch (err) {
-      if (err.response.status === 404) {
+      if (err.response !== undefined && err.response.status === 404) {
         console.log("failed to connect - user mail doesn't exists");
         props.onError({
           title: "ההתחברות נכשלה",
@@ -101,6 +117,7 @@ const LoginForm = (props) => {
       mail: enteredMail,
       pass: enteredPass,
       name: "חנה",
+      token:""
     };
 
     setEnteredMail("");
