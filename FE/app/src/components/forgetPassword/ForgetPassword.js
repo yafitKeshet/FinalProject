@@ -2,30 +2,31 @@ import React, { useState } from "react";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
+import { StepTypes } from "../enums.ts";
 
 import "./ForgetPassword.css";
 
 const ForgetPassword = (props) => {
   /*
     errors //TODO
-    STEP 1: insert mail - check if mail exist //TODO 
-    STEP 2: insure mail - send code to mail //TODO
-    STEP 3: insert code from mail - check if same code //TODO
-    STEP 4: create new password & confirm pass - update data base //TODO
+    STEP 1: insert mail - check if mail exist //TODO -mor
+    STEP 2: insure mail - send code to mail //TODO -mor
+    STEP 3: insert code from mail - check if same code //TODO -mor
+    STEP 4: create new password & confirm pass - update data base //TODO -mor (not yet)
     -> Move to Profile Page //TODO
-
-*/
+  */
 
   // STEPS
-  const [currentStep, setStep] = useState("step1");
+  const [currentStep, setStep] = useState(StepTypes.step1);
 
   const setBackStep = () => {
     switch (currentStep) {
-      case "step2":
-        setStep("step1");
+      case StepTypes.step2:
+        setStep(StepTypes.step1);
         break;
-      case "step3":
-        setStep("step2");
+      case StepTypes.step3:
+        setStep(StepTypes.step2);
+        break;
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -34,14 +35,14 @@ const ForgetPassword = (props) => {
 
   const setNextStep = () => {
     switch (currentStep) {
-      case "step1":
-        setStep("step2");
+      case StepTypes.step1:
+        setStep(StepTypes.step2);
         break;
-      case "step2":
-        setStep("step3");
+      case StepTypes.step2:
+        setStep(StepTypes.step3);
         break;
-      case "step3":
-        setStep("step4");
+      case StepTypes.step3:
+        setStep(StepTypes.step4);
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -51,11 +52,11 @@ const ForgetPassword = (props) => {
   // HEADERS
   const getHeader = () => {
     switch (currentStep) {
-      case "step1":
+      case StepTypes.step1:
         return "איתור החשבון שלך";
-      case "step2":
+      case StepTypes.step2:
         return `נשלח לך קוד לדוא"ל שלך`;
-      case "step3":
+      case StepTypes.step3:
         return "הזן קוד אבטחה";
       // eslint-disable-next-line no-fallthrough
       default:
@@ -66,32 +67,36 @@ const ForgetPassword = (props) => {
   // LABELS
   const getLabel = () => {
     switch (currentStep) {
-      case "step1":
+      case StepTypes.step1:
         return [
           {
             label: ` יש להזין את כתובת הדוא"ל או מספר הטלפון כדי לחפש את החשבון שלך.`,
             key: "label1",
           },
         ];
-      case "step2":
+      case StepTypes.step2:
         return [
           {
             label: ` נוכל לשלוח קוד התחברות אל:`,
             key: "label2",
           },
           {
-            label: inputs.mailStep1,
+            label: inputs.mail,
             key: "label3",
           },
         ];
 
-      case "step3":
+      case StepTypes.step3:
         return [
-          { label: `שלחנו את הקוד שלך אל: ${inputs.mailStep1}`, key: "label4" },
+          { label: `שלחנו את הקוד שלך אל: ${inputs.mail}`, key: "label4" },
 
           {
-            label: `יש לבדוק בדוא"ל אם קיבלת הודעה עם הקוד. אורך הקוד הוא ‏6‏ ספרות.`,
+            label: `יש לבדוק בדוא"ל אם קיבלת הודעה עם הקוד. `,
             key: "label5",
+          },
+          {
+            label: `אורך הקוד הוא ‏6‏ ספרות.`,
+            key: "label6",
           },
         ];
       // eslint-disable-next-line no-fallthrough
@@ -101,12 +106,17 @@ const ForgetPassword = (props) => {
   };
 
   // INPUTS
-  const [inputs, setInputs] = useState({ mailStep1: "" });
+  const [inputs, setInputs] = useState({ mail: "", code: "" });
 
   // Input change handlers
-  const onMailChangeStep1 = (event) => {
+  const onMailChange = (event) => {
     setInputs((prevState) => {
-      return { ...prevState, mailStep1: event.target.value };
+      return { ...prevState, mail: event.target.value };
+    });
+  };
+  const onCodeChange = (event) => {
+    setInputs((prevState) => {
+      return { ...prevState, code: event.target.value };
     });
   };
 
@@ -114,14 +124,17 @@ const ForgetPassword = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     switch (currentStep) {
-      case "step1":
-        // check mail exists
-        //error msg
+      case StepTypes.step1:
+        // check mail exists TODO -mor
+        // error msg -TODO -yafit
         break;
-      case "step2":
-        //send code to mail
+      case StepTypes.step2:
+        // send code to mail-mor
+        // error msg -TODO -yafit
         break;
-      case "step3":
+      case StepTypes.step3:
+      // check if same code //TODO -mor
+      // error msg -TODO -yafit
 
       // eslint-disable-next-line no-fallthrough
       default:
@@ -149,10 +162,10 @@ const ForgetPassword = (props) => {
             );
           })}
 
-          {currentStep === "step1" && (
+          {currentStep === StepTypes.step1 && (
             <input
-              onChange={onMailChangeStep1}
-              value={inputs.mailStep1}
+              onChange={onMailChange}
+              value={inputs.mail}
               className="forget-content"
               type="text"
               placeholder="some@mta.ac.il"
@@ -161,21 +174,38 @@ const ForgetPassword = (props) => {
               required
             />
           )}
+
+          {currentStep === StepTypes.step3 && (
+            <input
+              onChange={onCodeChange}
+              value={inputs.code}
+              className="forget-content"
+              type="text"
+              placeholder="הזן/הזני את הקוד"
+              pattern="[0-9]{6}"
+              title="נא להכניס קוד בן 6 ספרות"
+              required
+            />
+          )}
         </div>
         <Separator />
 
         <footer className="forget-actions">
-          {currentStep === "step2" && (
+          {(currentStep === StepTypes.step2 ||
+            currentStep === StepTypes.step3) && (
             <Button className="forget-back" onClick={setBackStep}>
-              זה לא המייל שלי
+              {(currentStep === StepTypes.step2 && "זה לא המייל שלי") ||
+                (currentStep === StepTypes.step3 && "לא קבלתי קוד")}
             </Button>
           )}
           <Button className="forget-cancel" onClick={props.onCancel}>
             ביטול
           </Button>
           <Button className="forget-send" type="submit">
-            {(currentStep === "step1" && "חיפוש") ||
-              (currentStep === "step2" && "המשך")}
+            {(currentStep === StepTypes.step1 && "חיפוש") ||
+              ((currentStep === StepTypes.step2 ||
+                currentStep === StepTypes.step3) &&
+                "המשך")}
           </Button>
         </footer>
       </Card>
