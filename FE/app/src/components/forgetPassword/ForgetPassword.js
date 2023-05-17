@@ -3,8 +3,8 @@ import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
 import { StepTypes } from "../enums.ts";
-
 import "./ForgetPassword.css";
+import axios from "axios";
 
 const ForgetPassword = (props) => {
   /*
@@ -121,16 +121,39 @@ const ForgetPassword = (props) => {
   };
 
   // Submit handler
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
     switch (currentStep) {
       case StepTypes.step1:
-        // check mail exists TODO -mor
-        // error msg -TODO -yafit
+        // check mail exists DONE - mor
+        let checkMailRequest = await axios.get(
+          "http://localhost:8080/userValidation?user_email=" + inputs.mail
+          );
+        if (checkMailRequest !== undefined && checkMailRequest.status === 200) {
+          // user mail exists
+          console.log("user mail exists -> in forgot password");
+        }
+        else if (checkMailRequest !== undefined && checkMailRequest.status === 404)
+        {
+          // error msg -TODO -yafit 
+          // (this mail is not registered in our data base)
+        }
         break;
       case StepTypes.step2:
         // send code to mail-mor
-        // error msg -TODO -yafit
+        ///resetPassword1Step
+        let resetPasswordRequest = await axios.get("http://localhost:8080//resetPassword1Step");
+        if (resetPasswordRequest !== undefined && resetPasswordRequest.status === 200) {
+          console.log(resetPasswordRequest.data);
+          if (resetPasswordRequest.data == true){ // mail sent properly
+            console.log("user mail sent -> in forgot password");
+          }
+        }
+        else if (resetPasswordRequest !== undefined && resetPasswordRequest.status === 404)
+        {
+          // error msg -TODO -yafit 
+          // mail is not sent, some problem happend , try again
+        }
         break;
       case StepTypes.step3:
       // check if same code //TODO -mor
