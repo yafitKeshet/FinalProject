@@ -3,7 +3,7 @@ from typing import Optional, Set, Tuple, List
 from pydantic import BaseModel
 from fastapi import UploadFile
 
-from BE.lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
+from lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
 
 
 class ProjectBaseModel(BaseModel):
@@ -77,6 +77,7 @@ class UpdateUserProfile(ProjectBaseModel):
 
 ############################################################
 
+
 # Login:
 class UserLogin(ProjectBaseModel):
     user_email: str
@@ -88,6 +89,17 @@ class Login(ProjectBaseModel):
     token_type: str
 
 
+class ResetPasswordBody(ProjectBaseModel):
+    temp_password: str
+    new_password: str
+
+
+class SignupSecondStep(ProjectBaseModel):
+    user_email: str
+    temp_password: str
+
+
+# Post
 class PostOut(ProjectBaseModel):
     author: UserProfileOut
     post_id: str

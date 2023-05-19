@@ -3,11 +3,11 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from pydantic import BaseModel
 from typing_extensions import Annotated
 
-from BE.lib.bussiness_logic.posts_manager import PostsManager
-from BE.lib.utils.auth.decode_token import get_current_active_user
-from BE.lib.utils.db.models.user import User
-from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.rest_models import PostOut, NewPost
+from lib.bussiness_logic.posts_manager import PostsManager
+from lib.utils.auth.decode_token import get_current_active_user
+from lib.utils.db.models.user import User
+from lib.utils.db.user_db import get_db_session, UserDBSession
+from lib.utils.rest_models import PostOut, NewPost
 
 
 router = APIRouter()

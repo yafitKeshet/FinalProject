@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 80%;
+  padding-bottom: 10px;
+}
+
+.logo-header img {
+  height: 100px;
+}

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 
-from BE.lib.utils.db.user_db import Base
+from lib.utils.db.user_db import Base
 
 
 class Job(Base):

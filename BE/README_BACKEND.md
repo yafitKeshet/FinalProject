@@ -17,3 +17,9 @@
 ### Notice:
 In order to check the swagger API, one should check the following path, while running the server:
 > http://localhost:8080/docs
+
+
+### Notice 2: 
+In order to create working env, you'll need to create .env file with the following params: 
+SENDER_EMAIL = EMAIL_ADDRESS
+SENDER_APP_PASSWORD = APP_PASSWORD

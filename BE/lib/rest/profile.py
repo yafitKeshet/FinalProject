@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 
-from BE.lib.utils.rest_models import UserProfileOut, UpdateUserProfile
+from lib.utils.rest_models import UserProfileOut, UpdateUserProfile
 
 router = APIRouter()
 
