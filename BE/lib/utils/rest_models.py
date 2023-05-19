@@ -157,7 +157,7 @@ class CourseOut(ProjectBaseModel):
     summary_documents: Optional[str]  # List of URLs
     tests: Optional[str]
     tests_solution: Optional[str]
-    recommendations: Optional[List[RecommendationOut]]
+    recommendations: Optional[List[RecommendationIn]]
 
 
 class CourseIn(ProjectBaseModel):
