@@ -29,7 +29,9 @@ def login_check_user_exists(
     db.close()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
+
     return True
+
 
 # Login into profile
     # 200 - Success

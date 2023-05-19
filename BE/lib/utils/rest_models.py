@@ -74,7 +74,6 @@ class UpdateUserProfile(ProjectBaseModel):
     job_description: Optional[str]
     user_image: Optional[str]  # URL to image
 
-
 ############################################################
 
 

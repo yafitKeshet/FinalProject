@@ -59,6 +59,8 @@ def initialize_db():
     if not db:
         db = DBManager()
     return db
+
+
 def get_db_session() -> UserDBSession:
     db_session = initialize_db().get_db()
     try:
