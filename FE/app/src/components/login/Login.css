@@ -4,16 +4,32 @@
   grid-template-rows: auto auto 2fr;
   justify-content: center;
 
+<<<<<<< Updated upstream
   height: 500px;
 }
 
 .login-description {
   font-size: 20px;
   text-align: right;
+=======
+.login-center {
+  text-align: center;
+  align-content: center;
+}
+
+.login-description {
+  font-size: 40px;
+  font-weight: 500;
+  color:#080f95;
+  text-shadow: 2px 2px 2px #a397af, 2px 2px 2px #b393d3, 0px 2px 2px #9e8ead,
+    2px 2px 2px #90839d;
+  text-align: center;
+>>>>>>> Stashed changes
   grid-row-start: 2;
   grid-column: 1;
 }
 
+<<<<<<< Updated upstream
 .login-description p {
   margin-bottom: 0.5rem;
 }
@@ -24,6 +40,18 @@
   grid-row: 1;
   grid-column: 1/ -1;
   justify-self: flex-start;
+=======
+.title {
+  font-size: 80px;
+  font-weight: 750;
+  color: #2e43c0;
+  /* border: #2b1a3c;
+  text-shadow: 5px 5px 15px #4f0895, 5px 5px 10px #b393d3, 5px 5px 10px #451079,
+    15px 15px 20px #2b1a3c; */
+    text-shadow: #efe9e9 5px 5px 5px,   #000 5px 5px 5px,   #0c5fb8 5px 0px 55px,
+             #6583d0 5px 5px 5px,   #5722f6 0px 0px 1px,   #000000 5px 5px 15px;
+    margin-bottom: 1%;
+>>>>>>> Stashed changes
 }
 
 .title p {
@@ -41,8 +69,24 @@
   border-radius: 1%;
 }
 
+<<<<<<< Updated upstream
 .login-form {
   grid-row: 2/-1;
   grid-column-start: 2;
   align-self: center;
+=======
+.login-carousel {
+  justify-self: center;
+  align-self: center;
+  height: 50%;
+  width: 50%;
+>>>>>>> Stashed changes
 }
+
+.login-carousel-div {
+  justify-self: center;
+  align-self: center;
+  align-items: center;
+  align-content: center;
+}
+

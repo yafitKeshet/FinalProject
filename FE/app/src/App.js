@@ -5,6 +5,8 @@ import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App = () => {
   // HEADER
