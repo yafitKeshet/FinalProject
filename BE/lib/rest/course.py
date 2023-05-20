@@ -27,11 +27,6 @@ def get_courses(
         course = c.__dict__
         course["recommendations"] = [RecommendationIn(**r.__dict__) for r in course.get("recommendations", {})]
         return_value.append(course)
-        recommendations_json = []
-        # for rec in recommendations:
-        #     recommendations_json.append(RecommendationOut(**rec.__dict__))
-        # course['recommendations'] = recommendations_json
-        # courses_json.append(course)
     return return_value
 
 @router.post(
