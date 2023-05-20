@@ -13,4 +13,4 @@ class Recommendation(Base):
     rating = Column(Integer)
 
     course_id = Column(Integer, ForeignKey('course.course_id'))
-    course = relationship("Course", back_populates="recommendations")
+    course = relationship("Course", back_populates="recommendations", lazy="joined")
