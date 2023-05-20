@@ -15,5 +15,4 @@ class Course(Base):
     summary_documents = Column(String, nullable=True)
     tests = Column(String, nullable=True)
     tests_solution = Column(String, nullable=True)
-    # recommendations = relationship("Recommendation", backref="course")
     recommendations = relationship("Recommendation", back_populates="course", lazy="joined")
