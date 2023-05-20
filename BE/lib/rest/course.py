@@ -23,13 +23,13 @@ def get_courses(
 ):
     courses_json = []
     for c in db.query(CourseTable).all():
-        courses_json.append(c.__dict__)
-    for course in courses_json:
+        course = c.__dict__
         recommendations = db.get_recommendation_by_id(c.course_id).all()
         recommendations_json = []
         for rec in recommendations:
             recommendations_json.append(RecommendationOut(**rec.__dict__))
         course['recommendations'] = recommendations_json
+        courses_json.append(course)
     return courses_json
 
 @router.post(
@@ -46,6 +46,8 @@ def add_recommendation(
     existing_course = db.get_course_by_id(course_id).first()
     if existing_course is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course was not found")
+    global unique_recommendation_id
+    unique_recommendation_id += 1
     recommendation_to_add = {
         'id': ++unique_recommendation_id,
         'title': recommendation.title,
