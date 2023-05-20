@@ -2,10 +2,10 @@ import logging
 import uuid
 from typing import List
 
-from lib.utils.db.models.post import Post
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import UserDBSession
-from lib.utils.rest_models import PostOut, NewPost, UserProfileOut
+from ..utils.db.models.post import Post
+from ..utils.db.models.user import User
+from ..utils.db.user_db import UserDBSession
+from ..utils.rest_models import PostOut, NewPost
 
 
 class PostsManager:

@@ -3,7 +3,7 @@ import uuid
 from sqlalchemy import Column, String, JSON
 
 
-from lib.utils.db.user_db import Base
+from ..user_db import Base
 
 
 class Post(Base):

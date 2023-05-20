@@ -3,10 +3,10 @@ from jose import jwt
 from typing_extensions import Annotated
 
 
-from lib.utils.auth.generate_access_token import ALGORITHM, SECRET_KEY
-from lib.utils.auth.oauth2 import oauth2_scheme
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import get_db_session, UserDBSession
+from .generate_access_token import ALGORITHM, SECRET_KEY
+from .oauth2 import oauth2_scheme
+from ..db.models.user import User
+from ..db.user_db import get_db_session, UserDBSession
 
 
 async def get_current_user(

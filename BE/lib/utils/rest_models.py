@@ -3,7 +3,7 @@ from typing import Optional, Set, Tuple, List
 from pydantic import BaseModel
 from fastapi import UploadFile
 
-from lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
+from .enums import JobTime, Faculty, Experience, Year, Rating
 
 
 class ProjectBaseModel(BaseModel):
@@ -145,27 +145,42 @@ class NewJob(ProjectBaseModel):
     experience: Optional[Experience]
 
 
-class Recommend(ProjectBaseModel):
+class RecommendationIn(ProjectBaseModel):
     title: str
     description: str
-    rating: Rating
+    rating: int
 
 
-class Course(ProjectBaseModel):
-    course_id: str
+class RecommendationOut(ProjectBaseModel):
+    course_id: int
+    description: str
+    id: str
+    rating: int
+    title: str
+
+
+class CourseOut(ProjectBaseModel):
+    course_id: int
     name: str
-    teachers: List[str]
+    teachers: str
     rating_avg: float
     description: str
-    summary_documents: List[str]  # List of URLs
+    summary_documents: Optional[str]  # List of URLs
+    tests: Optional[str]
+    tests_solution: Optional[str]
+    recommendations: Optional[List[RecommendationIn]]
+
+
+class CourseIn(ProjectBaseModel):
+    name: str
+    teachers: str
+    description: str
+    summary_documents: Optional[List[str]]  # List of URLs
     tests: Optional[List[str]]
     tests_solution: Optional[List[str]]
-    avg: Optional[List[str]]
-    recommendations: List[Recommend]
 
 
 class CourseUpdate(ProjectBaseModel):
-    rate: Optional[Rating]
     tests: Optional[List[UploadFile]]
     tests_solution: Optional[List[UploadFile]]
     summary_documents: Optional[List[UploadFile]]

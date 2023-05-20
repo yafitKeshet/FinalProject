@@ -7,8 +7,8 @@ from email.mime.text import MIMEText
 
 from dotenv import load_dotenv
 
-from lib.utils.db.models.user_temp_password import UserTempPassword
-from lib.utils.db.user_db import UserDBSession
+from ..db.models.user_temp_password import UserTempPassword
+from ..db.user_db import UserDBSession
 
 # Load variables from .env file
 load_dotenv()

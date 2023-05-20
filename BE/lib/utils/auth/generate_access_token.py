@@ -5,9 +5,9 @@ from fastapi import Depends, HTTPException, status
 from jose import jwt
 
 
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import get_db_session, UserDBSession
-from lib.utils.rest_models import UserLogin, Login
+from ..db.models.user import User
+from ..db.user_db import get_db_session, UserDBSession
+from ..rest_models import UserLogin, Login
 
 SECRET_KEY = 'a9c5a47a668c690fb675a3d892dbf6507663f1a80aec9316e09834bf9e5c82ff'
 ALGORITHM = "HS256"
