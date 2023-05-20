@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Float, Integer, JSON
 from sqlalchemy.orm import relationship
 
-from BE.lib.utils.db.user_db import Base
+from ..user_db import Base
 
 
 class Course(Base):

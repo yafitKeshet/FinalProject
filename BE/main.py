@@ -8,7 +8,7 @@ from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 
 # Internal imports
-from BE.lib.rest import course, feed, general, job, login, profile, signup
+from lib.rest import course, feed, general, job, login, profile, signup
 from dotenv import load_dotenv
 
 # Load variables from .env file

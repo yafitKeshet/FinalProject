@@ -1,8 +1,8 @@
 from sqlalchemy import Column, String, Enum, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from BE.lib.utils.db.user_db import Base
-from ...enums import Rating
+from ..user_db import Base
+
 
 
 # ToDo: Foreign key must be post id

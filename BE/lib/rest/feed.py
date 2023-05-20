@@ -2,11 +2,11 @@ from typing import List
 from fastapi import APIRouter, status, Depends
 from typing_extensions import Annotated
 
-from BE.lib.bussiness_logic.posts_manager import PostsManager
-from BE.lib.utils.auth.decode_token import get_current_active_user
-from BE.lib.utils.db.models.user import User
-from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.rest_models import PostOut, NewPost
+from ..bussiness_logic.posts_manager import PostsManager
+from ..utils.auth.decode_token import get_current_active_user
+from ..utils.db.models.user import User
+from ..utils.db.user_db import get_db_session, UserDBSession
+from ..utils.rest_models import PostOut, NewPost
 
 
 router = APIRouter()

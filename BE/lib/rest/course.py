@@ -1,11 +1,10 @@
 from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException
-import json
 
-from BE.lib.utils.db.user_db import get_db_session, UserDBSession
-from BE.lib.utils.rest_models import CourseOut, CourseIn, CourseUpdate, RecommendationIn, RecommendationOut
-from BE.lib.utils.db.models.course import Course as CourseTable
-from BE.lib.utils.db.models.recommendations import Recommendation as RecommendationTable
+from ..utils.db.user_db import get_db_session, UserDBSession
+from ..utils.rest_models import CourseOut, CourseIn, CourseUpdate, RecommendationIn, RecommendationOut
+from ..utils.db.models.course import Course as CourseTable
+from ..utils.db.models.recommendations import Recommendation as RecommendationTable
 
 unique_course_id = 0
 unique_recommendation_id = 0
