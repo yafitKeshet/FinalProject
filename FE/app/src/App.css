@@ -1,7 +1,5 @@
 .App {
   text-align: center;
-<<<<<<< Updated upstream
-=======
   /* background-image: url("https://wallpaperboat.com/wp-content/uploads/2020/10/30/58688/graduation-04-920x518.jpg"); */
   background-color: #cccccc;
   position: absolute;
@@ -10,5 +8,4 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center top;
->>>>>>> Stashed changes
 }
