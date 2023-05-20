@@ -6,6 +6,7 @@ import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Icons from "./components/icons/Icons";
 
 
 const App = () => {
@@ -14,11 +15,127 @@ const App = () => {
   const INITIAL_MENU = [
     {
       onclick: {},
+      data: "התחברות/ הרשמה",
+    },
+    {
+      onclick: {},
       data: "מידע כללי",
     },
     {
       onclick: {},
       data: "פקולטות",
+    },
+    {
+      onclick: {},
+      data: "גלריה",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: "",
+    },
+    {
+      onclick: {},
+      data: <Icons></Icons>,
     },
   ];
 

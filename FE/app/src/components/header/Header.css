@@ -5,16 +5,6 @@
   align-items: center;
 }
 
-.icons {
-  display:inline-flex;
-  vertical-align: middle;
-  gap: 10px;
-  list-style-type: none;
-  align-items: left;
-  align-content: left;
-  margin-right: 25%;
-}
-
 .menu-header {
   display: flex;
   justify-content: space-between;
@@ -38,6 +28,10 @@
   justify-self: end;
 }
 
-.logo-header img {
+.logo-header{
   height: 100px;
+}
+
+.logoMTA {
+  height: 70px;
 }

@@ -1,5 +1,12 @@
 .login-form {
   justify-self: center;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 1rem 2rem;
+  display: flex;
+  gap: 0.3rem;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form-card {
@@ -15,7 +22,6 @@
 .login-control {
   text-align: right;
   display: flex;
-
   flex-direction: column;
 }
 
@@ -45,9 +51,11 @@
   width: fit-content;
   border-radius: 5px;
 }
+
 .login-btn {
   background-color: #a52a2a !important ;
 }
+
 .login-btn:hover,
 .login-btn:active {
   background: #b94343 !important ;
@@ -59,17 +67,20 @@
   font-weight: 400 !important ;
   font-size: 10px !important ;
 }
+
 .forgetPass-btn:hover,
 .forgetPass-btn:active {
   background: rgb(172, 134, 134) !important ;
   border-color: rgb(172, 134, 134) !important ;
 }
+
 .register-btn {
   background-color: #008000 !important ;
   font-weight: 400 !important ;
   font-size: 10px !important ;
   padding: 0 1rem !important ;
 }
+
 .register-btn:hover,
 .register-btn:active {
   background: #2cae2c !important ;
