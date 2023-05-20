@@ -20,16 +20,19 @@ router = APIRouter()
 def get_courses(
         db: UserDBSession = Depends(get_db_session)
 ):
-    courses_json = []
-    for c in db.query(CourseTable).all():
+    return_value = []
+    all_courses = db.query(CourseTable).all()
+
+    for c in all_courses:
         course = c.__dict__
-        recommendations = db.get_recommendation_by_id(c.course_id).all()
+        course["recommendations"] = [RecommendationIn(**r.__dict__) for r in course.get("recommendations", {})]
+        return_value.append(course)
         recommendations_json = []
-        for rec in recommendations:
-            recommendations_json.append(RecommendationOut(**rec.__dict__))
-        course['recommendations'] = recommendations_json
-        courses_json.append(course)
-    return courses_json
+        # for rec in recommendations:
+        #     recommendations_json.append(RecommendationOut(**rec.__dict__))
+        # course['recommendations'] = recommendations_json
+        # courses_json.append(course)
+    return return_value
 
 @router.post(
     "/courses/{course_id}/recommendations",

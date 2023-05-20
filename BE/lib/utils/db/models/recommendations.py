@@ -4,10 +4,8 @@ from sqlalchemy.orm import relationship
 from ..user_db import Base
 
 
-
-# ToDo: Foreign key must be post id
 class Recommendation(Base):
-    __tablename__ = "recommendations"
+    __tablename__ = "recommendation"
 
     id = Column(Integer, primary_key=True, unique=True, index=True)
     title = Column(String)
