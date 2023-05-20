@@ -13,14 +13,10 @@ const Login = (props) => {
 
   return (
     <div className="login-page">
-      <div className="title">
-        <p>אתר הבוגרים, האקדמית תל אביב יפו</p>
         <div>
+          <div>
           <h1 className="title">אתר הבוגרים - האקדמית תל אביב יפו</h1>
-          {/* <div className="title">
-          <p>אתר הבוגרים - האקדמית תל אביב יפו</p>
-        </div> */}
-          <div className="login-center">
+
             <div className="login-description">
               <h4>
                 קהילת בוגרי המכללה אקדמית תל אביב יפו
@@ -52,45 +48,9 @@ const Login = (props) => {
                 onError={props.onError}
               />
             </div>
-
-
-            {/* <div>
-            <LoginForm
-            className="login-form"
-            onLogIn={props.onLogin}
-            onForgetPassword={props.onForgetPassword}
-            onError={props.onError}
-          />
-          </div> */}
-            {/* <img
-            className="login-img"
-            src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
-            alt="תמונה של האקדמית"
-          /> */}
           </div>
-          <div className="login-description">
-            <p>
-              קהילת בוגרי האקדמית תל אביב יפו.
-              <br />
-            </p>
-            זה הזמן להצטרף לקהילת הבוגרות והבוגרים המשפיעה בישראל, בכדי שנוכל לעדכנך
-            במגוון אירועים, חדשות והזדמנויות לפיתוח קריירה
-          </div>
-          <img
-            className="login-img"
-            src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
-            alt="תמונה של האקדמית"
-          />
-          <LoginForm
-            className="login-form"
-            onLogIn={props.onLogin}
-            onForgetPassword={props.onForgetPassword}
-            onError={props.onError}
-          />
         </div>
       </div>
-    </div>
-
   );
 };
 
