@@ -3,7 +3,7 @@ from typing import Optional, Set, Tuple, List
 from pydantic import BaseModel
 from fastapi import UploadFile
 
-from lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
+from BE.lib.utils.enums import JobTime, Faculty, Experience, Year, Rating
 
 
 class ProjectBaseModel(BaseModel):
