@@ -1,4 +1,6 @@
 import logging
+from typing import Optional, Type
+
 from sqlalchemy.engine import Engine
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
@@ -7,6 +9,7 @@ from .base import Base
 from .models.recommendations import Recommendation
 from .models.user import User
 from .models.course import Course
+from .models.user_temp_password import UserTempPassword
 
 
 class UserDBSession(Session):
@@ -20,6 +23,9 @@ class UserDBSession(Session):
 
     def get_user_query(self, user_email):
         return self.query(User).filter(User.user_email == user_email)
+
+    def get_user_temp_password_entry(self, user_email) -> Optional[Type[UserTempPassword]]:
+        return self.query(UserTempPassword).filter(UserTempPassword.user_email == user_email).first()
 
     def get_course_query(self, course_name):
         return self.query(Course).filter(Course.name == course_name)
