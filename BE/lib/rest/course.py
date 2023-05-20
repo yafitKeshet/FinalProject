@@ -31,6 +31,7 @@ def get_courses(
         return_value.append(course)
     return return_value
 
+
 @router.post(
     "/courses/{course_id}/recommendations",
     name="Add recommendations",
@@ -57,6 +58,7 @@ def add_recommendation(
     return recommendation_to_add
 
 
+# ToDo: Delete
 @router.post(
     "/courses",
     name="Create new course",
@@ -99,8 +101,6 @@ def update_course_data(
     existing_course = db.get_course_by_id(course_id).first()
     if existing_course is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course was not found")
-    non_null_props = {prop: value for prop, value in course_data.dict(exclude_unset=True).items()}
-    db.get_course_by_id(course_id).update(non_null_props)
+    db.get_course_by_id(course_id).update({k: v for k, v in course_data.dict().items() if v is not None})
     db.commit()
-    db.refresh(existing_course)
     return True

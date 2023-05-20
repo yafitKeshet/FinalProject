@@ -181,7 +181,6 @@ class CourseIn(ProjectBaseModel):
 
 
 class CourseUpdate(ProjectBaseModel):
-    rating_avg: Optional[float]
     tests: Optional[List[UploadFile]]
     tests_solution: Optional[List[UploadFile]]
     summary_documents: Optional[List[UploadFile]]
