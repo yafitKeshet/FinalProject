@@ -29,13 +29,13 @@ const Login = (props) => {
 
             <div className="login-center">
               <Carousel activeIndex={index} onSelect={handleSelect}>
-                <Carousel.Item interval={2000}>
+                <Carousel.Item interval={1500}>
                   <img src="./alumni1.jpg" className="login-carousel" />
                 </Carousel.Item>
-                <Carousel.Item interval={2000}>
+                <Carousel.Item interval={1500}>
                   <img src="./alumni2.jpg" className="login-carousel" />
                 </Carousel.Item>
-                <Carousel.Item interval={2000}>
+                <Carousel.Item interval={1500}>
                   <img src="./alumni3.jpg" className="login-carousel" />
                 </Carousel.Item>
               </Carousel>

@@ -14,5 +14,6 @@
     #ccc
 
 // Text:
-    #0a416e - Title
- 
+    #2e43c0 - main page Title
+    #080f95 - main page login description
+
