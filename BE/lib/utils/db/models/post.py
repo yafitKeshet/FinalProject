@@ -1,4 +1,5 @@
 import uuid
+from typing import List
 
 from sqlalchemy import Column, String, JSON
 
@@ -19,10 +20,14 @@ class Post(Base):
     content = Column(String, nullable=False)
     likes = Column(JSON, nullable=True, default=[])  # Use ARRAY data type for likes
 
-    def add_like(self, user_email):
+    def add_like(self, user_email) -> List[str]:
+        likes = self.likes.copy()
         if user_email not in self.likes:
-            self.likes.append(user_email)
+            likes.append(user_email)
+        return likes
 
-    def remove_like(self, user_email):
+    def remove_like(self, user_email: str) -> List[str]:
+        likes = self.likes.copy()
         if user_email in self.likes:
-            self.likes.remove(user_email)
+            likes = [email for email in likes if email != user_email]
+        return likes

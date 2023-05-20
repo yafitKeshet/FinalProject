@@ -26,7 +26,6 @@ def get_all_posts(
     return PostsManager(db).get_user_feed(user)
 
 
-
 @router.post(
     "/feed/new",
     name="Write new post",
@@ -43,20 +42,22 @@ def new_post(
     return PostsManager(db).create_new_post(user, post)
 
 
-
 @router.patch(
     "/feed/like",
     name="Like a post",
-    description="Like unlike a post. We determain if user like or not according to the Likes set n Post scheme."
-                "FrontEnd - Notice: Update State OR Get request (on post) should happen in order to update state) ",
+    description="Like unlike a post. We determine if user like or not according to the Likes set n Post scheme."
+                "FrontEnd - Notice: Update State OR Get request (on post) should happen in order to update state)."
+                "Return value is the list of users that like the post ",
     status_code=status.HTTP_200_OK,
-    response_model=dict
+    response_model=List[str]
 )
 def like_post(
-        like_status: bool,
-        post_id: str
+        like: bool,
+        id: str,
+        user: Annotated[User, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session)
 ):
-    pass
+    return PostsManager(db).manage_like_post(user, id, like)
 
 
 @router.delete(
@@ -69,6 +70,4 @@ def delete_post(
         post_id: str
 ):
     pass
-
-
 

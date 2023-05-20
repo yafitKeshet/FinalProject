@@ -13,7 +13,14 @@ async def get_current_user(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: UserDBSession = Depends(get_db_session)
 ):
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_sub": False})
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_sub": False})
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Bearer token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     user_email: str = payload.get("sub", {}).get("user_email")
     if user_email is None:
         raise HTTPException(
