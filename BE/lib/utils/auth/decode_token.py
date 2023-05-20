@@ -3,8 +3,8 @@ from jose import jwt
 from typing_extensions import Annotated
 
 
-from generate_access_token import ALGORITHM, SECRET_KEY
-from oauth2 import oauth2_scheme
+from .generate_access_token import ALGORITHM, SECRET_KEY
+from .oauth2 import oauth2_scheme
 from ..db.models.user import User
 from ..db.user_db import get_db_session, UserDBSession
 
