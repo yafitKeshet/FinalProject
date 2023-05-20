@@ -61,13 +61,14 @@ def like_post(
 
 
 @router.delete(
-    "/feed/{post_id}",
+    "/feed",
     name="Delete a post",
     status_code=status.HTTP_200_OK,
     response_model=bool
 )
 def delete_post(
-        post_id: str
+    id: str,
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: UserDBSession = Depends(get_db_session)
 ):
-    pass
-
+    return PostsManager(db).delete_post(user, id)

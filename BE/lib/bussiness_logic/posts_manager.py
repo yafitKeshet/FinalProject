@@ -61,3 +61,18 @@ class PostsManager:
         self.db_session.commit()
         existing_post = self.db_session.query(Post).filter(Post.post_id == post_id).first()
         return list(existing_post.likes)
+
+    def delete_post(self, user: User, post_id: str) -> bool:
+        existing_post = self.db_session.query(Post).filter(Post.post_id == post_id).first()
+        if not existing_post:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post was not found")
+
+        if existing_post.author_email != user.user_email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User is not Post's author. Can't perform delete"
+            )
+
+        self.db_session.query(Post).filter(Post.post_id == post_id).delete()
+        self.db_session.commit()
+        return True
