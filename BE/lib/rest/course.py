@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException
 
@@ -7,7 +8,6 @@ from ..utils.db.models.course import Course as CourseTable
 from ..utils.db.models.recommendations import Recommendation as RecommendationTable
 
 unique_course_id = 0
-unique_recommendation_id = 0
 router = APIRouter()
 
 
@@ -25,7 +25,9 @@ def get_courses(
 
     for c in all_courses:
         course = c.__dict__
-        course["recommendations"] = [RecommendationIn(**r.__dict__) for r in course.get("recommendations", {})]
+        course["recommendations"] = [RecommendationIn(**r.__dict__) for r in c.recommendations]
+        if len(c.recommendations) > 0:
+            course["rating_avg"] = sum([r.rating for r in c.recommendations]) / len(c.recommendations)
         return_value.append(course)
     return return_value
 
@@ -43,10 +45,8 @@ def add_recommendation(
     existing_course = db.get_course_by_id(course_id).first()
     if existing_course is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course was not found")
-    global unique_recommendation_id
-    unique_recommendation_id += 1
     recommendation_to_add = {
-        'id': ++unique_recommendation_id,
+        'id': str(uuid.uuid4()),
         'title': recommendation.title,
         'description': recommendation.description,
         'rating': recommendation.rating,

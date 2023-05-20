@@ -154,7 +154,7 @@ class RecommendationIn(ProjectBaseModel):
 class RecommendationOut(ProjectBaseModel):
     course_id: int
     description: str
-    id: int
+    id: str
     rating: int
     title: str
 
