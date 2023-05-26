@@ -74,6 +74,7 @@ class UpdateUserProfile(ProjectBaseModel):
     job_description: Optional[str]
     user_image: Optional[str]  # URL to image
 
+
 ############################################################
 
 
@@ -210,3 +211,39 @@ class UserCV(ProjectBaseModel):
     skills: List[str]
     jobs: Optional[List[JobCV]]
     education: Optional[List[EducationCV]]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "first_name": "OPTIONAL",
+                "last_name": "OPTIONAL",
+                "email": "OPTIONAL",
+                "phone": "+1234567890",
+                "summary": "A highly skilled software engineer with 7 years of experience in the industry.",
+                "skills": ["Python", "JavaScript", "React", "Django"],
+                "jobs": [
+                    {
+                        "job_title": "Senior Software Engineer",
+                        "company": "ABC Corp",
+                        "start_date": "2018-01-01",
+                        "end_date": "2022-12-31",
+                        "description": "Developed and maintained key software applications."
+                    },
+                    {
+                        "job_title": "Junior Software Engineer",
+                        "company": "XYZ Inc",
+                        "start_date": "2015-01-01",
+                        "end_date": "2017-12-31",
+                        "description": "Worked on various software projects and learned key skills."
+                    }
+                ],
+                "education": [
+                    {
+                        "institution": "Example University",
+                        "degree": "BSc in Computer Science",
+                        "start_date": "2010-09-01",
+                        "end_date": "2014-06-30"
+                    }
+                ]
+            },
+        }
