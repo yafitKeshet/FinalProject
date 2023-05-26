@@ -1,6 +1,10 @@
-from fastapi import APIRouter, status
-
+from fastapi import APIRouter, status, Depends
+from typing_extensions import Annotated
+from ..utils.db.models.user import User
+from ..utils.auth.decode_token import get_current_active_user
+from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.rest_models import UserProfileOut, UpdateUserProfile
+from ..utils.db.models.user import User as UserTable
 
 router = APIRouter()
 
@@ -11,8 +15,11 @@ router = APIRouter()
     status_code=status.HTTP_200_OK,
     response_model=UserProfileOut
 )
-def get_profile():
-    pass
+def get_profile(
+        user: Annotated[User, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session)
+):
+    return UserProfileOut(**{**user.__dict__})
 
 
 # 200 - Success
@@ -27,6 +34,7 @@ def get_profile():
     response_model=UserProfileOut
 )
 def update_profile(
+        user: Annotated[User, Depends(get_current_active_user)],
         user_profile: UpdateUserProfile
 ):
     pass
@@ -41,15 +49,3 @@ def update_profile(
 )
 def get_resume():
     pass
-
-
-
-
-
-
-
-
-
-
-
-
