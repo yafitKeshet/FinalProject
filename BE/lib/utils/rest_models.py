@@ -3,7 +3,7 @@ from typing import Optional, Set, Tuple, List
 from pydantic import BaseModel
 from fastapi import UploadFile
 
-from .enums import JobTime, Faculty, Experience, Year, Rating
+from .enums import JobTime, Faculty, Experience, Year
 
 
 class ProjectBaseModel(BaseModel):
@@ -184,3 +184,29 @@ class CourseUpdate(ProjectBaseModel):
     tests: Optional[List[UploadFile]]
     tests_solution: Optional[List[UploadFile]]
     summary_documents: Optional[List[UploadFile]]
+
+
+class JobCV(ProjectBaseModel):
+    job_title: str
+    company: str
+    start_date: str
+    end_date: Optional[str]
+    description: Optional[str]
+
+
+class EducationCV(ProjectBaseModel):
+    institution: str
+    degree: str
+    start_date: str
+    end_date: Optional[str]
+
+
+class UserCV(ProjectBaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[str]
+    phone: Optional[str]
+    summary: str
+    skills: List[str]
+    jobs: Optional[List[JobCV]]
+    education: Optional[List[EducationCV]]
