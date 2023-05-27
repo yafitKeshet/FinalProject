@@ -1,10 +1,13 @@
-
 from fastapi import APIRouter, status, Depends, HTTPException
 from typing_extensions import Annotated
 
+
+from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
 from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV
+
+
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
@@ -20,8 +23,10 @@ router = APIRouter()
     status_code=status.HTTP_200_OK,
     response_model=UserProfileOut
 )
-def get_profile():
-    pass
+def get_profile(
+        user: Annotated[User, Depends(get_current_active_user)]
+):
+    return UserProfileOut(**user.__dict__)
 
 
 # 200 - Success
@@ -33,13 +38,16 @@ def get_profile():
     description="User can update any fields he wants (according to Scheme) -"
                 "After the request the user details should refresh (changing State / invoking a get request)",
     status_code=status.HTTP_200_OK,
-    response_model=UserProfileOut
+    response_model=bool
 )
 def update_profile(
-        user_profile: UpdateUserProfile
+        user_data: UpdateUserProfile,
+        user: Annotated[User, Depends(get_current_active_user)],
+        db: UserDBSession = Depends(get_db_session)
 ):
-    pass
-
+    db.get_user_query(user.user_email).update({k: v for k, v in user_data.dict().items() if v is not None})
+    db.commit()
+    return True
 
 @router.post(
     "/profile/resume",
@@ -59,7 +67,6 @@ def get_resume(
     first_name = user.first_name if user.first_name else user_from_token.private_name
     last_name = user.last_name if user.last_name else user_from_token.last_name
     email = user.email if user.email else user_from_token.user_email
-
 
     # Personal info
     story.append(Paragraph(f"<b>{first_name} {last_name}</b>", styles["Title"]))

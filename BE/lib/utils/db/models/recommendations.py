@@ -12,5 +12,5 @@ class Recommendation(Base):
     description = Column(String)
     rating = Column(Integer)
 
-    course_id = Column(Integer, ForeignKey('course.course_id'))
+    course_id = Column(String, ForeignKey('course.course_id'))
     course = relationship("Course", back_populates="recommendations", lazy="joined")
