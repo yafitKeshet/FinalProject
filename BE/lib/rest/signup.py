@@ -103,6 +103,6 @@ def sign_up_new_profile(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
 
     updated_user_profile.user_email = auth.user_email
-    db.get_user_query(auth.user_email).update(updated_user_profile.dict())
+    db.get_user_query(auth.user_email).update({k: v for k, v in updated_user_profile.dict().items() if v is not None})
     db.commit()
-    return UserProfileOut(**updated_user_profile.dict())
+    return UserProfileOut(**db.get_user_query(auth.user_email).first().dict())
