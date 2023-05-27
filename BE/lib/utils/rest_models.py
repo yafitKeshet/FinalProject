@@ -27,7 +27,7 @@ class SignUpUserProfile(ProjectBaseModel):
 
 
 class OnBoardingUserProfile(ProjectBaseModel):
-    user_email: str
+    user_email: Optional[str]
     private_name: str
     last_name: str
     birthday_date: str
@@ -67,7 +67,7 @@ class UserProfileOut(ProjectBaseModel):
 
 
 class UpdateUserProfile(ProjectBaseModel):
-    faculty: Optional[str]
+    faculty: Optional[Faculty]
     year: Optional[Year]
     job_company_name: Optional[str]
     job_start_year: Optional[int]
