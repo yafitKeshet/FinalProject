@@ -37,6 +37,7 @@ def new_post(
     post: NewPost,
     user: Annotated[User, Depends(get_current_active_user)],
     db: UserDBSession = Depends(get_db_session)
+
 ):
     return PostsManager(db).create_new_post(user, post)
 
