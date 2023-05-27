@@ -1,6 +1,6 @@
 venv/
 .idea
 *__pycache__*
-server_db.db
+BE/server_db.db
 GmailPassword*
 .env
