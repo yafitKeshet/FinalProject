@@ -27,7 +27,7 @@ class SignUpUserProfile(ProjectBaseModel):
 
 
 class OnBoardingUserProfile(ProjectBaseModel):
-    user_email: str
+    user_email: Optional[str]
     private_name: str
     last_name: str
     birthday_date: str
@@ -90,6 +90,7 @@ class Login(ProjectBaseModel):
 
 
 class ResetPasswordBody(ProjectBaseModel):
+    user_email: str
     temp_password: str
     new_password: str
 
@@ -153,7 +154,7 @@ class RecommendationIn(ProjectBaseModel):
 
 
 class RecommendationOut(ProjectBaseModel):
-    course_id: int
+    course_id: str
     description: str
     id: str
     rating: int
@@ -161,7 +162,7 @@ class RecommendationOut(ProjectBaseModel):
 
 
 class CourseOut(ProjectBaseModel):
-    course_id: int
+    course_id: str
     name: str
     teachers: str
     rating_avg: float

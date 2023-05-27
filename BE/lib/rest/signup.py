@@ -98,11 +98,11 @@ def sign_up_new_profile(
         updated_user_profile: OnBoardingUserProfile,
         db: UserDBSession = Depends(get_db_session)
 ):
-    existing_user = db.get_user_query(updated_user_profile.user_email).first()
+    existing_user = db.get_user_query(auth.user_email).first()
     if existing_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
 
-    db.get_user_query(updated_user_profile.user_email).update(
-        updated_user_profile.dict())
+    updated_user_profile.user_email = auth.user_email
+    db.get_user_query(auth.user_email).update(updated_user_profile.dict())
     db.commit()
     return UserProfileOut(**updated_user_profile.dict())

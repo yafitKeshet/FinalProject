@@ -1,10 +1,13 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from typing_extensions import Annotated
 
+
+from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
-from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV
+
+
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
@@ -45,7 +48,6 @@ def update_profile(
     db.get_user_query(user.user_email).update({k: v for k, v in user_data.dict().items() if v is not None})
     db.commit()
     return True
-
 
 @router.post(
     "/profile/resume",
@@ -94,16 +96,12 @@ def get_resume(
     if not all([user_from_token.job_description, user_from_token.job_company_name, user_from_token.job_start_year]):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User should update current job info first")
     if user_from_token.job_company_name:
-        story.append(
-            Paragraph(f"<b>{user_from_token.job_company_name} ({user_from_token.job_start_year} - Present)</b>",
-                      styles["Heading3"]))
+        story.append(Paragraph(f"<b>{user_from_token.job_company_name} ({user_from_token.job_start_year} - Present)</b>", styles["Heading3"]))
         story.append(Paragraph(user_from_token.job_description, styles["BodyText"]))
         story.append(Spacer(1, 12))
 
     for job in user.jobs:
-        story.append(
-            Paragraph(f"<b>{job.job_title} at {job.company} ({job.start_date} - {job.end_date or 'Present'})</b>",
-                      styles["Heading3"]))
+        story.append(Paragraph(f"<b>{job.job_title} at {job.company} ({job.start_date} - {job.end_date or 'Present'})</b>", styles["Heading3"]))
         story.append(Paragraph(job.description, styles["BodyText"]))
         story.append(Spacer(1, 12))
 
@@ -111,9 +109,7 @@ def get_resume(
     story.append(Paragraph("<b>Education</b>", styles["Heading2"]))
 
     for edu in user.education:
-        story.append(
-            Paragraph(f"<b>{edu.degree} from {edu.institution} ({edu.start_date} - {edu.end_date or 'Present'})</b>",
-                      styles["Heading3"]))
+        story.append(Paragraph(f"<b>{edu.degree} from {edu.institution} ({edu.start_date} - {edu.end_date or 'Present'})</b>", styles["Heading3"]))
         story.append(Spacer(1, 12))
 
     # Create a BytesIO buffer and build the document in memory
