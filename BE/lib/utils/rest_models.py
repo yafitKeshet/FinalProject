@@ -90,6 +90,7 @@ class Login(ProjectBaseModel):
 
 
 class ResetPasswordBody(ProjectBaseModel):
+    user_email: str
     temp_password: str
     new_password: str
 
