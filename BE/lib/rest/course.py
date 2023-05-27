@@ -7,7 +7,6 @@ from ..utils.rest_models import CourseOut, CourseIn, CourseUpdate, Recommendatio
 from ..utils.db.models.course import Course as CourseTable
 from ..utils.db.models.recommendations import Recommendation as RecommendationTable
 
-unique_course_id = 0
 router = APIRouter()
 
 
@@ -69,10 +68,8 @@ def post_courses(
         course: CourseIn,
         db: UserDBSession = Depends(get_db_session)
 ):
-    global unique_course_id
-    unique_course_id += 1
     course_to_add = {
-        'course_id': ++unique_course_id,
+        'course_id': str(uuid.uuid4()),
         'name': course.name,
         'teachers': course.teachers,
         'rating_avg': 0,

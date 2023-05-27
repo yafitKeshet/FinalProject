@@ -154,7 +154,7 @@ class RecommendationIn(ProjectBaseModel):
 
 
 class RecommendationOut(ProjectBaseModel):
-    course_id: int
+    course_id: str
     description: str
     id: str
     rating: int
@@ -162,7 +162,7 @@ class RecommendationOut(ProjectBaseModel):
 
 
 class CourseOut(ProjectBaseModel):
-    course_id: int
+    course_id: str
     name: str
     teachers: str
     rating_avg: float
