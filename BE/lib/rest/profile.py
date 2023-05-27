@@ -26,7 +26,7 @@ router = APIRouter()
 def get_profile(
         user: Annotated[User, Depends(get_current_active_user)]
 ):
-    return UserProfileOut(**{**user.__dict__})
+    return UserProfileOut(**user.__dict__)
 
 
 # 200 - Success
