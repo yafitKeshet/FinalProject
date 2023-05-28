@@ -206,8 +206,9 @@ class EducationCV(ProjectBaseModel):
 class UserCV(ProjectBaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
-    email: Optional[str]
-    phone: Optional[str]
+    private_email: Optional[str]
+    phone: str
+    job_title: str
     summary: str
     skills: List[str]
     jobs: Optional[List[JobCV]]
@@ -218,9 +219,10 @@ class UserCV(ProjectBaseModel):
             "example": {
                 "first_name": "OPTIONAL",
                 "last_name": "OPTIONAL",
-                "email": "OPTIONAL",
+                "private_email": "OPTIONAL",
                 "phone": "+1234567890",
                 "summary": "A highly skilled software engineer with 7 years of experience in the industry.",
+                "job_title": "Senior Software Engineer",
                 "skills": ["Python", "JavaScript", "React", "Django"],
                 "jobs": [
                     {
