@@ -10,7 +10,7 @@ const Header = (props) => {
       <div className="logo-header">
           <img src="./logoMTA.jpg" alt="לוגו האקדמית תל אביב יפו" className="logoMTA"/>
         </div>
-        {props.isLoggedIn && (
+        {/* {props.isLoggedIn && (
           <div className="user-menu">
             <Menu
               items={[
@@ -22,7 +22,7 @@ const Header = (props) => {
               ]}
             />{" "}
           </div>
-        )}
+        )} */}
         <div className={`${props.isLoggedIn && "buttons-menu"}`}>
           <Menu items={props.menu}></Menu>
         </div>

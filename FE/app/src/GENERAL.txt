@@ -17,3 +17,5 @@
     #2e43c0 - main page Title
     #080f95 - main page login description
 
+// menu :
+background: #0a416e;

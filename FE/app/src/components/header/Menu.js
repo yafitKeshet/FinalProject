@@ -8,7 +8,8 @@ const Menu = (props) => {
       {props.items.map((btn) => (
         <Button
           className="menu-item"
-          onClick={btn.onClick}
+          onClick={btn.onclick}
+          // onClick={()=> btn.onClick}
           key={Math.random().toString()}
         >
           {btn.data}

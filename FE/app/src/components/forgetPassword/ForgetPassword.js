@@ -125,7 +125,7 @@ const ForgetPassword = (props) => {
     event.preventDefault();
     switch (currentStep) {
       case StepTypes.step1:
-        // check mail exists DONE - mor
+        // check mail exists (DONE) - mor
         let checkMailRequest = await axios.get(
           "http://localhost:8080/userValidation?user_email=" + inputs.mail
           );
@@ -137,12 +137,13 @@ const ForgetPassword = (props) => {
         {
           // error msg -TODO -yafit 
           // (this mail is not registered in our data base)
+          console.log("user mail doesn't exists -> in forgot password");
         }
         break;
       case StepTypes.step2:
         // send code to mail-mor
-        ///resetPassword1Step
-        let resetPasswordRequest = await axios.get("http://localhost:8080//resetPassword1Step");
+        ///resetPasswordStepOne
+        let resetPasswordRequest = await axios.post("http://localhost:8080//resetPassword1Step");
         if (resetPasswordRequest !== undefined && resetPasswordRequest.status === 200) {
           console.log(resetPasswordRequest.data);
           if (resetPasswordRequest.data == true){ // mail sent properly
@@ -158,7 +159,24 @@ const ForgetPassword = (props) => {
       case StepTypes.step3:
       // check if same code //TODO -mor
       // error msg -TODO -yafit
-
+      let resetPasswordSecondRequest = await axios.get("http://localhost:8080//resetPassword2Step", 
+      {
+        temp_password: inputs.code,
+        new_password: inputs.code,
+      });
+      if (resetPasswordSecondRequest !== undefined && resetPasswordSecondRequest.status === 200) {
+        console.log(resetPasswordSecondRequest.data);
+        if (resetPasswordSecondRequest.data == true){ // mail sent properly
+          console.log("password changed -> in forgot password");
+        }
+      }
+      else if (resetPasswordSecondRequest !== undefined && resetPasswordSecondRequest.status === 404)
+      {
+        // error msg -TODO -yafit 
+        // mail is not sent, some problem happend , try again
+        console.log("password not changed -> in forgot password");
+      }
+      break;
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();

@@ -40,14 +40,8 @@ const Login = (props) => {
                 </Carousel.Item>
               </Carousel>
             </div>
-            {/* <div>
-              <LoginForm
-                className="login-form"
-                onLogIn={props.onLogin}
-                onForgetPassword={props.onForgetPassword}
-                onError={props.onError}
-              />
-            </div> */}
+            <div>
+            </div>
           </div>
         </div>
       </div>

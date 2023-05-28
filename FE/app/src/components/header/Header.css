@@ -3,12 +3,13 @@
   grid-template-columns: 3fr 1fr;
   height: 70px;
   align-items: center;
+  background: #0a416e;
 }
 
 .menu-header {
   display: flex;
   justify-content: space-between;
-  margin-left: 80%;
+  margin-left: 40%;
 }
 
 .buttons-menu,
@@ -20,9 +21,9 @@
   align-content: start;
 }
 
-.buttons-menu {
+/* .buttons-menu {
   justify-content: flex-end;
-}
+} */
 
 .logo-header {
   justify-self: end;

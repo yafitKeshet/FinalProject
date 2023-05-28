@@ -125,7 +125,7 @@ const LoginForm = (props) => {
     setEnteredConfirmPass("");
 
     // TODO
-    props.onLogIn(userData);
+    props.onLogin(userData);
   };
 
   // Register handler
@@ -164,7 +164,7 @@ const LoginForm = (props) => {
               required
             ></input>
           </div>
-          <div className="login-control">
+          {/* <div className="login-control">
             <label>אימות סיסמא</label>
             <input
               type="password"
@@ -178,7 +178,7 @@ const LoginForm = (props) => {
               title="Password not match."
               required
             ></input>
-          </div>
+          </div> */}
         </div>
 
         <div className="login-actions">
@@ -198,9 +198,9 @@ const LoginForm = (props) => {
           {/* TODO: onClick */}
           <Button className="register-btn btn">
             <p>
-              אין לך משתמש?
+              אין לך משתמש ? 
               <br />
-              <b> הירשם</b>
+              הירשם
             </p>
           </Button>
         </div>

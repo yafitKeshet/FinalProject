@@ -7,161 +7,95 @@ import GeneralInformation from "./components/general_information/GeneralInformat
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Icons from "./components/icons/Icons";
+import Button from "./components/UI/Button";
+import LoginFormModal from "./components/loginFormModal/LoginFormModal";
+// import LoginForm from "./components/login/LoginForm";
 
 
-const App = () => {
+const App = (props) => {
   // HEADER
   //    Menu
+  const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
+
+  const toggleLoginFormModal = () => {
+    console.log('Toggle login form modal');
+    setLoginFormModalOpen((prevState) => !prevState);
+  };
+
   const INITIAL_MENU = [
     {
-      onclick: {},
-      data: "התחברות/ הרשמה",
+      onclick: toggleLoginFormModal,
+      data:"התחברות/ הרשמה",
     },
     {
-      onclick: {},
+      onclick: () => { console.log("General Info button was clicked"); },
       data: "מידע כללי",
     },
-    {
-      onclick: {},
-      data: "פקולטות",
-    },
-    {
-      onclick: {},
-      data: "גלריה",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: "",
-    },
-    {
-      onclick: {},
-      data: <Icons></Icons>,
-    },
+    // {
+    //   onclick: {},
+    //   data: "פקולטות",
+    // },
+    // {
+    //   onclick: {},
+    //   data: "גלריה",
+    // },
+    // {
+    //   onclick: {},
+    //   data: "",
   ];
 
   const [menu, setMenu] = useState(INITIAL_MENU);
   //    Add button to menu header- on login
-  const addButtonsToMenu = () => {
+  const addButtonsToMenu = (props) => {
     setMenu((prevMenu) => {
-      return [
-        ...prevMenu,
+      const newButtons = [
         {
-          onclick: {},
+          onclick: () => {
+            // Handle onclick action for "שלום" button
+            console.log("שלום button clicked");
+          },
+          data: `שלום ${localStorage.getItem("userName")}`,
+        },
+        {
+          onclick: () => {
+            // Handle onclick action for "FEED" button
+            console.log("FEED button clicked");
+          },
           data: "FEED",
         },
         {
-          onclick: {},
-          data: "משרות",
-        },
-        {
-          onclick: {},
+          onclick: () => {
+            // Handle onclick action for "פרופיל" button
+            console.log("פרופיל button clicked");
+          },
           data: "פרופיל",
         },
+        {
+          onclick: () => {
+            // Handle onclick action for "מידע כללי" button
+            console.log("מידע כללי button clicked");
+          },
+          data: "מידע כללי",
+        },
+        {
+          onclick: () => {
+            // Handle onclick action for "משרות" button
+            console.log("משרות button clicked");
+          },
+          data: "משרות",
+        },
+        { onclick: onLogOut, data: "התנתק" }
       ];
+      
+      // Exclude the first two elements of the previous menu (login/ signup & general info)
+      const updatedMenu = prevMenu.slice(2);
+  
+      // Concatenate the new buttons with the updated menu
+      return [...updatedMenu, ...newButtons];
     });
   };
 
-  //    Pages
+  // Pages
   const [pages, setPages] = useState({
     isLoginPage: false,
     isRegisterPage: false,
@@ -190,6 +124,7 @@ const App = () => {
   const onCancelForgetPassword = () => {
     setForgetPass(false);
   };
+  
 
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -214,6 +149,9 @@ const App = () => {
   const loginHandler = async (userData) => {
     // Save data of the user TODO
     localStorage.setItem("userName", userData.name);
+
+    // Close the login form modal
+    setLoginFormModalOpen(false); 
 
     // Add buttons to the menu
     addButtonsToMenu();
@@ -241,6 +179,7 @@ const App = () => {
   //    LogOut handler
   const onLogOut = () => {
     // Update user as LogOut
+    console.log("logout button clicked");
     localStorage.setItem("isLoggedIn", "0");
     setIsLoggedIn(false);
 
@@ -275,8 +214,13 @@ const App = () => {
         />
       )}
       {forgetPass && <ForgetPassword onCancel={onCancelForgetPassword} />}
-
-      <div className="App">
+      {isLoginFormModalOpen && (<LoginFormModal
+                              toggleLoginFormModal={toggleLoginFormModal} 
+                              onLogin = {loginHandler}
+                              onError={setError}
+                              onForgetPassword={forgetPasswordHandler}
+                            />
+)}      <div className="App">
         {/* HEADER */}
         <Header menu={menu} isLoggedIn={isLoggedIn} onLogOut={onLogOut} />
 
