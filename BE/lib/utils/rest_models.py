@@ -206,59 +206,11 @@ class EducationCV(ProjectBaseModel):
 class UserCV(ProjectBaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
-    email: Optional[str]
-    phone: str
-    summary: str
-    skills: List[str]
-    jobs: Optional[List[JobCV]]
-    education: Optional[List[EducationCV]]
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "first_name": "OPTIONAL",
-                "last_name": "OPTIONAL",
-                "email": "OPTIONAL",
-                "phone": "+1234567890",
-                "summary": "A highly skilled software engineer with 7 years of experience in the industry.",
-                "skills": ["Python", "JavaScript", "React", "Django"],
-                "jobs": [
-                    {
-                        "job_title": "Senior Software Engineer",
-                        "company": "ABC Corp",
-                        "start_date": "2018-01-01",
-                        "end_date": "2022-12-31",
-                        "description": "Developed and maintained key software applications."
-                    },
-                    {
-                        "job_title": "Junior Software Engineer",
-                        "company": "XYZ Inc",
-                        "start_date": "2015-01-01",
-                        "end_date": "2017-12-31",
-                        "description": "Worked on various software projects and learned key skills."
-                    }
-                ],
-                "education": [
-                    {
-                        "institution": "Example University",
-                        "degree": "BSc in Computer Science",
-                        "start_date": "2010-09-01",
-                        "end_date": "2014-06-30"
-                    }
-                ]
-            },
-        }
-
-
-class UserCV2(ProjectBaseModel):
-    first_name: Optional[str]
-    last_name: Optional[str]
     private_email: Optional[str]
     phone: str
     job_title: str
     summary: str
     skills: List[str]
-    tech_stack: List[str]
     jobs: Optional[List[JobCV]]
     education: Optional[List[EducationCV]]
 
@@ -267,9 +219,10 @@ class UserCV2(ProjectBaseModel):
             "example": {
                 "first_name": "OPTIONAL",
                 "last_name": "OPTIONAL",
-                "email": "OPTIONAL",
+                "private_email": "OPTIONAL",
                 "phone": "+1234567890",
                 "summary": "A highly skilled software engineer with 7 years of experience in the industry.",
+                "job_title": "Senior Software Engineer",
                 "skills": ["Python", "JavaScript", "React", "Django"],
                 "jobs": [
                     {
@@ -287,7 +240,6 @@ class UserCV2(ProjectBaseModel):
                         "description": "Worked on various software projects and learned key skills."
                     }
                 ],
-                "tech_stack": ["CPP", "Python", "Java", "Golang"],
                 "education": [
                     {
                         "institution": "Example University",
@@ -298,4 +250,3 @@ class UserCV2(ProjectBaseModel):
                 ]
             },
         }
-

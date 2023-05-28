@@ -9,7 +9,7 @@ from typing_extensions import Annotated
 from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
-from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV, UserCV2
+from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV
 
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -53,7 +53,7 @@ def update_profile(
     return True
 
 @router.post(
-    "/profile/resume",
+    "/profile/resume/0",
     name="Generate User resume (Random template). Return URL",
     description="TBD: This one is currently not going to be implemented",
     status_code=status.HTTP_200_OK,
@@ -69,7 +69,7 @@ def get_resume(
     # Taking all body data if exists. Else - default is what we have from token
     first_name = user.first_name if user.first_name else user_from_token.private_name
     last_name = user.last_name if user.last_name else user_from_token.last_name
-    email = user.email if user.email else user_from_token.user_email
+    email = user.private_email if user.private_email else user_from_token.user_email
 
     # Personal info
     story.append(Paragraph(f"<b>{first_name} {last_name}</b>", styles["Title"]))
@@ -128,31 +128,29 @@ def get_resume(
 
 
 MULTI_TECH_STACK_FORMAT = '<ul class="talent"> {} </ul>'
-SINGLE_TECH_STACK_FORMAT = '<li>{}</li>'
+SINGLE_TECH_STACK_FORMAT = '<p>{}</p>'
 JOB_FORMAT = """
 <div class="job">
-    <h2>{}</h2>
-    <h3>{}</h3>
-    <h4>{}-{}</h4>
+    <h3> {} - {}    <p style="display: inline; font-size: 60%;">{} - {}</p> </h3>
     <p>{}</p>
 </div>
 """
 
-EDUCATION_FORMAT= """
+EDUCATION_FORMAT = """
 <div class="yui-u">
-    <h2>{}, {}: {} - {} </h2>
+    <p style="display: inline;"><b>{}, {} </b>: {} - {} </p>
 </div>"""
 
 
 @router.post(
-    "/profile/resume2",
+    "/profile/resume/1",
     name="Generate User resume (Random template). Return URL",
     description="TBD: This one is currently not going to be implemented",
     status_code=status.HTTP_200_OK,
     response_model=str
 )
 def get_resume(
-        user: UserCV2,
+        user: UserCV,
         token_user: Annotated[User, Depends(get_current_active_user)],
 ):
     with open(f'{os.getcwd()}/BE/templates/pretty.html') as f:
@@ -167,18 +165,21 @@ def get_resume(
 
 
     stacks_formatted = []
+    stack_txt = ""
     i = 0
-    for stack in user.tech_stack:
-        stacks_formatted.append(SINGLE_TECH_STACK_FORMAT.format(stack))
+    for skill in user.skills:
+        i += 1
+        stacks_formatted.append(SINGLE_TECH_STACK_FORMAT.format(skill))
+        if i % 2 == 0:
+            stack_txt = f'{stack_txt}{MULTI_TECH_STACK_FORMAT.format("".join(stacks_formatted))}'
+            stacks_formatted = []
 
-    stacks_txt = "".join(stacks_formatted)
-    stacks_txt = MULTI_TECH_STACK_FORMAT.format(stacks_txt)
-    html_content = html_content.replace("USER_TECH_STACK", stacks_txt)
+    if stacks_formatted:
+        stack_txt = f'{stack_txt}{MULTI_TECH_STACK_FORMAT.format("".join(stacks_formatted))}'
+
+    html_content = html_content.replace("USER_SKILLS", stack_txt)
 
     jobs = []
-
-    # if token_user.job_company_name:
-    #     jobs.append(JOB_FORMAT.format(token_user.job_company_name, token_user.))
 
     for job in user.jobs:
         jobs.append(JOB_FORMAT.format(job.company, job.job_title, job.start_date, job.end_date, job.description))
