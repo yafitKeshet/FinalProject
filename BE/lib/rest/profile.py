@@ -1,12 +1,15 @@
+import os
+
+import pdfkit
 from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi.openapi.models import Response
 from typing_extensions import Annotated
 
 
 from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
-from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV
-
+from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV, UserCV2
 
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -120,3 +123,99 @@ def get_resume(
     # Return the PDF file
     buffer.seek(0)
     return StreamingResponse(buffer, media_type="application/pdf")
+
+
+
+
+MULTI_TECH_STACK_FORMAT = '<ul class="talent"> {} </ul>'
+SINGLE_TECH_STACK_FORMAT = '<li>{}</li>'
+JOB_FORMAT = """
+<div class="job">
+    <h2>{}</h2>
+    <h3>{}</h3>
+    <h4>{}-{}</h4>
+    <p>{}</p>
+</div>
+"""
+
+EDUCATION_FORMAT= """
+<div class="yui-u">
+    <h2>{}, {}: {} - {} </h2>
+</div>"""
+
+
+@router.post(
+    "/profile/resume2",
+    name="Generate User resume (Random template). Return URL",
+    description="TBD: This one is currently not going to be implemented",
+    status_code=status.HTTP_200_OK,
+    response_model=str
+)
+def get_resume(
+        user: UserCV2,
+        token_user: Annotated[User, Depends(get_current_active_user)],
+):
+    with open(f'{os.getcwd()}/BE/templates/pretty.html') as f:
+        html_content = f.read()
+
+    full_name = f"{user.first_name} {user.last_name}" if user.first_name else f"{token_user.private_name} {token_user.last_name}"
+    html_content = html_content.replace("USER_FULL_NAME", full_name)
+    html_content = html_content.replace("USER_TITLE", user.job_title)
+    html_content = html_content.replace("USER_PHONE_NUMBER", user.phone)
+    html_content = html_content.replace("USER_PRIVATE_MAIL", user.private_email if user.private_email else token_user.user_email)
+    html_content = html_content.replace("USER_SUMMARY", user.summary)
+
+
+    stacks_formatted = []
+    i = 0
+    for stack in user.tech_stack:
+        stacks_formatted.append(SINGLE_TECH_STACK_FORMAT.format(stack))
+
+    stacks_txt = "".join(stacks_formatted)
+    stacks_txt = MULTI_TECH_STACK_FORMAT.format(stacks_txt)
+    html_content = html_content.replace("USER_TECH_STACK", stacks_txt)
+
+    jobs = []
+
+    # if token_user.job_company_name:
+    #     jobs.append(JOB_FORMAT.format(token_user.job_company_name, token_user.))
+
+    for job in user.jobs:
+        jobs.append(JOB_FORMAT.format(job.company, job.job_title, job.start_date, job.end_date, job.description))
+
+    jobs_txt = "".join(jobs)
+
+    html_content = html_content.replace("USER_JOBS", jobs_txt)
+
+    education_list = []
+    for edu in user.education:
+        education_list.append(EDUCATION_FORMAT.format(edu.degree, edu.institution, edu.start_date, edu.end_date))
+
+    education_txt = "".join(education_list)
+
+
+
+    html_content = html_content.replace("USER_EDUCATION", education_txt)
+
+
+    # Configure PDF options
+    pdf_options = {
+        "page-size": "A4",
+        "encoding": "UTF-8",
+        "no-outline": None
+    }
+
+    # Generate PDF from HTML
+    pdf_data = pdfkit.from_string(html_content, False, options=pdf_options)
+
+    # Set response headers
+    pdfkit.from_string(html_content, 'output.pdf')
+    buffer = BytesIO(pdf_data)
+    # doc = SimpleDocTemplate(buffer, pagesize=letter)
+    # doc.build(html_content)
+
+    # Return the PDF file
+    buffer.seek(0)
+    return StreamingResponse(buffer, media_type="application/pdf")
+
+
