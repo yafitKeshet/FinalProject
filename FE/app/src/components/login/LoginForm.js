@@ -18,6 +18,8 @@ const LoginForm = (props) => {
   const [mailBackgroundColor, setMailBackgroundColor] = useState("");
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPass, setEnteredPass] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userToken, setUserToken] = useState("");
   const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
 
   // Input fields handlers
@@ -45,6 +47,35 @@ const LoginForm = (props) => {
     setConfirmPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
 
+  // Get User Profile handler
+  const getUserProfile = async (token) => {
+     // MOR TODO: after using token as local storage: change the way you treat it here:
+            token = token.replace(/(?:\r\n|\r|\n)/g, '');
+            setUserToken(token);
+            const config = {
+              headers: {
+                Authorization: 'Bearer ' + token,
+              },
+            };
+            console.log(token);
+            try {
+              let userDataRequest = await axios.get('http://localhost:8080/profile', config);
+              if (userDataRequest !== undefined && userDataRequest.status === 200) {
+                // we got user profile data
+                let username = userDataRequest.data.private_name + " " + userDataRequest.data.last_name;
+                console.log("we got user profile data , userName: " + username);
+                setUserName(username);
+              }
+            } catch (err) {
+              if (err.response !== undefined && err.response.status === 401) {
+                // Unable to get user profile data
+                console.log("failed to get user profile data");
+                return;
+              }
+            }
+  };
+
+
   // Login handler
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -54,8 +85,6 @@ const LoginForm = (props) => {
     // & DONE ↓
     // 2. Check if mail and password existing- login.
     let checkMailRequest = null;
-    let userName = "";
-    let token = "";
 
     try {
       checkMailRequest = await axios.get(
@@ -72,21 +101,12 @@ const LoginForm = (props) => {
 
           if (checkPasswordRequest !== undefined && checkPasswordRequest.status === 200) {
             // good to go (mail and password are correct)
-            console.log("good to go (mail and password are correct)  -  " + token);
-
-            // YAFIT TODO: move user to main page
-            // here: send request to get user's data and token
-            // token = checkPasswordRequest.data["jwt_token"];
-            // const config = {headers: { Authorization: `Bearer ${token}` }};
-            // console.log(token);
-            // let userDataRequest = await axios.get('http://localhost:8080/profile',
-            //                                       {}, config)
-            //                                   .then(console.log("made it to profile")).catch(console.log);
-            // if (userDataRequest.response !== undefined && userDataRequest.response.status === 200) {
-            // // we got user profile data
-            //   console.log("we got user profile data " + userDataRequest.data);
-            // }
+            console.log("good to go (mail and password are correct)");
+            let token = checkPasswordRequest.data.jwt_token; // user token
+            // YAFIT TODO: move user to the main page
+            getUserProfile(token);
           }
+
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
             // Unauthorized - password doesn't exists
@@ -116,8 +136,8 @@ const LoginForm = (props) => {
     const userData = {
       mail: enteredMail,
       pass: enteredPass,
-      name: "חנה",
-      token:""
+      name: userName,
+      token: userToken
     };
 
     setEnteredMail("");
@@ -198,7 +218,7 @@ const LoginForm = (props) => {
           {/* TODO: onClick */}
           <Button className="register-btn btn">
             <p>
-              אין לך משתמש ? 
+              אין לך משתמש ?
               <br />
               הירשם
             </p>
