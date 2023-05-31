@@ -19,3 +19,10 @@
 
 // menu :
 background: #0a416e;
+
+// login button:
+  background-color: #276fff 
+
+  // register button:
+    background-color: #65ce7d !important ;
+

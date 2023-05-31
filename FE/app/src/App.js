@@ -118,7 +118,8 @@ const App = (props) => {
   const [forgetPass, setForgetPass] = useState(false);
 
   const forgetPasswordHandler = () => {
-    console.log("Forget password was clicking.");
+    console.log("Forget password was clicked");
+    setLoginFormModalOpen(false); 
     setForgetPass(true);
   };
   const onCancelForgetPassword = () => {
