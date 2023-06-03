@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class JobTime(Enum):
     FullTime = "FullTime"
     PartTime = "PartTime"
-    Studnet = "Student"
+    Student = "Student"
 
 
 class Experience(Enum):
@@ -17,7 +17,7 @@ class Experience(Enum):
 
 
 class Faculty(Enum):
-    ComputerScience = 'ComputerScience'
+    ComputerScience = "ComputerScience"
     Economy = 'Economy'
     Psychology = 'Psychology'
     Social = 'Social'

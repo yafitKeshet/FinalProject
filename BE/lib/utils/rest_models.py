@@ -123,26 +123,24 @@ class Company(ProjectBaseModel):
 
 
 class Job(ProjectBaseModel):
-    job_id: str
+    id: str
     publisher_email: str
     published_time: datetime
     applies: int = 0
     title: str
     time_required: JobTime
     description: str
-    company: Company
+    company: str
     faculty_relevance: Faculty
     experience: Optional[Experience]
 
 
-class NewJob(ProjectBaseModel):
+class NewJobIn(ProjectBaseModel):
     publisher_email: str
-    published_time: datetime
-    applies: int = 0
     title: str
     time_required: JobTime
     description: str
-    company: Company
+    company: str
     faculty_relevance: Faculty
     experience: Optional[Experience]
 
