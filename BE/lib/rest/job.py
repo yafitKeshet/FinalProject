@@ -5,6 +5,7 @@ from fastapi import APIRouter, status, Depends
 from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.rest_models import Job, Company, NewJobIn
 from ..utils.db.models.job import Job as JobTable
+
 router = APIRouter()
 
 
@@ -15,8 +16,14 @@ router = APIRouter()
     status_code=status.HTTP_200_OK,
     response_model=List[Job]
 )
-def get_jobs():
-    pass
+def get_jobs(
+        db: UserDBSession = Depends(get_db_session)
+):
+    job_to_return = []
+    db_jobs = db.query(JobTable).all()
+    for job in db_jobs:
+        job_to_return.append(job.__dict__)
+    return job_to_return
 
 
 @router.post(
@@ -44,7 +51,6 @@ def post_job(
     db.add(JobTable(**job_to_add))
     db.commit()
     return job_to_add
-
 
 
 @router.post(
