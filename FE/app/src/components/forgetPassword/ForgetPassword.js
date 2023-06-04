@@ -238,6 +238,13 @@ const ForgetPassword = (props) => {
           }
         }
         // move to feed/ profile - TODO YAFIT
+        // TODO
+        // 3. Get user data.
+        const userData = {
+          mail: inputs.mail,
+          pass: inputs.password,
+        };
+        props.onLogin(userData);
 
         break;
 

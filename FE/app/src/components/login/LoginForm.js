@@ -218,7 +218,11 @@ const LoginForm = (props) => {
           </Button>
 
           {/* TODO: onClick */}
-          <Button className="login-btn btn" onClick={props.onForgetPassword}>
+          <Button
+            className="login-btn btn"
+            onClick={props.onForgetPassword}
+            onLogin={props.onLogin}
+          >
             שכחתי סיסמא
           </Button>
           <Separator className="separator" />
