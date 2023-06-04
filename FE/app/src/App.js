@@ -5,12 +5,11 @@ import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 // import LoginForm from "./components/login/LoginForm";
-
 
 const App = (props) => {
   // HEADER
@@ -18,17 +17,19 @@ const App = (props) => {
   const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
 
   const toggleLoginFormModal = () => {
-    console.log('Toggle login form modal');
+    console.log("Toggle login form modal");
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
   const INITIAL_MENU = [
     {
       onclick: toggleLoginFormModal,
-      data:"התחברות/ הרשמה",
+      data: "התחברות/ הרשמה",
     },
     {
-      onclick: () => { console.log("General Info button was clicked"); },
+      onclick: () => {
+        console.log("General Info button was clicked");
+      },
       data: "מידע כללי",
     },
     // {
@@ -84,12 +85,12 @@ const App = (props) => {
           },
           data: "משרות",
         },
-        { onclick: onLogOut, data: "התנתק" }
+        { onclick: onLogOut, data: "התנתק" },
       ];
-      
+
       // Exclude the first two elements of the previous menu (login/ signup & general info)
       const updatedMenu = prevMenu.slice(2);
-  
+
       // Concatenate the new buttons with the updated menu
       return [...updatedMenu, ...newButtons];
     });
@@ -119,13 +120,12 @@ const App = (props) => {
 
   const forgetPasswordHandler = () => {
     console.log("Forget password was clicked");
-    setLoginFormModalOpen(false); 
+    setLoginFormModalOpen(false);
     setForgetPass(true);
   };
   const onCancelForgetPassword = () => {
     setForgetPass(false);
   };
-  
 
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -152,7 +152,7 @@ const App = (props) => {
     localStorage.setItem("userName", userData.name);
 
     // Close the login form modal
-    setLoginFormModalOpen(false); 
+    setLoginFormModalOpen(false);
 
     // Add buttons to the menu
     addButtonsToMenu();
@@ -214,14 +214,18 @@ const App = (props) => {
           onConfirm={onConfirmError}
         />
       )}
-      {forgetPass && <ForgetPassword onCancel={onCancelForgetPassword} />}
-      {isLoginFormModalOpen && (<LoginFormModal
-                              toggleLoginFormModal={toggleLoginFormModal} 
-                              onLogin = {loginHandler}
-                              onError={setError}
-                              onForgetPassword={forgetPasswordHandler}
-                            />
-)}      <div className="App">
+      {forgetPass && (
+        <ForgetPassword onCancel={onCancelForgetPassword} onError={setError} />
+      )}
+      {isLoginFormModalOpen && (
+        <LoginFormModal
+          toggleLoginFormModal={toggleLoginFormModal}
+          onLogin={loginHandler}
+          onError={setError}
+          onForgetPassword={forgetPasswordHandler}
+        />
+      )}{" "}
+      <div className="App">
         {/* HEADER */}
         <Header menu={menu} isLoggedIn={isLoggedIn} onLogOut={onLogOut} />
 

@@ -4,3 +4,4 @@ venv/
 server_db.db
 GmailPassword*
 .env
+BE/env
