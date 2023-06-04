@@ -8,6 +8,7 @@ import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
+import Profile from './components/profile/Profile';
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 // import LoginForm from "./components/login/LoginForm";
 
@@ -15,7 +16,8 @@ import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 const App = (props) => {
   // HEADER
   //    Menu
-  const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
+const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
+const [isShowProfile, setShowProfile] = useState(false);
 
   const toggleLoginFormModal = () => {
     console.log('Toggle login form modal');
@@ -59,14 +61,15 @@ const App = (props) => {
         {
           onclick: () => {
             // Handle onclick action for "FEED" button
-            console.log("FEED button clicked");
+            console.log("דף הבית button clicked");
           },
-          data: "FEED",
+          data: "דף הבית",
         },
         {
           onclick: () => {
             // Handle onclick action for "פרופיל" button
             console.log("פרופיל button clicked");
+            setShowProfile(true);
           },
           data: "פרופיל",
         },
@@ -112,7 +115,7 @@ const App = (props) => {
     setError();
   };
 
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
 
   // Forget password
   const [forgetPass, setForgetPass] = useState(false);
@@ -148,9 +151,10 @@ const App = (props) => {
 
   //    Login handler
   const loginHandler = async (userData) => {
+    // setUser(userData);
     // Save data of the user TODO
     localStorage.setItem("userName", userData.name);
-
+    // console.log("after login- "  + userData.name, + " \n " + userData.mail + " \n " + userData.pass + " \n " + userData.token)
     // Close the login form modal
     setLoginFormModalOpen(false); 
 
@@ -239,7 +243,7 @@ const App = (props) => {
         {/* REGISTER-PAGE */}
         {/* FORGOT PASSWORD */}
         {/* FEED */}
-        {/* PROFILE */}
+        {/* PROFILE */  isShowProfile && <Profile />}
       </div>
     </div>
   );

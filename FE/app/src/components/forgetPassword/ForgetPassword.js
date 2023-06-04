@@ -143,7 +143,7 @@ const ForgetPassword = (props) => {
       case StepTypes.step2:
         // send code to mail-mor
         ///resetPasswordStepOne
-        let resetPasswordRequest = await axios.post("http://localhost:8080//resetPassword1Step");
+        let resetPasswordRequest = await axios.post("http://localhost:8080/resetPassword1Step?user_email=" + inputs.mail);
         if (resetPasswordRequest !== undefined && resetPasswordRequest.status === 200) {
           console.log(resetPasswordRequest.data);
           if (resetPasswordRequest.data == true){ // mail sent properly
@@ -159,8 +159,9 @@ const ForgetPassword = (props) => {
       case StepTypes.step3:
       // check if same code //TODO -mor
       // error msg -TODO -yafit
-      let resetPasswordSecondRequest = await axios.get("http://localhost:8080//resetPassword2Step", 
+      let resetPasswordSecondRequest = await axios.post("http://localhost:8080/resetPassword2Step", 
       {
+        user_email: inputs.mail,
         temp_password: inputs.code,
         new_password: inputs.code,
       });

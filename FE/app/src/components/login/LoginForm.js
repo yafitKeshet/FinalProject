@@ -1,9 +1,16 @@
 import "./LoginForm.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
+
+const userData = {
+  mail: "",
+  pass: "",
+  name: "",
+  token: ""
+};
 
 const LoginForm = (props) => {
   // Input Colors
@@ -21,6 +28,17 @@ const LoginForm = (props) => {
   const [userName, setUserName] = useState("");
   const [userToken, setUserToken] = useState("");
   const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
+
+  
+  useEffect(() => {
+    // console.log("userName1: " + userName);
+    userData.name = userName;
+  }, [userName]);
+  
+  useEffect(() => {
+    // console.log("userToken1: " + userToken);
+    userData.token = userToken;
+  }, [userToken]);
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
@@ -50,21 +68,21 @@ const LoginForm = (props) => {
   // Get User Profile handler
   const getUserProfile = async (token) => {
      // MOR TODO: after using token as local storage: change the way you treat it here:
-            token = token.replace(/(?:\r\n|\r|\n)/g, '');
-            setUserToken(token);
+            
             const config = {
               headers: {
                 Authorization: 'Bearer ' + token,
               },
             };
-            console.log(token);
+            // console.log("userToken: " + userToken);
             try {
               let userDataRequest = await axios.get('http://localhost:8080/profile', config);
               if (userDataRequest !== undefined && userDataRequest.status === 200) {
                 // we got user profile data
-                let username = userDataRequest.data.private_name + " " + userDataRequest.data.last_name;
-                console.log("we got user profile data , userName: " + username);
-                setUserName(username);
+                let username = userDataRequest.data.private_name.charAt(0).toUpperCase() + userDataRequest.data.private_name.slice(1);
+                // console.log("we got user profile data , userName: " + username);
+                // setUserName(username);
+                userData.name = username;
               }
             } catch (err) {
               if (err.response !== undefined && err.response.status === 401) {
@@ -104,7 +122,10 @@ const LoginForm = (props) => {
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
             // YAFIT TODO: move user to the main page
-            getUserProfile(token);
+            token = token.replace(/(?:\r\n|\r|\n)/g, '');
+            setUserToken(token);
+            await getUserProfile(token);
+            
           }
 
         } catch (err) {
@@ -131,14 +152,17 @@ const LoginForm = (props) => {
       }
     }
 
-    // TODO
-    // 3. Get user data.
-    const userData = {
-      mail: enteredMail,
-      pass: enteredPass,
-      name: userName,
-      token: userToken
-    };
+    
+    userData.mail = enteredMail;
+    userData.pass = enteredPass;
+    // // TODO
+    // // 3. Get user data.
+    // const userData = {
+    //   mail: enteredMail,
+    //   pass: enteredPass,
+    //   name: userName,
+    //   token: userToken
+    // };
 
     setEnteredMail("");
     setEnteredPass("");
@@ -146,6 +170,7 @@ const LoginForm = (props) => {
 
     // TODO
     props.onLogin(userData);
+
   };
 
   // Register handler
