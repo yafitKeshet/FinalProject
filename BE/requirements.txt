@@ -7,3 +7,5 @@ python-jose
 passlib[bcrypt]
 sqlalchemy
 python-dotenv
+reportlab
+pdfkit

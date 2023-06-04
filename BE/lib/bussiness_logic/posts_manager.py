@@ -2,10 +2,13 @@ import logging
 import uuid
 from typing import List
 
-from lib.utils.db.models.post import Post
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import UserDBSession
-from lib.utils.rest_models import PostOut, NewPost, UserProfileOut
+from fastapi import HTTPException
+from starlette import status
+
+from ..utils.db.models.post import Post
+from ..utils.db.models.user import User
+from ..utils.db.user_db import UserDBSession
+from ..utils.rest_models import PostOut, NewPost
 
 
 class PostsManager:
@@ -38,10 +41,38 @@ class PostsManager:
         }
         post_to_add_dict.update(new_post.dict())
 
-        post_to_add = Post(**post_to_add_dict)
         self.db_session.add(Post(**post_to_add_dict))
         self.db_session.commit()
         # Create response
         post_to_add_dict["author"] = self.db_session.get_user_query(user.user_email).first().dict()
         response = PostOut(**post_to_add_dict)
         return response
+
+    def manage_like_post(self, user: User, post_id: str, like_status: bool) -> List[str]:
+        existing_post = self.db_session.query(Post).filter(Post.post_id == post_id).first()
+        if not existing_post:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post was not found")
+        if like_status:
+            likes = existing_post.add_like(user.user_email)
+        else:
+            likes = existing_post.remove_like(user.user_email)
+        existing_post.likes = likes
+        self.db_session.add(existing_post)
+        self.db_session.commit()
+        existing_post = self.db_session.query(Post).filter(Post.post_id == post_id).first()
+        return list(existing_post.likes)
+
+    def delete_post(self, user: User, post_id: str) -> bool:
+        existing_post = self.db_session.query(Post).filter(Post.post_id == post_id).first()
+        if not existing_post:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post was not found")
+
+        if existing_post.author_email != user.user_email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User is not Post's author. Can't perform delete"
+            )
+
+        self.db_session.query(Post).filter(Post.post_id == post_id).delete()
+        self.db_session.commit()
+        return True
