@@ -3,17 +3,24 @@ from jose import jwt
 from typing_extensions import Annotated
 
 
-from lib.utils.auth.generate_access_token import ALGORITHM, SECRET_KEY
-from lib.utils.auth.oauth2 import oauth2_scheme
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import get_db_session, UserDBSession
+from .generate_access_token import ALGORITHM, SECRET_KEY
+from .oauth2 import oauth2_scheme
+from ..db.models.user import User
+from ..db.user_db import get_db_session, UserDBSession
 
 
 async def get_current_user(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: UserDBSession = Depends(get_db_session)
 ):
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_sub": False})
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_sub": False})
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Bearer token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     user_email: str = payload.get("sub", {}).get("user_email")
     if user_email is None:
         raise HTTPException(
