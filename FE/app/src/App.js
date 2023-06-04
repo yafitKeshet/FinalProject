@@ -32,17 +32,6 @@ const App = (props) => {
       },
       data: "מידע כללי",
     },
-    // {
-    //   onclick: {},
-    //   data: "פקולטות",
-    // },
-    // {
-    //   onclick: {},
-    //   data: "גלריה",
-    // },
-    // {
-    //   onclick: {},
-    //   data: "",
   ];
 
   const [menu, setMenu] = useState(INITIAL_MENU);
@@ -98,7 +87,7 @@ const App = (props) => {
 
   // Pages
   const [pages, setPages] = useState({
-    isLoginPage: false,
+    isLoginPage: true,
     isRegisterPage: false,
     isGeneralInformationPage: false,
     isFacultyPage: false,

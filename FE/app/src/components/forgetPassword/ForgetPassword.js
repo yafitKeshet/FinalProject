@@ -198,11 +198,12 @@ const ForgetPassword = (props) => {
         }
         break;
       case StepTypes.step3:
-        // check if same code & save password- needs to fix
+        // check if same code & save password
         try {
-          let resetPasswordSecondRequest = await axios.get(
+          let resetPasswordSecondRequest = await axios.post(
             "http://localhost:8080/resetPassword2Step",
             {
+              user_email: inputs.mail,
               temp_password: inputs.code,
               new_password: inputs.password,
             }
