@@ -41,9 +41,6 @@ const ForgetPassword = (props) => {
       case StepTypes.step2:
         setStep(StepTypes.step3);
         break;
-      case StepTypes.step3:
-        setStep(StepTypes.step4);
-        break;
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -58,9 +55,7 @@ const ForgetPassword = (props) => {
       case StepTypes.step2:
         return `נשלח לך קוד לדוא"ל שלך`;
       case StepTypes.step3:
-        return "הזן קוד אבטחה";
-      case StepTypes.step4:
-        return "הזן סיסמא חדשה";
+        return "הזן קוד אבטחה וסיסמא חדשה";
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -101,13 +96,7 @@ const ForgetPassword = (props) => {
             key: "label6",
           },
         ];
-      case StepTypes.step4:
-        return [
-          {
-            label: "הכנס/י סיסמא חדשה.",
-            key: "label7",
-          },
-        ];
+
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -182,7 +171,7 @@ const ForgetPassword = (props) => {
         // send code to mail
         try {
           let resetPasswordRequest = await axios.post(
-            "http://localhost:8080//resetPassword1Step"
+            "http://localhost:8080/resetPassword1Step?user_email=" + inputs.mail
           );
           if (
             resetPasswordRequest !== undefined &&
@@ -209,13 +198,13 @@ const ForgetPassword = (props) => {
         }
         break;
       case StepTypes.step3:
-        // check if same code
+        // check if same code & save password- needs to fix
         try {
           let resetPasswordSecondRequest = await axios.get(
-            "http://localhost:8080//resetPassword2Step",
+            "http://localhost:8080/resetPassword2Step",
             {
               temp_password: inputs.code,
-              new_password: inputs.code,
+              new_password: inputs.password,
             }
           );
           if (
@@ -224,7 +213,7 @@ const ForgetPassword = (props) => {
           ) {
             console.log(resetPasswordSecondRequest.data);
             if (resetPasswordSecondRequest.data === true) {
-              console.log("same code -> in forgot password");
+              console.log("save new password -> in forgot password");
             }
           }
         } catch (err) {
@@ -238,12 +227,10 @@ const ForgetPassword = (props) => {
             return;
           }
         }
+        // move to feed/ profile - TODO YAFIT
 
         break;
-      case StepTypes.step4:
-        // send new password to the server - MOR
-        // move to feed/ profile - YAFIT
-        break;
+
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -284,20 +271,21 @@ const ForgetPassword = (props) => {
           )}
 
           {currentStep === StepTypes.step3 && (
-            <input
-              onChange={onCodeChange}
-              value={inputs.code}
-              className="forget-content"
-              type="text"
-              placeholder="הזן/הזני את הקוד"
-              pattern="[0-9]{6}"
-              title="נא להכניס קוד בן 6 ספרות"
-              required
-            />
-          )}
-
-          {currentStep === StepTypes.step4 && (
             <>
+              <input
+                onChange={onCodeChange}
+                value={inputs.code}
+                className="forget-content"
+                type="text"
+                placeholder="הזן/הזני את הקוד"
+                pattern="[0-9]{6}"
+                title="נא להכניס קוד בן 6 ספרות"
+                required
+              />
+
+              <label className="forget-content" key={"label7"}>
+                הכנס/י סיסמא חדשה.
+              </label>
               <input
                 onChange={onPassChange}
                 value={inputs.password}
@@ -306,7 +294,7 @@ const ForgetPassword = (props) => {
                 required
               />
               <label className="forget-content" key={"label8"}>
-                "אנא חזור/חזרי על הסיסמא."
+                אנא חזור/חזרי על הסיסמא.
               </label>
               <input
                 onChange={onConfirmPassChange}
@@ -336,7 +324,6 @@ const ForgetPassword = (props) => {
           <Button className="forget-send" type="submit">
             {(currentStep === StepTypes.step1 && "חיפוש") ||
               ((currentStep === StepTypes.step2 ||
-                currentStep === StepTypes.step4 ||
                 currentStep === StepTypes.step3) &&
                 "המשך")}
           </Button>
