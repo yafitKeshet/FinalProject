@@ -218,11 +218,20 @@ const ForgetPassword = (props) => {
             }
           }
         } catch (err) {
-          if (err.response !== undefined && err.response.status === 404) {
+          if (err.response !== undefined && err.response.status === 400) {
             console.log("entered code was wrong -> in forgot password");
             props.onError({
               title: "קוד שגוי",
               message: "המספר שהזנת לא תואם לקוד שלך. נסה/נסי שוב.",
+            });
+            resetFields();
+            return;
+          }
+          if (err.response !== undefined && err.response.status === 404) {
+            console.log("entered code was wrong -> in forgot password");
+            props.onError({
+              title: "קוד שגוי",
+              message: "סיסמא קיימת",
             });
             resetFields();
             return;
