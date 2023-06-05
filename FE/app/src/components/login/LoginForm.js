@@ -49,32 +49,37 @@ const LoginForm = (props) => {
 
   // Get User Profile handler
   const getUserProfile = async (token) => {
-     // MOR TODO: after using token as local storage: change the way you treat it here:
-            token = token.replace(/(?:\r\n|\r|\n)/g, '');
-            setUserToken(token);
-            const config = {
-              headers: {
-                Authorization: 'Bearer ' + token,
-              },
-            };
-            console.log(token);
-            try {
-              let userDataRequest = await axios.get('http://localhost:8080/profile', config);
-              if (userDataRequest !== undefined && userDataRequest.status === 200) {
-                // we got user profile data
-                let username = userDataRequest.data.private_name + " " + userDataRequest.data.last_name;
-                console.log("we got user profile data , userName: " + username);
-                setUserName(username);
-              }
-            } catch (err) {
-              if (err.response !== undefined && err.response.status === 401) {
-                // Unable to get user profile data
-                console.log("failed to get user profile data");
-                return;
-              }
-            }
+    // MOR TODO: after using token as local storage: change the way you treat it here:
+    token = token.replace(/(?:\r\n|\r|\n)/g, "");
+    setUserToken(token);
+    const config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    console.log(token);
+    try {
+      let userDataRequest = await axios.get(
+        "http://localhost:8080/profile",
+        config
+      );
+      if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        // we got user profile data
+        let username =
+          userDataRequest.data.private_name +
+          " " +
+          userDataRequest.data.last_name;
+        console.log("we got user profile data , userName: " + username);
+        setUserName(username);
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 401) {
+        // Unable to get user profile data
+        console.log("failed to get user profile data");
+        return;
+      }
+    }
   };
-
 
   // Login handler
   const submitHandler = async (event) => {
@@ -94,19 +99,24 @@ const LoginForm = (props) => {
         // user mail exists, need to check password
         console.log("user mail exists, checking password");
         try {
-          let checkPasswordRequest = await axios.post("http://localhost:8080/login", {
-            user_email: enteredMail,
-            password: enteredPass,
-          });
+          let checkPasswordRequest = await axios.post(
+            "http://localhost:8080/login",
+            {
+              user_email: enteredMail,
+              password: enteredPass,
+            }
+          );
 
-          if (checkPasswordRequest !== undefined && checkPasswordRequest.status === 200) {
+          if (
+            checkPasswordRequest !== undefined &&
+            checkPasswordRequest.status === 200
+          ) {
             // good to go (mail and password are correct)
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
             // YAFIT TODO: move user to the main page
             getUserProfile(token);
           }
-
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
             // Unauthorized - password doesn't exists
@@ -137,7 +147,7 @@ const LoginForm = (props) => {
       mail: enteredMail,
       pass: enteredPass,
       name: userName,
-      token: userToken
+      token: userToken,
     };
 
     setEnteredMail("");
@@ -162,7 +172,7 @@ const LoginForm = (props) => {
               value={enteredMail}
               onChange={mailChangeHandler}
               placeholder="some@mta.ac.il"
-              pattern="[a-z0-9._%+-]+@mta.ac.il"
+              pattern="[a-zA-Z0-9]+@mta\.ac\.il"
               title="The email should be of the Academic Tel-Aviv Yafo."
               style={{
                 border: `2px solid ${mailBorderColor}`,
@@ -211,6 +221,7 @@ const LoginForm = (props) => {
           <Button
             className="login-btn btn"
             onClick={props.onForgetPassword}
+            onLogin={props.onLogin}
           >
             שכחתי סיסמא
           </Button>
