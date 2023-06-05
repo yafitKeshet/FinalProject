@@ -1,9 +1,16 @@
 import "./LoginForm.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
+
+const userData = {
+  mail: "",
+  pass: "",
+  name: "",
+  token: "",
+};
 
 const LoginForm = (props) => {
   // Input Colors
@@ -21,6 +28,16 @@ const LoginForm = (props) => {
   const [userName, setUserName] = useState("");
   const [userToken, setUserToken] = useState("");
   const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
+
+  useEffect(() => {
+    // console.log("userName1: " + userName);
+    userData.name = userName;
+  }, [userName]);
+
+  useEffect(() => {
+    // console.log("userToken1: " + userToken);
+    userData.token = userToken;
+  }, [userToken]);
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
@@ -48,15 +65,15 @@ const LoginForm = (props) => {
   };
 
   // Get User Profile handler
-  const getUserProfile = async () => {
+  const getUserProfile = async (token) => {
     // MOR TODO: after using token as local storage: change the way you treat it here:
-    // token = token.replace(/(?:\r\n|\r|\n)/g, "");
-    // setUserToken(token);
+
     const config = {
       headers: {
-        Authorization: "Bearer " + userToken,
+        Authorization: "Bearer " + token,
       },
     };
+    // console.log("userToken: " + userToken);
     try {
       let userDataRequest = await axios.get(
         "http://localhost:8080/profile",
@@ -64,28 +81,12 @@ const LoginForm = (props) => {
       );
       if (userDataRequest !== undefined && userDataRequest.status === 200) {
         // we got user profile data
-        console.log("we got user profile data , ");
-        const userData = {
-          user_email: userDataRequest.data.user_email,
-          private_name: userDataRequest.data.private_name,
-          last_name: userDataRequest.data.last_name,
-          birthday_date: userDataRequest.data.birthday_date,
-          faculty: userDataRequest.data.faculty,
-          year: userDataRequest.data.year,
-          job_company_name: userDataRequest.data.job_company_name,
-          job_start_year: userDataRequest.data.job_start_year,
-          job_description: userDataRequest.data.job_description,
-          user_image: userDataRequest.data.user_image,
-          cv_resume: userDataRequest.data.cv_resume,
-        };
-        console.log("we got user profile data , " + userData);
-        // let username =
-        //   userDataRequest.data.private_name +
-        //   " " +
-        //   userDataRequest.data.last_name;
+        let username =
+          userDataRequest.data.private_name.charAt(0).toUpperCase() +
+          userDataRequest.data.private_name.slice(1);
         // console.log("we got user profile data , userName: " + username);
         // setUserName(username);
-        return userData;
+        userData.name = username;
       }
     } catch (err) {
       if (err.response !== undefined && err.response.status === 401) {
@@ -129,10 +130,10 @@ const LoginForm = (props) => {
             // good to go (mail and password are correct)
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
-
-            console.log(token);
+            // YAFIT TODO: move user to the main page
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
             setUserToken(token);
+            await getUserProfile(token);
           }
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
@@ -158,10 +159,16 @@ const LoginForm = (props) => {
       }
     }
 
-    // TODO
-    // 3. Get user data.
-
-    const userData = getUserProfile(userToken);
+    userData.mail = enteredMail;
+    userData.pass = enteredPass;
+    // // TODO
+    // // 3. Get user data.
+    // const userData = {
+    //   mail: enteredMail,
+    //   pass: enteredPass,
+    //   name: userName,
+    //   token: userToken
+    // };
 
     setEnteredMail("");
     setEnteredPass("");
