@@ -48,33 +48,53 @@ const LoginForm = (props) => {
   };
 
   // Get User Profile handler
-  const getUserProfile = async (token) => {
-     // MOR TODO: after using token as local storage: change the way you treat it here:
-            token = token.replace(/(?:\r\n|\r|\n)/g, '');
-            setUserToken(token);
-            const config = {
-              headers: {
-                Authorization: 'Bearer ' + token,
-              },
-            };
-            console.log(token);
-            try {
-              let userDataRequest = await axios.get('http://localhost:8080/profile', config);
-              if (userDataRequest !== undefined && userDataRequest.status === 200) {
-                // we got user profile data
-                let username = userDataRequest.data.private_name + " " + userDataRequest.data.last_name;
-                console.log("we got user profile data , userName: " + username);
-                setUserName(username);
-              }
-            } catch (err) {
-              if (err.response !== undefined && err.response.status === 401) {
-                // Unable to get user profile data
-                console.log("failed to get user profile data");
-                return;
-              }
-            }
+  const getUserProfile = async () => {
+    // MOR TODO: after using token as local storage: change the way you treat it here:
+    // token = token.replace(/(?:\r\n|\r|\n)/g, "");
+    // setUserToken(token);
+    const config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    };
+    try {
+      let userDataRequest = await axios.get(
+        "http://localhost:8080/profile",
+        config
+      );
+      if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        // we got user profile data
+        console.log("we got user profile data , ");
+        const userData = {
+          user_email: userDataRequest.data.user_email,
+          private_name: userDataRequest.data.private_name,
+          last_name: userDataRequest.data.last_name,
+          birthday_date: userDataRequest.data.birthday_date,
+          faculty: userDataRequest.data.faculty,
+          year: userDataRequest.data.year,
+          job_company_name: userDataRequest.data.job_company_name,
+          job_start_year: userDataRequest.data.job_start_year,
+          job_description: userDataRequest.data.job_description,
+          user_image: userDataRequest.data.user_image,
+          cv_resume: userDataRequest.data.cv_resume,
+        };
+        console.log("we got user profile data , " + userData);
+        // let username =
+        //   userDataRequest.data.private_name +
+        //   " " +
+        //   userDataRequest.data.last_name;
+        // console.log("we got user profile data , userName: " + username);
+        // setUserName(username);
+        return userData;
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 401) {
+        // Unable to get user profile data
+        console.log("failed to get user profile data");
+        return;
+      }
+    }
   };
-
 
   // Login handler
   const submitHandler = async (event) => {
@@ -94,19 +114,26 @@ const LoginForm = (props) => {
         // user mail exists, need to check password
         console.log("user mail exists, checking password");
         try {
-          let checkPasswordRequest = await axios.post("http://localhost:8080/login", {
-            user_email: enteredMail,
-            password: enteredPass,
-          });
+          let checkPasswordRequest = await axios.post(
+            "http://localhost:8080/login",
+            {
+              user_email: enteredMail,
+              password: enteredPass,
+            }
+          );
 
-          if (checkPasswordRequest !== undefined && checkPasswordRequest.status === 200) {
+          if (
+            checkPasswordRequest !== undefined &&
+            checkPasswordRequest.status === 200
+          ) {
             // good to go (mail and password are correct)
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
-            // YAFIT TODO: move user to the main page
-            getUserProfile(token);
-          }
 
+            console.log(token);
+            token = token.replace(/(?:\r\n|\r|\n)/g, "");
+            setUserToken(token);
+          }
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
             // Unauthorized - password doesn't exists
@@ -133,12 +160,8 @@ const LoginForm = (props) => {
 
     // TODO
     // 3. Get user data.
-    const userData = {
-      mail: enteredMail,
-      pass: enteredPass,
-      name: userName,
-      token: userToken
-    };
+
+    const userData = getUserProfile(userToken);
 
     setEnteredMail("");
     setEnteredPass("");
@@ -208,10 +231,7 @@ const LoginForm = (props) => {
           </Button>
 
           {/* TODO: onClick */}
-          <Button
-            className="login-btn btn"
-            onClick={props.onForgetPassword}
-          >
+          <Button className="login-btn btn" onClick={props.onForgetPassword}>
             שכחתי סיסמא
           </Button>
           <Separator className="separator" />
