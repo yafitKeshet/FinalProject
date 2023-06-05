@@ -36,9 +36,9 @@ const App = (props) => {
 
   const [menu, setMenu] = useState(INITIAL_MENU);
   //    Add button to menu header- on login
-  const addButtonsToMenu = (props) => {
+  const loggedInMenu = (props) => {
     setMenu((prevMenu) => {
-      const newButtons = [
+      return [
         {
           onclick: () => {
             // Handle onclick action for "שלום" button
@@ -78,10 +78,10 @@ const App = (props) => {
       ];
 
       // Exclude the first two elements of the previous menu (login/ signup & general info)
-      const updatedMenu = prevMenu.slice(2);
+      // const updatedMenu = prevMenu.slice(2);
 
       // Concatenate the new buttons with the updated menu
-      return [...updatedMenu, ...newButtons];
+      // return [...updatedMenu, ...newButtons];
     });
   };
 
@@ -124,6 +124,7 @@ const App = (props) => {
     const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
+      loggedInMenu();
     }
 
     const storedCurrentPage = localStorage.getItem("currentPage");
@@ -138,13 +139,15 @@ const App = (props) => {
   //    Login handler
   const loginHandler = async (userData) => {
     // Save data of the user TODO
-    localStorage.setItem("userName", userData.name);
+    console.log(userData);
+    localStorage.setItem("userData", userData);
+    console.log(localStorage.getItem("userData"));
 
     // Close the login form modal
     setLoginFormModalOpen(false);
 
     // Add buttons to the menu
-    addButtonsToMenu();
+    loggedInMenu();
 
     // Update user as LoggedIn
     localStorage.setItem("isLoggedIn", "1");
@@ -170,11 +173,11 @@ const App = (props) => {
   const onLogOut = () => {
     // Update user as LogOut
     console.log("logout button clicked");
-    localStorage.setItem("isLoggedIn", "0");
+    localStorage.removeItem("isLoggedIn", "0");
     setIsLoggedIn(false);
 
     // Remove data of the user TODO
-    localStorage.removeItem("user");
+    localStorage.removeItem("userData");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -204,7 +207,11 @@ const App = (props) => {
         />
       )}
       {forgetPass && (
-        <ForgetPassword onCancel={onCancelForgetPassword} onError={setError} />
+        <ForgetPassword
+          onCancel={onCancelForgetPassword}
+          onError={setError}
+          onLogin={loginHandler}
+        />
       )}
       {isLoginFormModalOpen && (
         <LoginFormModal

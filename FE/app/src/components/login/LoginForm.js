@@ -6,9 +6,17 @@ import Separator from "../UI/Separator";
 import axios from "axios";
 
 const userData = {
-  mail: "",
-  pass: "",
-  name: "",
+  user_email: "",
+  private_name: "",
+  last_name: "",
+  birthday_date: "",
+  faculty: "",
+  year: "",
+  job_company_name: "",
+  job_start_year: 0,
+  job_description: "",
+  user_image: "",
+  cv_resume: "",
   token: "",
 };
 
@@ -16,28 +24,28 @@ const LoginForm = (props) => {
   // Input Colors
   const [passBorderColor, setPassBorderColor] = useState("#ccc");
   const [passBackgroundColor, setPassBackgroundColor] = useState("");
-  const [confirmPassBorderColor, setConfirmPassBorderColor] = useState("#ccc");
-  const [confirmPassBackgroundColor, setConfirmPassBackgroundColor] =
-    useState("");
+  // const [confirmPassBorderColor, setConfirmPassBorderColor] = useState("#ccc");
+  // const [confirmPassBackgroundColor, setConfirmPassBackgroundColor] =
+  // useState("");
 
   // Input fields
   const [mailBorderColor, setMailBorderColor] = useState("#ccc");
   const [mailBackgroundColor, setMailBackgroundColor] = useState("");
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPass, setEnteredPass] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userToken, setUserToken] = useState("");
-  const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
+  // const [userName, setUserName] = useState("");
+  // const [userToken, setUserToken] = useState("");
+  // const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
 
-  useEffect(() => {
-    // console.log("userName1: " + userName);
-    userData.name = userName;
-  }, [userName]);
+  // useEffect(() => {
+  //   // console.log("userName1: " + userName);
+  //   userData.name = userName;
+  // }, [userName]);
 
-  useEffect(() => {
-    // console.log("userToken1: " + userToken);
-    userData.token = userToken;
-  }, [userToken]);
+  // useEffect(() => {
+  //   // console.log("userToken1: " + userToken);
+  //   userData.token = userToken;
+  // }, [userToken]);
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
@@ -56,13 +64,13 @@ const LoginForm = (props) => {
     setPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
 
-  const confirmPassChangeHandler = (event) => {
-    let isValid =
-      event.target.value.length > 0 && event.target.value === enteredPass;
-    setEnteredConfirmPass(event.target.value);
-    setConfirmPassBorderColor(isValid ? "green" : "red");
-    setConfirmPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
-  };
+  // const confirmPassChangeHandler = (event) => {
+  //   let isValid =
+  //     event.target.value.length > 0 && event.target.value === enteredPass;
+  //   setEnteredConfirmPass(event.target.value);
+  //   setConfirmPassBorderColor(isValid ? "green" : "red");
+  //   setConfirmPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
+  // };
 
   // Get User Profile handler
   const getUserProfile = async (token) => {
@@ -80,13 +88,31 @@ const LoginForm = (props) => {
         config
       );
       if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        console.log(userDataRequest);
         // we got user profile data
-        let username =
+
+        userData.private_name =
           userDataRequest.data.private_name.charAt(0).toUpperCase() +
           userDataRequest.data.private_name.slice(1);
+        userData.birthday_date = userDataRequest.data.birthday_date;
+        userData.last_name =
+          userDataRequest.data.last_name.charAt(0).toUpperCase() +
+          userDataRequest.data.last_name.slice(1);
+        userData.faculty = userDataRequest.data.faculty;
+        userData.year = userDataRequest.data.year;
+        userData.job_company_name = userDataRequest.data.job_company_name;
+        userData.job_start_year = userDataRequest.data.job_start_year;
+        userData.job_description = userDataRequest.data.job_description;
+        userData.user_image = userDataRequest.data.user_image;
+        userData.cv_resume = userDataRequest.data.cv_resume;
+        userData.token = token;
+
+        // let username =
+        //   userDataRequest.data.private_name.charAt(0).toUpperCase() +
+        //   userDataRequest.data.private_name.slice(1);
         // console.log("we got user profile data , userName: " + username);
         // setUserName(username);
-        userData.name = username;
+        // userData.name = username;
       }
     } catch (err) {
       if (err.response !== undefined && err.response.status === 401) {
@@ -132,7 +158,7 @@ const LoginForm = (props) => {
             let token = checkPasswordRequest.data.jwt_token; // user token
             // YAFIT TODO: move user to the main page
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-            setUserToken(token);
+            // setUserToken(token);
             await getUserProfile(token);
           }
         } catch (err) {
@@ -159,8 +185,8 @@ const LoginForm = (props) => {
       }
     }
 
-    userData.mail = enteredMail;
-    userData.pass = enteredPass;
+    //userData.mail = enteredMail;
+    //userData.pass = enteredPass;
     // // TODO
     // // 3. Get user data.
     // const userData = {
@@ -172,9 +198,8 @@ const LoginForm = (props) => {
 
     setEnteredMail("");
     setEnteredPass("");
-    setEnteredConfirmPass("");
+    // setEnteredConfirmPass("");
 
-    // TODO
     props.onLogin(userData);
   };
 
@@ -192,7 +217,7 @@ const LoginForm = (props) => {
               value={enteredMail}
               onChange={mailChangeHandler}
               placeholder="some@mta.ac.il"
-              pattern="[a-z0-9._%+-]+@mta.ac.il"
+              pattern="[a-zA-Z0-9]+@mta\.ac\.il"
               title="The email should be of the Academic Tel-Aviv Yafo."
               style={{
                 border: `2px solid ${mailBorderColor}`,

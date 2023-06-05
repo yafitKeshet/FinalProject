@@ -135,8 +135,16 @@ const ForgetPassword = (props) => {
   };
 
   // Submit handler
-  const resetFields = () => {
-    setInputs({ mail: "", code: "", password: "", confirmPassword: "" });
+  const resetMail = () => {
+    setInputs((prev) => {
+      return { ...prev, mail: "" };
+    });
+  };
+
+  const resetCode = () => {
+    setInputs((prev) => {
+      return { ...prev, code: "" };
+    });
   };
   const submitHandler = async (event) => {
     console.log(`submit handler: ${currentStep} -> in forgot password`);
@@ -162,7 +170,7 @@ const ForgetPassword = (props) => {
               title: "אין תוצאות חיפוש",
               message: "החיפוש שלך לא החזיר תוצאות. נסה/נסי שוב עם מידע אחר.",
             });
-            resetFields();
+            resetMail();
             return;
           }
         }
@@ -192,7 +200,6 @@ const ForgetPassword = (props) => {
               title: "קוד אימות לא נשלח",
               message: "קוד האימות לא נשלח, אנא נסה/נסי שוב.",
             });
-            resetFields();
             return;
           }
         }
@@ -224,16 +231,7 @@ const ForgetPassword = (props) => {
               title: "קוד שגוי",
               message: "המספר שהזנת לא תואם לקוד שלך. נסה/נסי שוב.",
             });
-            resetFields();
-            return;
-          }
-          if (err.response !== undefined && err.response.status === 404) {
-            console.log("entered code was wrong -> in forgot password");
-            props.onError({
-              title: "קוד שגוי",
-              message: "סיסמא קיימת",
-            });
-            resetFields();
+            resetCode();
             return;
           }
         }
