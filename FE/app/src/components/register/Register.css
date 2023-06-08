@@ -7,6 +7,7 @@
   z-index: 10;
   background: rgba(0, 0, 0, 0.75);
 }
+
 .register-cancel-btn {
   position: absolute;
   left: 3%;
@@ -52,6 +53,9 @@
   width: 100%;
   padding: 0.3rem 0;
 }
+select {
+  text-align: center;
+}
 
 input {
   text-align: center;
@@ -89,12 +93,19 @@ input {
 .input-div {
   position: relative;
 }
-.register-details .register-content {
-  /* width: 90%; */
-}
 svg.sticky {
   position: absolute;
   z-index: 1000;
-  top: -25%;
-  left: 0;
+  top: 25%;
+  left: 5px;
+}
+input[type="date"] {
+}
+::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 10rem;
+}
+
+select {
+  appearance: none;
 }

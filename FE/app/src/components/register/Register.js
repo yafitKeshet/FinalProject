@@ -175,8 +175,8 @@ const Register = (props) => {
     <form className="register-form" onSubmit={submitHandler}>
       <div className="backdrop" onClick={props.onCancel} />
       <Card className="register-card">
-        <Cancel className="register-cancel-btn" onClick={props.onCancel} />
         <header className="register-header">
+          <Cancel className="register-cancel-btn" onClick={props.onCancel} />
           <h2>{getHeader()}</h2>
         </header>
         <Separator />
