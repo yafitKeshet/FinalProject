@@ -18,17 +18,20 @@ const LoginForm = (props) => {
   const [mailBackgroundColor, setMailBackgroundColor] = useState("");
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPass, setEnteredPass] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userToken, setUserToken] = useState("");
   const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
     let isValid =
-      event.target.value.endsWith("@mta.ac.il") &&
+      event.target.value.match("[a-z0-9._%+-]+@mta.ac.il") &&
       event.target.value.length > 10;
     setEnteredMail(event.target.value);
     setMailBorderColor(isValid ? "green" : "red");
     setMailBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
+
   const passChangeHandler = (event) => {
     let isValid = event.target.value.length > 0;
     setEnteredPass(event.target.value);
@@ -44,37 +47,105 @@ const LoginForm = (props) => {
     setConfirmPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
 
+  // Get User Profile handler
+  const getUserProfile = async (token) => {
+     // MOR TODO: after using token as local storage: change the way you treat it here:
+            token = token.replace(/(?:\r\n|\r|\n)/g, '');
+            setUserToken(token);
+            const config = {
+              headers: {
+                Authorization: 'Bearer ' + token,
+              },
+            };
+            console.log(token);
+            try {
+              let userDataRequest = await axios.get('http://localhost:8080/profile', config);
+              if (userDataRequest !== undefined && userDataRequest.status === 200) {
+                // we got user profile data
+                let username = userDataRequest.data.private_name + " " + userDataRequest.data.last_name;
+                console.log("we got user profile data , userName: " + username);
+                setUserName(username);
+              }
+            } catch (err) {
+              if (err.response !== undefined && err.response.status === 401) {
+                // Unable to get user profile data
+                console.log("failed to get user profile data");
+                return;
+              }
+            }
+  };
+
+
   // Login handler
   const submitHandler = async (event) => {
     event.preventDefault();
 
+    // DONE ↓
+    // 1. Check if mail existing- userValidation.
+    // & DONE ↓
+    // 2. Check if mail and password existing- login.
+    let checkMailRequest = null;
+
+    try {
+      checkMailRequest = await axios.get(
+        "http://localhost:8080/userValidation?user_email=" + enteredMail
+      );
+      if (checkMailRequest !== undefined && checkMailRequest.status === 200) {
+        // user mail exists, need to check password
+        console.log("user mail exists, checking password");
+        try {
+          let checkPasswordRequest = await axios.post("http://localhost:8080/login", {
+            user_email: enteredMail,
+            password: enteredPass,
+          });
+
+          if (checkPasswordRequest !== undefined && checkPasswordRequest.status === 200) {
+            // good to go (mail and password are correct)
+            console.log("good to go (mail and password are correct)");
+            let token = checkPasswordRequest.data.jwt_token; // user token
+            // YAFIT TODO: move user to the main page
+            getUserProfile(token);
+          }
+
+        } catch (err) {
+          if (err.response !== undefined && err.response.status === 401) {
+            // Unauthorized - password doesn't exists
+            console.log("failed to connect - password doesn't exists");
+            props.onError({
+              title: "ההתחברות נכשלה",
+              message: `סיסמא לא נכונה, אנא נסה סיסמא אחרת.
+                    אם שכחת סיסמא- אנא לחץ על שכחתי סיסמא.`,
+            });
+            return;
+          }
+        }
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 404) {
+        console.log("failed to connect - user mail doesn't exists");
+        props.onError({
+          title: "ההתחברות נכשלה",
+          message: "מייל זה לא קיים, אנא נסה מייל אחר.",
+        });
+        return;
+      }
+    }
+
     // TODO
+    // 3. Get user data.
     const userData = {
       mail: enteredMail,
       pass: enteredPass,
+      name: userName,
+      token: userToken
     };
-
-    const response = await axios
-      .get(`http://localhost:8080/userValidation?user_email=${enteredMail}`)
-      .then(function (response) {
-        return response;
-      })
-
-      .catch(function (error) {
-        // handle error
-
-        console.log(error);
-      });
-
-    console.log(response);
 
     setEnteredMail("");
     setEnteredPass("");
     setEnteredConfirmPass("");
 
     // TODO
-    props.onLogIn({ userData: userData });
-    // props.onSaveUser(userData);
+    props.onLogin(userData);
   };
 
   // Register handler
@@ -91,14 +162,14 @@ const LoginForm = (props) => {
               value={enteredMail}
               onChange={mailChangeHandler}
               placeholder="some@mta.ac.il"
-              pattern="[a-zA-Z0-9._%+-]+@mta.ac.il"
+              pattern="[a-z0-9._%+-]+@mta.ac.il"
               title="The email should be of the Academic Tel-Aviv Yafo."
               style={{
                 border: `2px solid ${mailBorderColor}`,
                 backgroundColor: `${mailBackgroundColor}`,
               }}
               required
-            ></input>
+            />
           </div>
           <div className="login-control">
             <label>סיסמא</label>
@@ -113,7 +184,7 @@ const LoginForm = (props) => {
               required
             ></input>
           </div>
-          <div className="login-control">
+          {/* <div className="login-control">
             <label>אימות סיסמא</label>
             <input
               type="password"
@@ -127,7 +198,7 @@ const LoginForm = (props) => {
               title="Password not match."
               required
             ></input>
-          </div>
+          </div> */}
         </div>
 
         <div className="login-actions">
@@ -137,14 +208,19 @@ const LoginForm = (props) => {
           </Button>
 
           {/* TODO: onClick */}
-          <Button className="forgotPass-btn btn">שכחתי סיסמא</Button>
+          <Button
+            className="login-btn btn"
+            onClick={props.onForgetPassword}
+          >
+            שכחתי סיסמא
+          </Button>
           <Separator className="separator" />
           {/* TODO: onClick */}
           <Button className="register-btn btn">
             <p>
-              אין לך משתמש?
+              אין לך משתמש ?
               <br />
-              <b> הירשם</b>
+              הירשם
             </p>
           </Button>
         </div>
