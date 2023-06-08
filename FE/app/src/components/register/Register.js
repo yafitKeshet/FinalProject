@@ -178,10 +178,8 @@ const Register = (props) => {
             console.log("user mail doesn't exists, sending code");
             try {
               let resetPasswordRequest = await axios.post(
-                "http://localhost:8080/signUp/firstStep",
-                {
-                  user_email: inputs.mail,
-                }
+                "http://localhost:8080/signUp/firstStep?user_email=" +
+                  inputs.mail
               );
               if (
                 resetPasswordRequest !== undefined &&
