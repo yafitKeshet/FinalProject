@@ -1,5 +1,5 @@
 import "./LoginForm.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
@@ -239,21 +239,6 @@ const LoginForm = (props) => {
               required
             ></input>
           </div>
-          {/* <div className="login-control">
-            <label>אימות סיסמא</label>
-            <input
-              type="password"
-              value={enteredConfirmPass}
-              onChange={confirmPassChangeHandler}
-              pattern={enteredPass.toString()}
-              style={{
-                border: `2px solid ${confirmPassBorderColor}`,
-                backgroundColor: `${confirmPassBackgroundColor}`,
-              }}
-              title="Password not match."
-              required
-            ></input>
-          </div> */}
         </div>
 
         <div className="login-actions">

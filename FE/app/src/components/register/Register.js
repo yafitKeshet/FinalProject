@@ -149,11 +149,62 @@ const Register = (props) => {
   };
 
   // Submit handler
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     console.log(`submit handler: ${currentStep} -> in register password`);
     event.preventDefault();
+
+    let checkMailRequest = null;
     switch (currentStep) {
       case RegisterStepTypes.step1:
+        try {
+          checkMailRequest = await axios.get(
+            "http://localhost:8080/userValidation?user_email=" + inputs.mail
+          );
+
+          if (
+            checkMailRequest !== undefined &&
+            checkMailRequest.status === 200
+          ) {
+            console.log("failed to register - user mail  exists");
+            props.onError({
+              title: "הרשמה נכשלה",
+              message: "מייל קיים, אנא נסה מייל אחר.",
+            });
+            return;
+          }
+        } catch (err) {
+          if (err.response !== undefined && err.response.status === 404) {
+            // user mail doesn't exists, need to send temp code
+            console.log("user mail doesn't exists, sending code");
+            try {
+              let resetPasswordRequest = await axios.post(
+                "http://localhost:8080/signUp/firstStep",
+                {}
+              );
+              if (
+                resetPasswordRequest !== undefined &&
+                resetPasswordRequest.status === 200
+              ) {
+                console.log(resetPasswordRequest.data);
+                if (resetPasswordRequest.data === true) {
+                  // mail sent properly
+                  console.log("temp code was sent");
+                }
+              }
+            } catch (err) {
+              if (err.response !== undefined && err.response.status === 404) {
+                console.log(
+                  "mail is not sent, some problem happend -> in register"
+                );
+                props.onError({
+                  title: "קוד אימות לא נשלח",
+                  message: "קוד האימות לא נשלח, אנא נסה/נסי שוב.",
+                });
+                return;
+              }
+            }
+          }
+        }
         break;
       case RegisterStepTypes.step2:
         break;
