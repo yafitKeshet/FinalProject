@@ -5,17 +5,32 @@ import Separator from "../UI/Separator";
 import { StepTypes } from "../enums.ts";
 import "./ForgetPassword.css";
 import axios from "axios";
+import Cancel from "../UI/SVG/Cancel";
+
+/*
+  errors 
+  STEP 1: insert mail - check if mail exist 
+  STEP 2: insure mail - send code to mail 
+  STEP 3: insert code from mail - check if same code 
+  STEP 4: create new password & confirm pass - update data base - TODO yafit
+  -> Move to Profile Page - TODO yafit
+*/
+// const userData = {
+//   user_email: "",
+//   private_name: "",
+//   last_name: "",
+//   birthday_date: "",
+//   faculty: "",
+//   year: "",
+//   job_company_name: "",
+//   job_start_year: 0,
+//   job_description: "",
+//   user_image: "",
+//   cv_resume: "",
+//   token: "",
+// };
 
 const ForgetPassword = (props) => {
-  /*
-    errors //TODO
-    STEP 1: insert mail - check if mail exist 
-    STEP 2: insure mail - send code to mail 
-    STEP 3: insert code from mail - check if same code 
-    STEP 4: create new password & confirm pass - update data base //TODO -mor (not yet)
-    -> Move to Profile Page //TODO
-  */
-
   // STEPS
   const [currentStep, setStep] = useState(StepTypes.step1);
 
@@ -146,6 +161,7 @@ const ForgetPassword = (props) => {
       return { ...prev, code: "" };
     });
   };
+
   const submitHandler = async (event) => {
     console.log(`submit handler: ${currentStep} -> in forgot password`);
     event.preventDefault();
@@ -242,6 +258,7 @@ const ForgetPassword = (props) => {
           mail: inputs.mail,
           pass: inputs.password,
         };
+
         props.onLogin(userData);
 
         break;
@@ -259,6 +276,7 @@ const ForgetPassword = (props) => {
       <div className="backdrop" onClick={props.onCancel} />
       <Card className="forget-card">
         <header className="forget-header">
+          <Cancel className="forget-cancel-btn" onClick={props.onCancel} />
           <h2> {getHeader()}</h2>
         </header>
         <Separator />
@@ -333,9 +351,9 @@ const ForgetPassword = (props) => {
                 (currentStep === StepTypes.step3 && "לא קבלתי קוד")}
             </Button>
           )}
-          <Button className="forget-cancel" onClick={props.onCancel}>
+          {/* <Button className="forget-cancel" onClick={props.onCancel}>
             ביטול
-          </Button>
+          </Button> */}
           <Button className="forget-send" type="submit">
             {(currentStep === StepTypes.step1 && "חיפוש") ||
               ((currentStep === StepTypes.step2 ||

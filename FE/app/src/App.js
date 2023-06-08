@@ -13,14 +13,27 @@ import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 
 const App = (props) => {
   // HEADER
-  //    Menu
+
+  // POPUP
   const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
+  const [forgetPass, setForgetPass] = useState(false);
+
+  // Forget password
+  const forgetPasswordHandler = () => {
+    console.log("Forget password was clicked");
+    setLoginFormModalOpen(false);
+    setForgetPass(true);
+  };
+  const onCancelForgetPassword = () => {
+    setForgetPass(false);
+  };
 
   const toggleLoginFormModal = () => {
     console.log("Toggle login form modal");
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
+  //    Menu
   const INITIAL_MENU = [
     {
       onclick: toggleLoginFormModal,
@@ -102,19 +115,7 @@ const App = (props) => {
     setError();
   };
 
-  const [user, setUser] = useState([]);
-
-  // Forget password
-  const [forgetPass, setForgetPass] = useState(false);
-
-  const forgetPasswordHandler = () => {
-    console.log("Forget password was clicked");
-    setLoginFormModalOpen(false);
-    setForgetPass(true);
-  };
-  const onCancelForgetPassword = () => {
-    setForgetPass(false);
-  };
+  // const [user, setUser] = useState([]);
 
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
