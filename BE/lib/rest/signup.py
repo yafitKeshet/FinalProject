@@ -24,7 +24,7 @@ router = APIRouter()
     response_model=bool
 )
 def sign_up_new_profile_first_step(
-        user_email: str = Body(...),
+        user_email: str,
         db: UserDBSession = Depends(get_db_session),
 ):
     if db.get_user_query(user_email).first():
