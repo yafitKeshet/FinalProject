@@ -235,7 +235,6 @@ const ForgetPassword = (props) => {
             resetPasswordSecondRequest !== undefined &&
             resetPasswordSecondRequest.status === 200
           ) {
-            console.log(resetPasswordSecondRequest.data);
             if (resetPasswordSecondRequest.data === true) {
               console.log("save new password -> in forgot password");
             }

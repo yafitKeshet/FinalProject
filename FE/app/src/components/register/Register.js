@@ -207,10 +207,73 @@ const Register = (props) => {
         }
         break;
       case RegisterStepTypes.step2:
+        try {
+          let codeRequest = await axios.post(
+            "http://localhost:8080/signUp/secondStep",
+            {
+              user_email: inputs.mail,
+              temp_password: inputs.code,
+            }
+          );
+          if (codeRequest !== undefined && codeRequest.status === 200) {
+            if (codeRequest.data === true) {
+              // temp code OK
+              console.log("temp code OK");
+            }
+          }
+        } catch (err) {
+          console.log(err);
+          console.log(inputs.code, inputs.mail);
+          if (err.response !== undefined && err.response.status === 400) {
+            console.log("temp code not the same");
+            props.onError({
+              title: "קוד לא זהה",
+              message: "קוד האימות לא נכון, אנא נסה/נסי שוב.",
+            });
+            return;
+          }
+        }
         break;
       case RegisterStepTypes.step3:
+        try {
+          let registerRequest = await axios.post(
+            "http://localhost:8080/signUP",
+            {
+              user_email: inputs.mail,
+              password: inputs.password,
+              private_name: inputs.firstName,
+              last_name: inputs.lastName,
+              birthday_date: inputs.birthdayDate,
+              faculty: inputs.faculty,
+              year: inputs.year,
+              job_company_name: inputs.jobCompanyName,
+              job_start_year: inputs.jobStartYear,
+              job_description: inputs.jobDescription,
+              user_image: inputs.userImage,
+            }
+          );
+          if (registerRequest !== undefined && registerRequest.status === 200) {
+            // good to go (mail and password are correct)
+            console.log("register succeed");
+            let token = registerRequest.data.jwt_token; // user token
+            // YAFIT TODO: move user to the main page
+            token = token.replace(/(?:\r\n|\r|\n)/g, "");
+            // setUserToken(token);
+            // await getUserProfile(token);
+          }
+        } catch (err) {
+          console.log(err);
+          if (err.response !== undefined && err.response.status === 409) {
+            // Unauthorized - password doesn't exists
+            console.log("failed to signup- user already exist.");
+            props.onError({
+              title: "ההרשמה נכשלה",
+              message: "משתמש זה כבר קיים.",
+            });
+            return;
+          }
+        }
         // props.onLogin();
-        props.onLogin();
         break;
       // eslint-disable-next-line no-fallthrough
       default:
@@ -316,7 +379,7 @@ const Register = (props) => {
                     required
                   >
                     <option value="">אנא בחרי/י פקולטה</option>
-                    <option value="1">מדעי המחשב</option>
+                    <option value="ComputerScience">מדעי המחשב</option>
                     <option value="2">מערכות הפעלה</option>
                     <option value="3">פסיכולוגיה</option>
                     <option value="4">סיעוד</option>
@@ -332,7 +395,7 @@ const Register = (props) => {
                     required
                   >
                     <option value="">בחר/י שנת לימודים</option>
-                    <option value="1">שנה 1</option>
+                    <option value="First">שנה 1</option>
                     <option value="2">שנה 2</option>
                     <option value="3">שנה 3</option>
                     <option value="4">שנה 4</option>
@@ -409,9 +472,9 @@ const Register = (props) => {
         </div>
         <Separator />
         <footer className="register-actions">
-          {currentStep !== RegisterStepTypes.step1 && (
+          {currentStep === RegisterStepTypes.step2 && (
             <Button className="register-back" onClick={setBackStep}>
-              חזרה
+              לא קבלתי קוד
             </Button>
           )}
           <Button className="register-send" type="submit">

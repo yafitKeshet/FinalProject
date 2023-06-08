@@ -103,7 +103,7 @@ input[type="date"] {
 }
 ::-webkit-calendar-picker-indicator {
   position: absolute;
-  left: 10rem;
+  right: 30%;
 }
 
 select {
