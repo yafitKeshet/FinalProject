@@ -268,7 +268,7 @@ const LoginForm = (props) => {
           </Button>
           <Separator className="separator" />
           {/* TODO: onClick */}
-          <Button className="register-btn btn">
+          <Button className="register-btn btn" onClick={props.onRegister}>
             <p>
               אין לך משתמש ?
               <br />

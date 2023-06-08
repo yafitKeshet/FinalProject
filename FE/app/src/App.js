@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
+import Register from "./components/register/Register";
 // import LoginForm from "./components/login/LoginForm";
 
 const App = (props) => {
@@ -17,6 +18,17 @@ const App = (props) => {
   // POPUP
   const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
   const [forgetPass, setForgetPass] = useState(false);
+  const [register, setRegister] = useState(false);
+
+  // Register
+  const registerHandler = () => {
+    console.log("Register was clicked");
+    setLoginFormModalOpen(false);
+    setRegister(true);
+  };
+  const onCancelRegister = () => {
+    setRegister(false);
+  };
 
   // Forget password
   const forgetPasswordHandler = () => {
@@ -28,6 +40,7 @@ const App = (props) => {
     setForgetPass(false);
   };
 
+  // Login
   const toggleLoginFormModal = () => {
     console.log("Toggle login form modal");
     setLoginFormModalOpen((prevState) => !prevState);
@@ -207,6 +220,15 @@ const App = (props) => {
           onConfirm={onConfirmError}
         />
       )}
+      {/* REGISTER-PAGE */}
+      {register && (
+        <Register
+          onCancel={onCancelRegister}
+          onError={setError}
+          onLogin={loginHandler}
+        />
+      )}
+      {/* FORGOT PASSWORD */}
       {forgetPass && (
         <ForgetPassword
           onCancel={onCancelForgetPassword}
@@ -214,12 +236,14 @@ const App = (props) => {
           onLogin={loginHandler}
         />
       )}
+      \{/* LOGIN PASSWORD */}
       {isLoginFormModalOpen && (
         <LoginFormModal
           toggleLoginFormModal={toggleLoginFormModal}
           onLogin={loginHandler}
           onError={setError}
           onForgetPassword={forgetPasswordHandler}
+          onRegister={registerHandler}
         />
       )}{" "}
       <div className="App">
@@ -229,7 +253,7 @@ const App = (props) => {
         {/* BODY */}
         {/* GENERAL INFORMATION-PAGE */}
         {pages.isGeneralInformationPage && <GeneralInformation />}
-        {/* lOGIN-PAGE */}
+        {/* MAIN-PAGE */}
         {pages.isLoginPage && (
           <Login
             onLogin={loginHandler}
@@ -237,8 +261,7 @@ const App = (props) => {
             onForgetPassword={forgetPasswordHandler}
           />
         )}
-        {/* REGISTER-PAGE */}
-        {/* FORGOT PASSWORD */}
+
         {/* FEED */}
         {/* PROFILE */}
       </div>

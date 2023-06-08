@@ -12,6 +12,7 @@ const LoginFormModal = (props) => {
           onLogin={props.onLogin}
           onForgetPassword={props.onForgetPassword}
           onError={props.onError}
+          onRegister={props.onRegister}
         />
       </Card>
     </div>
