@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
-import { ForgetPassStepTypes } from "../enums.ts";
+import { ForgetPassStepTypes } from "../enums/enums.ts";
 import "./ForgetPassword.css";
 import axios from "axios";
 import Cancel from "../UI/SVG/Cancel";

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
-import { RegisterStepTypes } from "../enums.ts";
+import { RegisterStepTypes, faculties, year } from "../enums/enums.ts";
 import axios from "axios";
 import "./Register.css";
 import Mark from "../UI/SVG/Mark";
 import Cancel from "../UI/SVG/Cancel";
+// import "../enums/Enums"
 /*
     errors 
     step1 = "step1- insert mail (check if already exist & send confirm code)",
@@ -154,8 +155,8 @@ const Register = (props) => {
     event.preventDefault();
 
     let checkMailRequest = null;
+    /*case RegisterStepTypes.step1:
     switch (currentStep) {
-      case RegisterStepTypes.step1:
         try {
           checkMailRequest = await axios.get(
             "http://localhost:8080/userValidation?user_email=" + inputs.mail
@@ -278,7 +279,7 @@ const Register = (props) => {
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
-    }
+    }*/
     setNextStep();
   };
 
@@ -379,10 +380,15 @@ const Register = (props) => {
                     required
                   >
                     <option value="">אנא בחרי/י פקולטה</option>
-                    <option value="ComputerScience">מדעי המחשב</option>
+                    {faculties.map((item) => (
+                      <option value={item} key={Math.random().toString()}>
+                        {item}
+                      </option>
+                    ))}
+                    {/* <option value="ComputerScience">מדעי המחשב</option>
                     <option value="2">מערכות הפעלה</option>
                     <option value="3">פסיכולוגיה</option>
-                    <option value="4">סיעוד</option>
+                    <option value="4">סיעוד</option> */}
                   </select>
                 </div>
 
@@ -395,10 +401,15 @@ const Register = (props) => {
                     required
                   >
                     <option value="">בחר/י שנת לימודים</option>
-                    <option value="First">שנה 1</option>
+                    {year.map((item) => (
+                      <option value={item} key={Math.random().toString()}>
+                        {item}
+                      </option>
+                    ))}
+                    {/* <option value="First">שנה 1</option>
                     <option value="2">שנה 2</option>
                     <option value="3">שנה 3</option>
-                    <option value="4">שנה 4</option>
+                    <option value="4">שנה 4</option> */}
                     <option value="5">סיימתי את הלימודים</option>
                   </select>
                 </div>
