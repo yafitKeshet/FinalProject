@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
-import { RegisterStepTypes, faculties, year } from "../enums/enums.ts";
+import { RegisterStepTypes, Faculty, Year } from "../enums/enums.ts";
 import axios from "axios";
 import "./Register.css";
 import Mark from "../UI/SVG/Mark";
@@ -155,8 +155,8 @@ const Register = (props) => {
     event.preventDefault();
 
     let checkMailRequest = null;
-    /*case RegisterStepTypes.step1:
     switch (currentStep) {
+      /*case RegisterStepTypes.step1:
         try {
           checkMailRequest = await axios.get(
             "http://localhost:8080/userValidation?user_email=" + inputs.mail
@@ -235,22 +235,39 @@ const Register = (props) => {
           }
         }
         break;
+        */
       case RegisterStepTypes.step3:
         try {
+          console.log(inputs);
+          let date = inputs.birthdayDate.split("-");
+          let new_date = date[2] + "/" + date[1] + "/" + date[0];
+          let ind = { ...inputs, birthdayDate: new_date };
+          console.log(ind);
           let registerRequest = await axios.post(
-            "http://localhost:8080/signUP",
+            "http://localhost:8080/signUp",
             {
               user_email: inputs.mail,
               password: inputs.password,
               private_name: inputs.firstName,
               last_name: inputs.lastName,
-              birthday_date: inputs.birthdayDate,
+              birthday_date: new_date,
               faculty: inputs.faculty,
               year: inputs.year,
               job_company_name: inputs.jobCompanyName,
-              job_start_year: inputs.jobStartYear,
+              job_start_year: 0,
               job_description: inputs.jobDescription,
               user_image: inputs.userImage,
+              // user_email: "dfh@mta.ac.il",
+              // password: "1",
+              // private_name: "yafit",
+              // last_name: "mizrahi",
+              // birthday_date: "21/02/1999",
+              // faculty: "ComputerScience",
+              // year: "First",
+              // job_company_name: "",
+              // job_start_year: "0",
+              // job_description: "",
+              // user_image: "",
             }
           );
           if (registerRequest !== undefined && registerRequest.status === 200) {
@@ -278,8 +295,8 @@ const Register = (props) => {
         break;
       // eslint-disable-next-line no-fallthrough
       default:
-        props.onCancel();
-    }*/
+      // props.onCancel();
+    }
     setNextStep();
   };
 
@@ -380,15 +397,49 @@ const Register = (props) => {
                     required
                   >
                     <option value="">אנא בחרי/י פקולטה</option>
-                    {faculties.map((item) => (
-                      <option value={item} key={Math.random().toString()}>
-                        {item}
-                      </option>
-                    ))}
-                    {/* <option value="ComputerScience">מדעי המחשב</option>
-                    <option value="2">מערכות הפעלה</option>
-                    <option value="3">פסיכולוגיה</option>
-                    <option value="4">סיעוד</option> */}
+
+                    {Object.keys(Faculty).map((faculty) => {
+                      switch (faculty) {
+                        case Faculty.ComputerScience:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              מדעי המחשב
+                            </option>
+                          );
+                        case Faculty.Economy:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              כלכלה
+                            </option>
+                          );
+                        case Faculty.Psychology:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              פסיכולוגיה
+                            </option>
+                          );
+                        case Faculty.Social:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              סוציולוגיה
+                            </option>
+                          );
+                        default:
+                          break;
+                      }
+                    })}
                   </select>
                 </div>
 
@@ -401,16 +452,55 @@ const Register = (props) => {
                     required
                   >
                     <option value="">בחר/י שנת לימודים</option>
-                    {year.map((item) => (
-                      <option value={item} key={Math.random().toString()}>
-                        {item}
-                      </option>
-                    ))}
+                    {Object.keys(Year).map((year) => {
+                      console.log(year);
+                      switch (year) {
+                        case Year.First:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה ראשונה
+                            </option>
+                          );
+                        case Year.Second:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה שנייה
+                            </option>
+                          );
+                        case Year.Third:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה שלישית
+                            </option>
+                          );
+                        case Year.Fourth:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה רביעית
+                            </option>
+                          );
+                        case Year.Fifth:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה חמישית
+                            </option>
+                          );
+                        case Year.Graduated:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              סיימתי את הלימודים
+                            </option>
+                          );
+
+                        default:
+                          break;
+                      }
+                    })}
                     {/* <option value="First">שנה 1</option>
                     <option value="2">שנה 2</option>
                     <option value="3">שנה 3</option>
                     <option value="4">שנה 4</option> */}
-                    <option value="5">סיימתי את הלימודים</option>
+                    {/* <option value="5">סיימתי את הלימודים</option> */}
                   </select>
                 </div>
               </div>

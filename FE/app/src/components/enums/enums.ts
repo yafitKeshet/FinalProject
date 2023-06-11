@@ -20,27 +20,18 @@ export enum RegisterStepTypes {
   step3 = "step3- insert user data",
 }
 
-export let faculties = {};
-export let jobTime = {};
-export let experience = {};
-export let year = {};
-export let rating = {};
+export enum Faculty {
+  ComputerScience = "ComputerScience",
+  Economy = "Economy",
+  Psychology = "Psychology",
+  Social = "Social",
+}
 
-const getEnumsAsync = async () => {
-  try {
-    let enumsRequest = await axios.get("http://localhost:8080/enums");
-    if (enumsRequest !== undefined && enumsRequest.status === 200) {
-      console.log("enums: ", enumsRequest.data);
-      return enumsRequest.data;
-    }
-  } catch (err) {
-    console.log("error in getting enums");
-  }
-};
-getEnumsAsync().then((enums) => {
-  faculties = enums.Faculty;
-  jobTime = enums.JobTime;
-  experience = enums.Experience;
-  year = enums.Year;
-  rating = enums.Rating;
-});
+export enum Year {
+  First = "First",
+  Second = "Second",
+  Third = "Third",
+  Fourth = "Fourth",
+  Fifth = "Fifth",
+  Graduated = "Graduated",
+}
