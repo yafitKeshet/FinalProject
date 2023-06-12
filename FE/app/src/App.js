@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
@@ -10,7 +10,6 @@ import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
-// import LoginForm from "./components/login/LoginForm";
 
 const App = (props) => {
   // HEADER
@@ -102,12 +101,6 @@ const App = (props) => {
         },
         { onclick: onLogOut, data: "התנתק" },
       ];
-
-      // Exclude the first two elements of the previous menu (login/ signup & general info)
-      // const updatedMenu = prevMenu.slice(2);
-
-      // Concatenate the new buttons with the updated menu
-      // return [...updatedMenu, ...newButtons];
     });
   };
 
@@ -127,8 +120,6 @@ const App = (props) => {
   const onConfirmError = () => {
     setError();
   };
-
-  // const [user, setUser] = useState([]);
 
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -152,10 +143,12 @@ const App = (props) => {
 
   //    Login handler
   const loginHandler = async (userData) => {
-    // Save data of the user TODO
-    console.log(userData);
-    localStorage.setItem("userData", userData);
-    console.log(localStorage.getItem("userData"));
+    // Save data of the user
+    console.log("login: ", userData);
+    // localStorage.setItem("userData", userData);
+    localStorage.setItem("token", userData.token);
+    localStorage.setItem("userName", userData.userName);
+    // console.log(localStorage.getItem("userData"));
 
     // Close the login form modal
     setLoginFormModalOpen(false);
@@ -190,8 +183,9 @@ const App = (props) => {
     localStorage.removeItem("isLoggedIn", "0");
     setIsLoggedIn(false);
 
-    // Remove data of the user TODO
-    localStorage.removeItem("userData");
+    // Remove data of the user
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);

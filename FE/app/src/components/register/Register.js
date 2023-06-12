@@ -7,7 +7,7 @@ import axios from "axios";
 import "./Register.css";
 import Mark from "../UI/SVG/Mark";
 import Cancel from "../UI/SVG/Cancel";
-// import "../enums/Enums"
+
 /*
     errors 
     step1 = "step1- insert mail (check if already exist & send confirm code)",
@@ -186,7 +186,6 @@ const Register = (props) => {
                 resetPasswordRequest !== undefined &&
                 resetPasswordRequest.status === 200
               ) {
-                console.log(resetPasswordRequest.data);
                 if (resetPasswordRequest.data === true) {
                   // mail sent properly
                   console.log("temp code was sent");
@@ -223,7 +222,6 @@ const Register = (props) => {
             }
           }
         } catch (err) {
-          console.log(err);
           console.log(inputs.code, inputs.mail);
           if (err.response !== undefined && err.response.status === 400) {
             console.log("temp code not the same");
@@ -238,11 +236,9 @@ const Register = (props) => {
 
       case RegisterStepTypes.step3:
         try {
-          console.log(inputs);
           let date = inputs.birthdayDate.split("-");
           let new_date = date[2] + "/" + date[1] + "/" + date[0];
-          let ind = { ...inputs, birthdayDate: new_date };
-          console.log(ind);
+
           let registerRequest = await axios.post(
             "http://localhost:8080/signUp",
             {
@@ -263,10 +259,8 @@ const Register = (props) => {
             // good to go (mail and password are correct)
             console.log("register succeed");
             let token = registerRequest.data.jwt_token; // user token
-            // YAFIT TODO: move user to the main page
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-            // setUserToken(token);
-            // await getUserProfile(token);
+            props.onLogin({ token: token, userName: inputs.firstName });
           }
         } catch (err) {
           console.log(err);
@@ -280,17 +274,15 @@ const Register = (props) => {
             return;
           }
         }
-        // props.onLogin();
         break;
       // eslint-disable-next-line no-fallthrough
       default:
-      // props.onCancel();
+        props.onCancel();
     }
     setNextStep();
   };
 
   const currentDate = new Date();
-  //year= year.getFullYear();
 
   return (
     <form className="register-form" onSubmit={submitHandler}>
@@ -442,7 +434,6 @@ const Register = (props) => {
                   >
                     <option value="">בחר/י שנת לימודים</option>
                     {Object.keys(Year).map((year) => {
-                      console.log(year);
                       switch (year) {
                         case Year.First:
                           return (
@@ -485,11 +476,6 @@ const Register = (props) => {
                           break;
                       }
                     })}
-                    {/* <option value="First">שנה 1</option>
-                    <option value="2">שנה 2</option>
-                    <option value="3">שנה 3</option>
-                    <option value="4">שנה 4</option> */}
-                    {/* <option value="5">סיימתי את הלימודים</option> */}
                   </select>
                 </div>
               </div>

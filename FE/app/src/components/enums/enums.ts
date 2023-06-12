@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export enum ScreenTypes {
   AppLoader = "appLoader",
   HomeScreen = "homeScreen",

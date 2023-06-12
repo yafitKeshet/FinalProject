@@ -33,19 +33,6 @@ const LoginForm = (props) => {
   const [mailBackgroundColor, setMailBackgroundColor] = useState("");
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPass, setEnteredPass] = useState("");
-  // const [userName, setUserName] = useState("");
-  // const [userToken, setUserToken] = useState("");
-  // const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
-
-  // useEffect(() => {
-  //   // console.log("userName1: " + userName);
-  //   userData.name = userName;
-  // }, [userName]);
-
-  // useEffect(() => {
-  //   // console.log("userToken1: " + userToken);
-  //   userData.token = userToken;
-  // }, [userToken]);
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
@@ -64,24 +51,13 @@ const LoginForm = (props) => {
     setPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
 
-  // const confirmPassChangeHandler = (event) => {
-  //   let isValid =
-  //     event.target.value.length > 0 && event.target.value === enteredPass;
-  //   setEnteredConfirmPass(event.target.value);
-  //   setConfirmPassBorderColor(isValid ? "green" : "red");
-  //   setConfirmPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
-  // };
-
   // Get User Profile handler
   const getUserProfile = async (token) => {
-    // MOR TODO: after using token as local storage: change the way you treat it here:
-
     const config = {
       headers: {
         Authorization: "Bearer " + token,
       },
     };
-    // console.log("userToken: " + userToken);
     try {
       let userDataRequest = await axios.get(
         "http://localhost:8080/profile",
@@ -106,13 +82,6 @@ const LoginForm = (props) => {
         userData.user_image = userDataRequest.data.user_image;
         userData.cv_resume = userDataRequest.data.cv_resume;
         userData.token = token;
-
-        // let username =
-        //   userDataRequest.data.private_name.charAt(0).toUpperCase() +
-        //   userDataRequest.data.private_name.slice(1);
-        // console.log("we got user profile data , userName: " + username);
-        // setUserName(username);
-        // userData.name = username;
       }
     } catch (err) {
       if (err.response !== undefined && err.response.status === 401) {
@@ -156,10 +125,13 @@ const LoginForm = (props) => {
             // good to go (mail and password are correct)
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
-            // YAFIT TODO: move user to the main page
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-            // setUserToken(token);
+
             await getUserProfile(token);
+            props.onLogin({
+              token: userData.token,
+              userName: userData.private_name,
+            });
           }
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
@@ -184,23 +156,8 @@ const LoginForm = (props) => {
         return;
       }
     }
-
-    //userData.mail = enteredMail;
-    //userData.pass = enteredPass;
-    // // TODO
-    // // 3. Get user data.
-    // const userData = {
-    //   mail: enteredMail,
-    //   pass: enteredPass,
-    //   name: userName,
-    //   token: userToken
-    // };
-
     setEnteredMail("");
     setEnteredPass("");
-    // setEnteredConfirmPass("");
-
-    props.onLogin(userData);
   };
 
   // Register handler

@@ -15,22 +15,62 @@ import Cancel from "../UI/SVG/Cancel";
   STEP 4: create new password & confirm pass - update data base - TODO yafit
   -> Move to Profile Page - TODO yafit
 */
-// const userData = {
-//   user_email: "",
-//   private_name: "",
-//   last_name: "",
-//   birthday_date: "",
-//   faculty: "",
-//   year: "",
-//   job_company_name: "",
-//   job_start_year: 0,
-//   job_description: "",
-//   user_image: "",
-//   cv_resume: "",
-//   token: "",
-// };
+const userData = {
+  user_email: "",
+  private_name: "",
+  last_name: "",
+  birthday_date: "",
+  faculty: "",
+  year: "",
+  job_company_name: "",
+  job_start_year: 0,
+  job_description: "",
+  user_image: "",
+  cv_resume: "",
+  token: "",
+};
 
 const ForgetPassword = (props) => {
+  // Get User Profile handler
+  const getUserProfile = async (token) => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    try {
+      let userDataRequest = await axios.get(
+        "http://localhost:8080/profile",
+        config
+      );
+      if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        console.log(userDataRequest);
+        // we got user profile data
+
+        userData.private_name =
+          userDataRequest.data.private_name.charAt(0).toUpperCase() +
+          userDataRequest.data.private_name.slice(1);
+        userData.birthday_date = userDataRequest.data.birthday_date;
+        userData.last_name =
+          userDataRequest.data.last_name.charAt(0).toUpperCase() +
+          userDataRequest.data.last_name.slice(1);
+        userData.faculty = userDataRequest.data.faculty;
+        userData.year = userDataRequest.data.year;
+        userData.job_company_name = userDataRequest.data.job_company_name;
+        userData.job_start_year = userDataRequest.data.job_start_year;
+        userData.job_description = userDataRequest.data.job_description;
+        userData.user_image = userDataRequest.data.user_image;
+        userData.cv_resume = userDataRequest.data.cv_resume;
+        userData.token = token;
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 401) {
+        // Unable to get user profile data
+        console.log("failed to get user profile data");
+        return;
+      }
+    }
+  };
   // STEPS
   const [currentStep, setStep] = useState(ForgetPassStepTypes.step1);
 
@@ -237,6 +277,44 @@ const ForgetPassword = (props) => {
           ) {
             if (resetPasswordSecondRequest.data === true) {
               console.log("save new password -> in forgot password");
+
+              // login the user
+              try {
+                let checkPasswordRequest = await axios.post(
+                  "http://localhost:8080/login",
+                  {
+                    user_email: inputs.mail,
+                    password: inputs.password,
+                  }
+                );
+
+                if (
+                  checkPasswordRequest !== undefined &&
+                  checkPasswordRequest.status === 200
+                ) {
+                  // good to go (mail and password are correct)
+                  console.log("good to go (mail and password are correct)");
+                  let token = checkPasswordRequest.data.jwt_token; // user token
+                  token = token.replace(/(?:\r\n|\r|\n)/g, "");
+
+                  await getUserProfile(token);
+                  props.onLogin({
+                    token: userData.token,
+                    userName: userData.private_name,
+                  });
+                }
+              } catch (err) {
+                if (err.response !== undefined && err.response.status === 401) {
+                  // Unauthorized - password doesn't exists
+                  console.log("failed to connect - password doesn't exists");
+                  props.onError({
+                    title: "ההתחברות נכשלה",
+                    message: `סיסמא לא נכונה, אנא נסה סיסמא אחרת.
+                          אם שכחת סיסמא- אנא לחץ על שכחתי סיסמא.`,
+                  });
+                  return;
+                }
+              }
             }
           }
         } catch (err) {
@@ -250,15 +328,6 @@ const ForgetPassword = (props) => {
             return;
           }
         }
-        // move to feed/ profile - TODO YAFIT
-        // TODO
-        // 3. Get user data.
-        const userData = {
-          mail: inputs.mail,
-          pass: inputs.password,
-        };
-
-        props.onLogin(userData);
 
         break;
 
