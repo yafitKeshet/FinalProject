@@ -45,6 +45,31 @@ const App = (props) => {
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
+  // Pages
+  const [pages, setPages] = useState({
+    isLoginPage: true,
+    isRegisterPage: false,
+    isGeneralInformationPage: false,
+    isFacultyPage: false,
+    isFeedPage: false,
+    isProfilePage: false,
+  });
+
+  const toggleGeneralInfo = () => {
+    console.log("General Info button was clicked");
+    setPages((prev) => {
+      return { ...prev, isLoginPage: false, isGeneralInformationPage: true };
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isGeneralInformationPage");
+
+    console.log(
+      `page after generalInfo btn clicked: ${localStorage.getItem(
+        "currentPage"
+      )}`
+    );
+  };
   //    Menu
   const INITIAL_MENU = [
     {
@@ -52,9 +77,7 @@ const App = (props) => {
       data: "התחברות/ הרשמה",
     },
     {
-      onclick: () => {
-        console.log("General Info button was clicked");
-      },
+      onclick: toggleGeneralInfo,
       data: "מידע כללי",
     },
   ];
@@ -104,16 +127,6 @@ const App = (props) => {
     });
   };
 
-  // Pages
-  const [pages, setPages] = useState({
-    isLoginPage: true,
-    isRegisterPage: false,
-    isGeneralInformationPage: false,
-    isFacultyPage: false,
-    isFeedPage: false,
-    isProfilePage: false,
-  });
-
   //ERRORS
   const [error, setError] = useState();
 
@@ -133,8 +146,14 @@ const App = (props) => {
     }
 
     const storedCurrentPage = localStorage.getItem("currentPage");
-    if (storedCurrentPage) setPages({ ...pages, [storedCurrentPage]: true });
-    else setPages({ ...pages, isLoginPage: true });
+    if (storedCurrentPage)
+      setPages((prev) => {
+        return { ...prev, isLoginPage: false, [storedCurrentPage]: true };
+      });
+    else
+      setPages((prev) => {
+        return { ...prev, isLoginPage: true };
+      });
 
     console.log(`starting in page: ${storedCurrentPage}`);
   }, []);
