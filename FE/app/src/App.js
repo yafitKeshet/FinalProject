@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
@@ -9,18 +9,43 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
-// import LoginForm from "./components/login/LoginForm";
+import Register from "./components/register/Register";
 
 const App = (props) => {
   // HEADER
-  //    Menu
-  const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
 
+  // POPUP
+  const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
+  const [forgetPass, setForgetPass] = useState(false);
+  const [register, setRegister] = useState(false);
+
+  // Register
+  const registerHandler = () => {
+    console.log("Register was clicked");
+    setLoginFormModalOpen(false);
+    setRegister(true);
+  };
+  const onCancelRegister = () => {
+    setRegister(false);
+  };
+
+  // Forget password
+  const forgetPasswordHandler = () => {
+    console.log("Forget password was clicked");
+    setLoginFormModalOpen(false);
+    setForgetPass(true);
+  };
+  const onCancelForgetPassword = () => {
+    setForgetPass(false);
+  };
+
+  // Login
   const toggleLoginFormModal = () => {
     console.log("Toggle login form modal");
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
+  //    Menu
   const INITIAL_MENU = [
     {
       onclick: toggleLoginFormModal,
@@ -76,12 +101,6 @@ const App = (props) => {
         },
         { onclick: onLogOut, data: "התנתק" },
       ];
-
-      // Exclude the first two elements of the previous menu (login/ signup & general info)
-      // const updatedMenu = prevMenu.slice(2);
-
-      // Concatenate the new buttons with the updated menu
-      // return [...updatedMenu, ...newButtons];
     });
   };
 
@@ -100,20 +119,6 @@ const App = (props) => {
 
   const onConfirmError = () => {
     setError();
-  };
-
-  const [user, setUser] = useState([]);
-
-  // Forget password
-  const [forgetPass, setForgetPass] = useState(false);
-
-  const forgetPasswordHandler = () => {
-    console.log("Forget password was clicked");
-    setLoginFormModalOpen(false);
-    setForgetPass(true);
-  };
-  const onCancelForgetPassword = () => {
-    setForgetPass(false);
   };
 
   // BODY
@@ -138,10 +143,12 @@ const App = (props) => {
 
   //    Login handler
   const loginHandler = async (userData) => {
-    // Save data of the user TODO
-    console.log(userData);
-    localStorage.setItem("userData", userData);
-    console.log(localStorage.getItem("userData"));
+    // Save data of the user
+    console.log("login: ", userData);
+    // localStorage.setItem("userData", userData);
+    localStorage.setItem("token", userData.token);
+    localStorage.setItem("userName", userData.userName);
+    // console.log(localStorage.getItem("userData"));
 
     // Close the login form modal
     setLoginFormModalOpen(false);
@@ -176,8 +183,9 @@ const App = (props) => {
     localStorage.removeItem("isLoggedIn", "0");
     setIsLoggedIn(false);
 
-    // Remove data of the user TODO
-    localStorage.removeItem("userData");
+    // Remove data of the user
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -206,6 +214,15 @@ const App = (props) => {
           onConfirm={onConfirmError}
         />
       )}
+      {/* REGISTER-PAGE */}
+      {register && (
+        <Register
+          onCancel={onCancelRegister}
+          onError={setError}
+          onLogin={loginHandler}
+        />
+      )}
+      {/* FORGOT PASSWORD */}
       {forgetPass && (
         <ForgetPassword
           onCancel={onCancelForgetPassword}
@@ -213,12 +230,14 @@ const App = (props) => {
           onLogin={loginHandler}
         />
       )}
+      \{/* LOGIN PASSWORD */}
       {isLoginFormModalOpen && (
         <LoginFormModal
           toggleLoginFormModal={toggleLoginFormModal}
           onLogin={loginHandler}
           onError={setError}
           onForgetPassword={forgetPasswordHandler}
+          onRegister={registerHandler}
         />
       )}{" "}
       <div className="App">
@@ -228,7 +247,7 @@ const App = (props) => {
         {/* BODY */}
         {/* GENERAL INFORMATION-PAGE */}
         {pages.isGeneralInformationPage && <GeneralInformation />}
-        {/* lOGIN-PAGE */}
+        {/* MAIN-PAGE */}
         {pages.isLoginPage && (
           <Login
             onLogin={loginHandler}
@@ -236,8 +255,7 @@ const App = (props) => {
             onForgetPassword={forgetPasswordHandler}
           />
         )}
-        {/* REGISTER-PAGE */}
-        {/* FORGOT PASSWORD */}
+
         {/* FEED */}
         {/* PROFILE */}
       </div>

@@ -9,7 +9,6 @@ const Menu = (props) => {
         <Button
           className="menu-item"
           onClick={btn.onclick}
-          // onClick={()=> btn.onClick}
           key={Math.random().toString()}
         >
           {btn.data}
