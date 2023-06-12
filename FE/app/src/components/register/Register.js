@@ -156,7 +156,7 @@ const Register = (props) => {
 
     let checkMailRequest = null;
     switch (currentStep) {
-      /*case RegisterStepTypes.step1:
+      case RegisterStepTypes.step1:
         try {
           checkMailRequest = await axios.get(
             "http://localhost:8080/userValidation?user_email=" + inputs.mail
@@ -235,7 +235,7 @@ const Register = (props) => {
           }
         }
         break;
-        */
+
       case RegisterStepTypes.step3:
         try {
           console.log(inputs);
@@ -257,17 +257,6 @@ const Register = (props) => {
               job_start_year: 0,
               job_description: inputs.jobDescription,
               user_image: inputs.userImage,
-              // user_email: "dfh@mta.ac.il",
-              // password: "1",
-              // private_name: "yafit",
-              // last_name: "mizrahi",
-              // birthday_date: "21/02/1999",
-              // faculty: "ComputerScience",
-              // year: "First",
-              // job_company_name: "",
-              // job_start_year: "0",
-              // job_description: "",
-              // user_image: "",
             }
           );
           if (registerRequest !== undefined && registerRequest.status === 200) {
