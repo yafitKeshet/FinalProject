@@ -365,8 +365,8 @@ const ForgetPassword = (props) => {
               value={inputs.mail}
               className="forget-content"
               placeholder="some@mta.ac.il"
-              pattern="[a-zA-Z0-9]+@mta\.ac\.il"
-              title="The email should be of the Academic Tel-Aviv Yafo."
+              pattern="[a-z0-9]+@mta\.ac\.il"
+              title="אנא הכנס/י מייל של המכללה האקדמדית תל אביב-יפו."
               required
             />
           )}
@@ -401,7 +401,7 @@ const ForgetPassword = (props) => {
                 onChange={onConfirmPassChange}
                 value={inputs.confirmPassword}
                 pattern={inputs.password.toString()}
-                title="Password not match."
+                title="סיסמאות לא תואמות."
                 className="forget-content"
                 type="password"
                 required

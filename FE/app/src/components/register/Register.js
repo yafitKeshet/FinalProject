@@ -305,8 +305,8 @@ const Register = (props) => {
                 value={inputs.mail}
                 className="register-content"
                 placeholder="some@mta.ac.il"
-                pattern="[a-zA-Z0-9]+@mta\.ac\.il"
-                title="The email should be of the Academic Tel-Aviv Yafo."
+                pattern="[a-z0-9]+@mta\.ac\.il"
+                title="אנא הכנס/י מייל של המכללה האקדמדית תל אביב-יפו."
                 required
               />
             </>
