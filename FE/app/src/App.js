@@ -230,7 +230,7 @@ const App = (props) => {
           onLogin={loginHandler}
         />
       )}
-      \{/* LOGIN PASSWORD */}
+      {/* LOGIN PASSWORD */}
       {isLoginFormModalOpen && (
         <LoginFormModal
           toggleLoginFormModal={toggleLoginFormModal}
@@ -239,7 +239,7 @@ const App = (props) => {
           onForgetPassword={forgetPasswordHandler}
           onRegister={registerHandler}
         />
-      )}{" "}
+      )}
       <div className="App">
         {/* HEADER */}
         <Header menu={menu} isLoggedIn={isLoggedIn} onLogOut={onLogOut} />
