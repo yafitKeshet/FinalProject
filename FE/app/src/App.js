@@ -45,6 +45,17 @@ const App = (props) => {
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
+  // Main
+  const toggleMain = () => {
+    setPages({
+      isLoginPage: true,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isFacultyPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+    });
+  };
   // Pages
   const [pages, setPages] = useState({
     isLoginPage: true,
@@ -55,10 +66,17 @@ const App = (props) => {
     isProfilePage: false,
   });
 
+  // General Info
   const toggleGeneralInfo = () => {
     console.log("General Info button was clicked");
-    setPages((prev) => {
-      return { ...prev, isLoginPage: false, isGeneralInformationPage: true };
+
+    setPages({
+      isLoginPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: true,
+      isFacultyPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
     });
 
     // Save current page
@@ -70,12 +88,14 @@ const App = (props) => {
       )}`
     );
   };
+
   //    Menu
   const INITIAL_MENU = [
     {
       onclick: toggleLoginFormModal,
       data: "התחברות/ הרשמה",
     },
+    { onclick: toggleMain, data: "עמוד ראשי" },
     {
       onclick: toggleGeneralInfo,
       data: "מידע כללי",
@@ -85,46 +105,40 @@ const App = (props) => {
   const [menu, setMenu] = useState(INITIAL_MENU);
   //    Add button to menu header- on login
   const loggedInMenu = (props) => {
-    setMenu((prevMenu) => {
-      return [
-        {
-          onclick: () => {
-            // Handle onclick action for "שלום" button
-            console.log("שלום button clicked");
-          },
-          data: `שלום ${localStorage.getItem("userName")}`,
+    setMenu([
+      {
+        onclick: () => {
+          // Handle onclick action for "שלום" button
+          console.log("שלום button clicked");
         },
-        {
-          onclick: () => {
-            // Handle onclick action for "FEED" button
-            console.log("FEED button clicked");
-          },
-          data: "FEED",
+        data: `שלום ${localStorage.getItem("userName")}`,
+      },
+      INITIAL_MENU[1],
+      INITIAL_MENU[2],
+      {
+        onclick: () => {
+          // Handle onclick action for "FEED" button
+          console.log("FEED button clicked");
         },
-        {
-          onclick: () => {
-            // Handle onclick action for "פרופיל" button
-            console.log("פרופיל button clicked");
-          },
-          data: "פרופיל",
+        data: "FEED",
+      },
+      {
+        onclick: () => {
+          // Handle onclick action for "פרופיל" button
+          console.log("פרופיל button clicked");
         },
-        {
-          onclick: () => {
-            // Handle onclick action for "מידע כללי" button
-            console.log("מידע כללי button clicked");
-          },
-          data: "מידע כללי",
+        data: "פרופיל",
+      },
+
+      {
+        onclick: () => {
+          // Handle onclick action for "משרות" button
+          console.log("משרות button clicked");
         },
-        {
-          onclick: () => {
-            // Handle onclick action for "משרות" button
-            console.log("משרות button clicked");
-          },
-          data: "משרות",
-        },
-        { onclick: onLogOut, data: "התנתק" },
-      ];
-    });
+        data: "משרות",
+      },
+      { onclick: onLogOut, data: "התנתק" },
+    ]);
   };
 
   //ERRORS
