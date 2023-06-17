@@ -1,7 +1,8 @@
 import React from "react";
 import Menu from "./Menu";
 import "./Header.css";
-import Icon from "../icons/Icons";
+import Icons from "../icons/Icons";
+
 
 const Header = (props) => {
   return (
@@ -27,6 +28,7 @@ const Header = (props) => {
           <Menu items={props.menu}></Menu>
         </div>
       </div>
+      <Icons></Icons>
     </div>
   );
 };
