@@ -1,10 +1,16 @@
 import uuid
 from datetime import datetime
 from typing import List
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, UploadFile, File
+from typing_extensions import Annotated
+
+from ..utils.auth.decode_token import get_current_active_user
+from ..utils.db.models.user import User
 from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.rest_models import Job, Company, NewJobIn
 from ..utils.db.models.job import Job as JobTable
+from ..utils.mail_handler.job_mail_sender import JobEmailSender
+
 
 router = APIRouter()
 
@@ -59,11 +65,15 @@ def post_job(
     description="User can apply the Job, in that case we send an email to the"
                 " Job's publisher with the User contact (email)",
     status_code=status.HTTP_200_OK,
-    response_model=None
+    response_model=bool
 )
-def apply_job():
-    pass
-
+async def apply_job(
+        auth: Annotated[User, Depends(get_current_active_user)],
+        publisher_email: str,
+        cv_file: UploadFile = File(default=None)
+):
+    await JobEmailSender().apply_job_by_mail(publisher_email, auth.private_name, cv_file)
+    return True
 
 @router.get(
     "/jobs/{company_name}",
