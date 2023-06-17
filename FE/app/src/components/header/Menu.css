@@ -4,4 +4,12 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  height: 70%;
+}
+
+.menu-item {
+  width: max-content;
+  height: 100%;
+  font-size: 20px;
+  font-weight: 20px;
 }

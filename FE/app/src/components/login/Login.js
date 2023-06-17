@@ -1,45 +1,51 @@
 import LoginForm from "./LoginForm";
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
+import Carousel from 'react-bootstrap/Carousel';
+
 
 const Login = (props) => {
-  const loginHandler = (userData) => {
-    props.addButtonToMenu([
-      {
-        onclick: {},
-        data: "FEED",
-      },
-      {
-        onclick: {},
-        data: "משרות",
-      },
-      {
-        onclick: {},
-        data: "פרופיל",
-      },
-    ]);
-    props.login(true);
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
   };
+
   return (
     <div className="login-page">
-      <div className="title">
-        <p>אתר הבוגרים, האקדמית תל אביב יפו</p>
+        <div>
+          <div>
+          <h1 className="title">אתר הבוגרים - האקדמית תל אביב יפו</h1>
+
+            <div className="login-description">
+              <h4>
+                קהילת בוגרי המכללה אקדמית תל אביב יפו
+              </h4>
+              <h5>
+                זה הזמן להצטרף לקהילת הבוגרות והבוגרים המשפיעה בישראל, בכדי שנוכל לעדכנך
+                במגוון אירועים, חדשות והזדמנויות לפיתוח קריירה
+              </h5>
+            </div>
+
+            <div className="login-center">
+              <Carousel activeIndex={index} onSelect={handleSelect}>
+                <Carousel.Item interval={1500}>
+                  <img src="./alumni1.jpg" className="login-carousel" />
+                </Carousel.Item>
+                <Carousel.Item interval={1500}>
+                  <img src="./alumni2.jpg" className="login-carousel" />
+                </Carousel.Item>
+                <Carousel.Item interval={1500}>
+                  <img src="./alumni3.jpg" className="login-carousel" />
+                </Carousel.Item>
+              </Carousel>
+            </div>
+            <div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="login-description">
-        <p>
-          קהילת בוגרי האקדמית תל אביב יפו.
-          <br />
-        </p>
-        זה הזמן להצטרף לקהילת הבוגרות והבוגרים המשפיעה בישראל, בכדי שנוכל לעדכנך
-        במגוון אירועים, חדשות והזדמנויות לפיתוח קריירה
-      </div>
-      <img
-        className="login-img"
-        src="https://www.mta.ac.il/he-il/PublishingImages/Lists/Plazma/AllItems/549A2139_RAW.jpg"
-        alt="תמונה של האקדמית"
-      />
-      <LoginForm className="login-form" onLogIn={loginHandler} />
-    </div>
   );
 };
+
 export default Login;
