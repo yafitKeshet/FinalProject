@@ -10,6 +10,9 @@ import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
+import Profile from "./components/profile/Profile";
+import Feed from "./components/feed/Feed";
+import Jobs from "./components/jobs/Jobs";
 
 const App = (props) => {
   // HEADER
@@ -47,21 +50,31 @@ const App = (props) => {
 
   // Main
   const toggleMain = () => {
+    console.log("Main button was clicked");
+
     setPages({
-      isLoginPage: true,
+      isMainPage: true,
       isRegisterPage: false,
       isGeneralInformationPage: false,
-      isFacultyPage: false,
+      isJobsPage: false,
       isFeedPage: false,
       isProfilePage: false,
     });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isMainPage");
+
+    console.log(
+      `page after main btn clicked: ${localStorage.getItem("currentPage")}`
+    );
   };
+
   // Pages
   const [pages, setPages] = useState({
-    isLoginPage: true,
+    isMainPage: true,
     isRegisterPage: false,
     isGeneralInformationPage: false,
-    isFacultyPage: false,
+    isJobsPage: false,
     isFeedPage: false,
     isProfilePage: false,
   });
@@ -71,10 +84,10 @@ const App = (props) => {
     console.log("General Info button was clicked");
 
     setPages({
-      isLoginPage: false,
+      isMainPage: false,
       isRegisterPage: false,
       isGeneralInformationPage: true,
-      isFacultyPage: false,
+      isJobsPage: false,
       isFeedPage: false,
       isProfilePage: false,
     });
@@ -86,6 +99,70 @@ const App = (props) => {
       `page after generalInfo btn clicked: ${localStorage.getItem(
         "currentPage"
       )}`
+    );
+  };
+
+  // Profile
+  const toggleProfile = () => {
+    console.log("Profile button was clicked");
+
+    setPages({
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isMainPage: false,
+      isProfilePage: true,
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isProfilePage");
+
+    console.log(
+      `page after profile btn clicked: ${localStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Feed
+  const toggleFeed = () => {
+    console.log("Feed button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: true,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isFeedPage");
+
+    console.log(
+      `page after feed btn clicked: ${localStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Jobs
+  // General Info
+  const toggleJobs = () => {
+    console.log("Jobs button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: true,
+      isFeedPage: false,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isJobsPage");
+
+    console.log(
+      `page after jobs btn clicked: ${localStorage.getItem("currentPage")}`
     );
   };
 
@@ -116,25 +193,16 @@ const App = (props) => {
       INITIAL_MENU[1],
       INITIAL_MENU[2],
       {
-        onclick: () => {
-          // Handle onclick action for "FEED" button
-          console.log("FEED button clicked");
-        },
+        onclick: toggleFeed,
         data: "FEED",
       },
       {
-        onclick: () => {
-          // Handle onclick action for "פרופיל" button
-          console.log("פרופיל button clicked");
-        },
+        onclick: toggleProfile,
         data: "פרופיל",
       },
 
       {
-        onclick: () => {
-          // Handle onclick action for "משרות" button
-          console.log("משרות button clicked");
-        },
+        onclick: toggleJobs,
         data: "משרות",
       },
       { onclick: onLogOut, data: "התנתק" },
@@ -162,11 +230,11 @@ const App = (props) => {
     const storedCurrentPage = localStorage.getItem("currentPage");
     if (storedCurrentPage)
       setPages((prev) => {
-        return { ...prev, isLoginPage: false, [storedCurrentPage]: true };
+        return { ...prev, isMainPage: false, [storedCurrentPage]: true };
       });
     else
       setPages((prev) => {
-        return { ...prev, isLoginPage: true };
+        return { ...prev, isMainPage: true };
       });
 
     console.log(`starting in page: ${storedCurrentPage}`);
@@ -197,10 +265,10 @@ const App = (props) => {
     setPages({
       isRegisterPage: false,
       isGeneralInformationPage: false,
-      isFacultyPage: false,
-      isFeedPage: false,
-      isLoginPage: false,
-      isProfilePage: true,
+      isJobsPage: false,
+      isFeedPage: true,
+      isMainPage: false,
+      isProfilePage: false,
     });
 
     // Save current page
@@ -227,14 +295,14 @@ const App = (props) => {
     setPages({
       isRegisterPage: false,
       isGeneralInformationPage: false,
-      isFacultyPage: false,
+      isJobsPage: false,
       isFeedPage: false,
-      isLoginPage: true,
+      isMainPage: true,
       isProfilePage: false,
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isLoginPage");
+    localStorage.setItem("currentPage", "isMainPage");
     console.log(`page after logout: ${localStorage.getItem("currentPage")}`);
   };
 
@@ -281,7 +349,7 @@ const App = (props) => {
         {/* GENERAL INFORMATION-PAGE */}
         {pages.isGeneralInformationPage && <GeneralInformation />}
         {/* MAIN-PAGE */}
-        {pages.isLoginPage && (
+        {pages.isMainPage && (
           <Login
             onLogin={loginHandler}
             onError={setError}
@@ -290,7 +358,11 @@ const App = (props) => {
         )}
 
         {/* FEED */}
+        {pages.isFeedPage && <Feed />}
         {/* PROFILE */}
+        {pages.isProfilePage && <Profile />}
+        {/* JOBS */}
+        {pages.isJobsPage && <Jobs />}
       </div>
     </div>
   );
