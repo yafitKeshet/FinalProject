@@ -15,6 +15,9 @@ import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
 
 const App = (props) => {
+  window.onbeforeunload = function () {
+    localStorage.clear();
+  };
   // HEADER
 
   // POPUP
