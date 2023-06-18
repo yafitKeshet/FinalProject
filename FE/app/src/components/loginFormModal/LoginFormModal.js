@@ -11,7 +11,10 @@ const LoginFormModal = (props) => {
       <div className={classes.backdrop} onClick={props.toggleLoginFormModal} />
       <Card className={classes.modal}>
         <header className={classes.loginHeader}>
-          <Cancel className={classes.loginCancelBtn} onClick={props.onCancel} />
+          <Cancel
+            className={classes.loginCancelBtn}
+            onClick={props.toggleLoginFormModal}
+          />
           <h2>התחברות</h2>
         </header>
         <Separator />
