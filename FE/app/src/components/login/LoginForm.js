@@ -125,6 +125,10 @@ const LoginForm = (props) => {
             token = token.replace(/(?:\r\n|\r|\n)/g, '');
             setUserToken(token);
             console.log(token);
+            // Save current page
+            sessionStorage.setItem("token", token);
+
+            console.log( `token saved: ${sessionStorage.getItem("token")}`);
             await getUserProfile(token);
             
           }

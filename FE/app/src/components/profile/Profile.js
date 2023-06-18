@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
@@ -10,25 +10,66 @@ import { faBriefcase } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 
+import axios from "axios";
 
 const Profile = () => {
-  const initialFormData = {
-    user_email: 'moryo@mta.ac.il',
-    password: '11',
-    private_name: 'mor',
-    last_name: 'yaakov',
-    birthday_date: '20.6.2013',
-    faculty: 'ComputerScience',
-    year: 'First',
-    job_company_name: 'dcs',
+  const userData = {
+    user_email: '',
+    password: '',
+    private_name: '',
+    last_name: '',
+    birthday_date: '',
+    faculty: '',
+    year: '',
+    job_company_name: '',
     job_start_year: 0,
-    job_description: 'string',
-    user_image: 'string',
+    job_description: '',
+    user_image: '',
+  }
+
+  // Get User Profile handler
+  const getUserProfile = async () => {
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem("token"),
+      },
+    };
+
+    try {
+      let userDataRequest = await axios.get('http://localhost:8080/profile', config);
+      if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        // Retrieve user profile data
+        let userData = userDataRequest.data;
+        // Update the form data with the retrieved values
+        setFormData({
+          user_email: userData.user_email,
+          password: userData.password,
+          private_name: userData.private_name,
+          last_name: userData.last_name,
+          birthday_date: userData.birthday_date,
+          faculty: userData.faculty,
+          year: userData.year,
+          job_company_name: userData.job_company_name,
+          job_start_year: userData.job_start_year,
+          job_description: userData.job_description,
+          user_image: userData.user_image,
+        });
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 401) {
+        // Unable to get user profile data
+        console.log('Failed to get user profile data');
+      }
+    }
   };
 
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+
   const [isEditMode, setIsEditMode] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
-  const [savedFormData, setSavedFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(userData);
+  const [savedFormData, setSavedFormData] = useState(userData);
 
   const toggleEditMode = () => {
     if (isEditMode) {
