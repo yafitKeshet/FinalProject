@@ -15,9 +15,6 @@ import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
 
 const App = (props) => {
-  window.onbeforeunload = function () {
-    localStorage.clear();
-  };
   // HEADER
 
   // POPUP
@@ -65,10 +62,10 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isMainPage");
+    sessionStorage.setItem("currentPage", "isMainPage");
 
     console.log(
-      `page after main btn clicked: ${localStorage.getItem("currentPage")}`
+      `page after main btn clicked: ${sessionStorage.getItem("currentPage")}`
     );
   };
 
@@ -96,10 +93,10 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isGeneralInformationPage");
+    sessionStorage.setItem("currentPage", "isGeneralInformationPage");
 
     console.log(
-      `page after generalInfo btn clicked: ${localStorage.getItem(
+      `page after generalInfo btn clicked: ${sessionStorage.getItem(
         "currentPage"
       )}`
     );
@@ -119,10 +116,10 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isProfilePage");
+    sessionStorage.setItem("currentPage", "isProfilePage");
 
     console.log(
-      `page after profile btn clicked: ${localStorage.getItem("currentPage")}`
+      `page after profile btn clicked: ${sessionStorage.getItem("currentPage")}`
     );
   };
 
@@ -140,10 +137,10 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isFeedPage");
+    sessionStorage.setItem("currentPage", "isFeedPage");
 
     console.log(
-      `page after feed btn clicked: ${localStorage.getItem("currentPage")}`
+      `page after feed btn clicked: ${sessionStorage.getItem("currentPage")}`
     );
   };
 
@@ -162,10 +159,10 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isJobsPage");
+    sessionStorage.setItem("currentPage", "isJobsPage");
 
     console.log(
-      `page after jobs btn clicked: ${localStorage.getItem("currentPage")}`
+      `page after jobs btn clicked: ${sessionStorage.getItem("currentPage")}`
     );
   };
 
@@ -191,7 +188,7 @@ const App = (props) => {
           // Handle onclick action for "שלום" button
           console.log("שלום button clicked");
         },
-        data: `שלום ${localStorage.getItem("userName")}`,
+        data: `שלום ${sessionStorage.getItem("userName")}`,
       },
       INITIAL_MENU[1],
       INITIAL_MENU[2],
@@ -224,21 +221,23 @@ const App = (props) => {
 
   // Runs when the apps start
   useEffect(() => {
-    const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
+    const storedUserLoggedINInformation = sessionStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
       loggedInMenu();
     }
 
-    const storedCurrentPage = localStorage.getItem("currentPage");
+    let storedCurrentPage = sessionStorage.getItem("currentPage");
     if (storedCurrentPage)
       setPages((prev) => {
         return { ...prev, isMainPage: false, [storedCurrentPage]: true };
       });
-    else
+    else {
+      storedCurrentPage = "isMainPage";
       setPages((prev) => {
         return { ...prev, isMainPage: true };
       });
+    }
 
     console.log(`starting in page: ${storedCurrentPage}`);
   }, []);
@@ -249,10 +248,8 @@ const App = (props) => {
   const loginHandler = async (userData) => {
     // Save data of the user
     console.log("login: ", userData);
-    // localStorage.setItem("userData", userData);
-    localStorage.setItem("token", userData.token);
-    localStorage.setItem("userName", userData.userName);
-    // console.log(localStorage.getItem("userData"));
+    sessionStorage.setItem("token", userData.token);
+    sessionStorage.setItem("userName", userData.userName);
 
     // Close the login form modal
     setLoginFormModalOpen(false);
@@ -261,7 +258,7 @@ const App = (props) => {
     loggedInMenu();
 
     // Update user as LoggedIn
-    localStorage.setItem("isLoggedIn", "1");
+    sessionStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
 
     // Update current page
@@ -275,21 +272,21 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isProfilePage");
+    sessionStorage.setItem("currentPage", "isProfilePage");
 
-    console.log(`page after login: ${localStorage.getItem("currentPage")}`);
+    console.log(`page after login: ${sessionStorage.getItem("currentPage")}`);
   };
 
   //    LogOut handler
   const onLogOut = () => {
     // Update user as LogOut
     console.log("logout button clicked");
-    localStorage.removeItem("isLoggedIn", "0");
+    sessionStorage.removeItem("isLoggedIn", "0");
     setIsLoggedIn(false);
 
     // Remove data of the user
-    localStorage.removeItem("token");
-    localStorage.removeItem("userName");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userName");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -305,8 +302,8 @@ const App = (props) => {
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isMainPage");
-    console.log(`page after logout: ${localStorage.getItem("currentPage")}`);
+    sessionStorage.setItem("currentPage", "isMainPage");
+    console.log(`page after logout: ${sessionStorage.getItem("currentPage")}`);
   };
 
   return (
