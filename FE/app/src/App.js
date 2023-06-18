@@ -11,7 +11,6 @@ import Button from "./components/UI/Button";
 import Profile from './components/profile/Profile';
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
-import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import './Profile.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
@@ -9,11 +9,11 @@ import { faCalendar } from '@fortawesome/free-solid-svg-icons'
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
+import axios  from 'axios';
 
-import axios from "axios";
 
-const Profile = (props) => {
-  const userData = {
+const Profile = () => {
+  const userProfileData = {
     user_email: '',
     password: '',
     private_name: '',
@@ -25,7 +25,7 @@ const Profile = (props) => {
     job_start_year: 0,
     job_description: '',
     user_image: '',
-  }
+  };
 
   // Get User Profile handler
   const getUserProfile = async () => {
@@ -68,8 +68,8 @@ const Profile = (props) => {
   }, []);
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const [formData, setFormData] = useState(userData);
-  const [savedFormData, setSavedFormData] = useState(userData);
+  const [formData, setFormData] = useState(userProfileData);
+  const [savedFormData, setSavedFormData] = useState(userProfileData);
 
   const toggleEditMode = () => {
     if (isEditMode) {
@@ -229,7 +229,7 @@ const Profile = (props) => {
           )}
         </div>
         <div className="profile-fields">
-          <label>תמונת פרופיל<FontAwesomeIcon icon={faImage} size='lg' className='profileIcons' /></label>
+          <label>תמונת פרופיל<FontAwesomeIcon icon={faImage} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -238,18 +238,18 @@ const Profile = (props) => {
               onChange={handleChange}
             />
           ) : (
-            <span>{formData.user_image}</span>
+            <img src={formData.user_image} alt="Profile" />
           )}
         </div>
-
-        <button type="submit" className="save-button" style={{ display: isEditMode ? 'block' : 'none'}}>
-          Save
-        </button>
+        {isEditMode ? (
+          <div className="buttons">
+            <button type="submit">שמור</button>
+            <button onClick={toggleEditMode}>ביטול</button>
+          </div>
+        ) : (
+          <button onClick={toggleEditMode}>עריכת פרופיל</button>
+        )}
       </form>
-
-      <button className="edit-button" onClick={toggleEditMode} style={{backgroundColor: isEditMode? 'red': ''}}>
-        {isEditMode ? 'Cancel' : 'Edit'}
-      </button>
     </div>
   );
 };
