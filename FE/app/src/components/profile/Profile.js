@@ -6,14 +6,13 @@ import { faLock } from '@fortawesome/free-solid-svg-icons'
 import { faCakeCandles } from '@fortawesome/free-solid-svg-icons'
 import { faSchool } from '@fortawesome/free-solid-svg-icons'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons'
-import { faBriefcase} from '@fortawesome/free-solid-svg-icons'
-import { faUser} from '@fortawesome/free-solid-svg-icons'
-import { faImage} from '@fortawesome/free-solid-svg-icons'
+import { faBriefcase } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faImage } from '@fortawesome/free-solid-svg-icons'
 
 
 const Profile = () => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     user_email: 'moryo@mta.ac.il',
     password: '11',
     private_name: 'mor',
@@ -25,10 +24,19 @@ const Profile = () => {
     job_start_year: 0,
     job_description: 'string',
     user_image: 'string',
-  });
+  };
+
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  const [savedFormData, setSavedFormData] = useState(initialFormData);
 
   const toggleEditMode = () => {
-    setIsEditMode(!isEditMode);
+    if (isEditMode) {
+      setIsEditMode(false);
+      setFormData(savedFormData);
+    } else {
+      setIsEditMode(true);
+    }
   };
 
   const handleChange = (e) => {
@@ -40,16 +48,17 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform save operation or API call here
+    // Save the form data
+    setSavedFormData(formData);
     toggleEditMode();
   };
 
   return (
     <div className="profile-container">
       <h2 className='title'>עמוד פרופיל</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='profile-form' onSubmit={handleSubmit}>
         <div className="profile-fields">
-            <label><FontAwesomeIcon icon={faEnvelope} size="lg" style={{color: "#273f68",}} /> אימייל</label>
+          <label>דוא"ל<FontAwesomeIcon icon={faEnvelope} size="lg" style={{ color: "#273f68", }} /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -62,7 +71,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faLock} size="lg" />  סיסמא</label>
+          <label>סיסמא<FontAwesomeIcon icon={faLock} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -75,7 +84,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faUser} size="lg"/>  שם פרטי</label>
+          <label>שם פרטי<FontAwesomeIcon icon={faUser} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -88,7 +97,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faUser} size="lg"/>  שם משפחה</label>
+          <label>שם משפחה<FontAwesomeIcon icon={faUser} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -101,7 +110,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faCakeCandles} size="lg"/>  תאריך לידה</label>
+          <label>תאריך לידה<FontAwesomeIcon icon={faCakeCandles} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -114,7 +123,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faSchool} size="lg" />  פקולטה</label>
+          <label>פקולטה<FontAwesomeIcon icon={faSchool} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -127,7 +136,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faCalendar} size="lg"/>  שנת לימודים נוכחית/ בוגר</label>
+          <label>שנת לימודים נוכחית/ בוגר<FontAwesomeIcon icon={faCalendar} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -140,7 +149,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faBriefcase} size="lg"/>  שם חברה</label>
+          <label>שם חברה<FontAwesomeIcon icon={faBriefcase} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -153,7 +162,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faBriefcase} size="lg"/>  שנת תחילת עבודה</label>
+          <label>שנת תחילת עבודה<FontAwesomeIcon icon={faBriefcase} size="lg" /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -166,7 +175,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label> <FontAwesomeIcon icon={faBriefcase} size="lg" style={{ color: '#273f68' }}/>  תיאור העבודה</label>
+          <label>תיאור העבודה<FontAwesomeIcon icon={faBriefcase} size="lg" style={{ color: '#273f68' }} /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -179,7 +188,7 @@ const Profile = () => {
           )}
         </div>
         <div className="profile-fields">
-          <label><FontAwesomeIcon icon={faImage} size='lg' className='profileIcons'/>  תמונת פרופיל</label>
+          <label>תמונת פרופיל<FontAwesomeIcon icon={faImage} size='lg' className='profileIcons' /></label>
           {isEditMode ? (
             <input
               type="text"
@@ -192,12 +201,12 @@ const Profile = () => {
           )}
         </div>
 
-        <button type="submit" className="save-button" style={{ display: isEditMode ? 'block' : 'none' }}>
+        <button type="submit" className="save-button" style={{ display: isEditMode ? 'block' : 'none'}}>
           Save
         </button>
       </form>
 
-      <button className="edit-button" onClick={toggleEditMode}>
+      <button className="edit-button" onClick={toggleEditMode} style={{backgroundColor: isEditMode? 'red': ''}}>
         {isEditMode ? 'Cancel' : 'Edit'}
       </button>
     </div>

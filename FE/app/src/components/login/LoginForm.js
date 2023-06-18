@@ -124,6 +124,7 @@ const LoginForm = (props) => {
             // YAFIT TODO: move user to the main page
             token = token.replace(/(?:\r\n|\r|\n)/g, '');
             setUserToken(token);
+            console.log(token);
             await getUserProfile(token);
             
           }
