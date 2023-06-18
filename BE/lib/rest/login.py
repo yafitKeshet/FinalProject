@@ -1,12 +1,12 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from typing_extensions import Annotated
 
-from lib.utils.auth.decode_token import get_current_active_user
-from lib.utils.auth.generate_access_token import login_for_access_token
-from lib.utils.db.models.user import User
-from lib.utils.db.user_db import get_db_session, UserDBSession
-from lib.utils.mail_handler.mail_sender import EmailSender
-from lib.utils.rest_models import UserLogin, Login, ResetPasswordBody
+from ..utils.auth.decode_token import get_current_active_user
+from ..utils.auth.generate_access_token import login_for_access_token
+from ..utils.db.models.user import User
+from ..utils.db.user_db import get_db_session, UserDBSession
+from ..utils.mail_handler.mail_sender import EmailSender
+from ..utils.rest_models import UserLogin, Login, ResetPasswordBody
 
 router = APIRouter()
 
@@ -59,10 +59,15 @@ def login_to_profile(
     response_model=bool
 )
 def reset_password_first_step(
-        user: Annotated[User, Depends(get_current_active_user)],
+        user_email: str,
         db: UserDBSession = Depends(get_db_session),
 ):
-    EmailSender(db).send_mail_to_user(user.user_email)
+    # First - validate that user exists:
+    user = db.query(User).filter(User.user_email == user_email).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
+
+    EmailSender(db).send_mail_to_user(user_email)
     return True
 
 
@@ -76,21 +81,20 @@ def reset_password_first_step(
 )
 def reset_password_second_step(
         body: ResetPasswordBody,
-        user: Annotated[User, Depends(get_current_active_user)],
         db: UserDBSession = Depends(get_db_session),
 ):
     # First Assert that temp password is correct & delete the temp password entry from DB
-    existing_user_temp_password = db.get_user_temp_password_entry(user.user_email)
+    existing_user_temp_password = db.get_user_temp_password_entry(body.user_email)
     if not existing_user_temp_password:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, f"The user {user.user_email} is not in reset password process")
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"The user {body.user_email} is not in reset password process")
 
     if existing_user_temp_password.temp_password != body.temp_password:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"The temp password is incorrect for user {user.user_email}")
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"The temp password is incorrect for user {body.user_email}")
 
     db.delete(existing_user_temp_password)
 
     # Assign the new password to the User entry in User table
-    existing_user = db.get_user_query(user.user_email).first()
+    existing_user = db.get_user_query(body.user_email).first()
     existing_user.password = body.new_password
     db.add(existing_user)
 

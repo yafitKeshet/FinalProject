@@ -29,6 +29,7 @@ class Year(Enum):
     Third = "Third"
     Fourth = "Fourth"
     Fifth = "Fifth"
+    Graduated = "Graduated"
 
 
 class Rating(Enum):

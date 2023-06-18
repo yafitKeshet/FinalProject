@@ -5,9 +5,10 @@ from sqlalchemy.engine import Engine
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
-
 from .base import Base
+from .models.recommendations import Recommendation
 from .models.user import User
+from .models.course import Course
 from .models.user_temp_password import UserTempPassword
 
 
@@ -26,6 +27,14 @@ class UserDBSession(Session):
     def get_user_temp_password_entry(self, user_email) -> Optional[Type[UserTempPassword]]:
         return self.query(UserTempPassword).filter(UserTempPassword.user_email == user_email).first()
 
+    def get_course_query(self, course_name):
+        return self.query(Course).filter(Course.name == course_name)
+
+    def get_course_by_id(self, course_id):
+        return self.query(Course).filter(Course.course_id == course_id)
+
+    def get_recommendation_by_id(self, course_id):
+        return self.query(Recommendation).filter(Recommendation.course_id == course_id)
 
 class DBManager:
 
@@ -49,9 +58,7 @@ class DBManager:
     def get_db(self) -> UserDBSession:
         return UserDBSession(self._session_maker())
 
-
 db = None
-
 
 def initialize_db():
     global db
@@ -68,3 +75,4 @@ def get_db_session() -> UserDBSession:
         raise error
     finally:
         db_session.close()
+
