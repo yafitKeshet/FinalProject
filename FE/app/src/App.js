@@ -1,112 +1,214 @@
 import "./App.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/login/Login";
 import Header from "./components/header/Header";
 import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import Icons from "./components/icons/Icons";
 import Button from "./components/UI/Button";
 import Profile from './components/profile/Profile';
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
-// import LoginForm from "./components/login/LoginForm";
-
+import Register from "./components/register/Register";
+import Profile from "./components/profile/Profile";
+import Feed from "./components/feed/Feed";
+import Jobs from "./components/jobs/Jobs";
 
 const App = (props) => {
   // HEADER
-  //    Menu
-const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
-const [isShowProfile, setShowProfile] = useState(false);
 
+  // POPUP
+  const [isLoginFormModalOpen, setLoginFormModalOpen] = useState(false);
+  const [forgetPass, setForgetPass] = useState(false);
+  const [register, setRegister] = useState(false);
+
+  // Register
+  const registerHandler = () => {
+    console.log("Register was clicked");
+    setLoginFormModalOpen(false);
+    setRegister(true);
+  };
+  const onCancelRegister = () => {
+    setRegister(false);
+  };
+
+  // Forget password
+  const forgetPasswordHandler = () => {
+    console.log("Forget password was clicked");
+    setLoginFormModalOpen(false);
+    setForgetPass(true);
+  };
+  const onCancelForgetPassword = () => {
+    setForgetPass(false);
+  };
+
+  // Login
   const toggleLoginFormModal = () => {
-    console.log('Toggle login form modal');
+    console.log("Toggle login form modal");
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
-  const INITIAL_MENU = [
-    {
-      onclick: toggleLoginFormModal,
-      data:"התחברות/ הרשמה",
-    },
-    {
-      onclick: () => { console.log("General Info button was clicked"); },
-      data: "מידע כללי",
-    },
-    // {
-    //   onclick: {},
-    //   data: "פקולטות",
-    // },
-    // {
-    //   onclick: {},
-    //   data: "גלריה",
-    // },
-    // {
-    //   onclick: {},
-    //   data: "",
-  ];
+  // Main
+  const toggleMain = () => {
+    console.log("Main button was clicked");
 
-  const [menu, setMenu] = useState(INITIAL_MENU);
-  //    Add button to menu header- on login
-  const addButtonsToMenu = (props) => {
-    setMenu((prevMenu) => {
-      const newButtons = [
-        {
-          onclick: () => {
-            // Handle onclick action for "שלום" button
-            console.log("שלום button clicked");
-          },
-          data: `שלום ${localStorage.getItem("userName")}`,
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "FEED" button
-            console.log("דף הבית button clicked");
-          },
-          data: "דף הבית",
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "פרופיל" button
-            console.log("פרופיל button clicked");
-            setShowProfile(true);
-          },
-          data: "פרופיל",
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "מידע כללי" button
-            console.log("מידע כללי button clicked");
-          },
-          data: "מידע כללי",
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "משרות" button
-            console.log("משרות button clicked");
-          },
-          data: "משרות",
-        },
-        { onclick: onLogOut, data: "התנתק" }
-      ];
-      
-      // Exclude the first two elements of the previous menu (login/ signup & general info)
-      const updatedMenu = prevMenu.slice(2);
-  
-      // Concatenate the new buttons with the updated menu
-      return [...updatedMenu, ...newButtons];
+    setPages({
+      isMainPage: true,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
     });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isMainPage");
+
+    console.log(
+      `page after main btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
   };
 
   // Pages
   const [pages, setPages] = useState({
-    isLoginPage: false,
+    isMainPage: true,
     isRegisterPage: false,
     isGeneralInformationPage: false,
-    isFacultyPage: false,
+    isJobsPage: false,
     isFeedPage: false,
     isProfilePage: false,
   });
+
+  // General Info
+  const toggleGeneralInfo = () => {
+    console.log("General Info button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: true,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isGeneralInformationPage");
+
+    console.log(
+      `page after generalInfo btn clicked: ${sessionStorage.getItem(
+        "currentPage"
+      )}`
+    );
+  };
+
+  // Profile
+  const toggleProfile = () => {
+    console.log("Profile button was clicked");
+
+    setPages({
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isMainPage: false,
+      isProfilePage: true,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isProfilePage");
+
+    console.log(
+      `page after profile btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Feed
+  const toggleFeed = () => {
+    console.log("Feed button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: true,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isFeedPage");
+
+    console.log(
+      `page after feed btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Jobs
+  // General Info
+  const toggleJobs = () => {
+    console.log("Jobs button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: true,
+      isFeedPage: false,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isJobsPage");
+
+    console.log(
+      `page after jobs btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  //    Menu
+  const INITIAL_MENU = [
+    {
+      onclick: toggleLoginFormModal,
+      data: "התחברות/ הרשמה",
+    },
+    { onclick: toggleMain, data: "עמוד ראשי" },
+    {
+      onclick: toggleGeneralInfo,
+      data: "מידע כללי",
+    },
+  ];
+
+  const [menu, setMenu] = useState(INITIAL_MENU);
+  //    Add button to menu header- on login
+  const loggedInMenu = (props) => {
+    setMenu([
+      {
+        onclick: () => {
+          // Handle onclick action for "שלום" button
+          console.log("שלום button clicked");
+        },
+        data: `שלום ${sessionStorage.getItem("userName")}`,
+      },
+      INITIAL_MENU[1],
+      INITIAL_MENU[2],
+      {
+        onclick: toggleFeed,
+        data: "FEED",
+      },
+      {
+        onclick: toggleProfile,
+        data: "פרופיל",
+      },
+
+      {
+        onclick: toggleJobs,
+        data: "משרות",
+      },
+      { onclick: onLogOut, data: "התנתק" },
+    ]);
+  };
 
   //ERRORS
   const [error, setError] = useState();
@@ -115,34 +217,28 @@ const [isShowProfile, setShowProfile] = useState(false);
     setError();
   };
 
-  const [user, setUser] = useState({});
-
-  // Forget password
-  const [forgetPass, setForgetPass] = useState(false);
-
-  const forgetPasswordHandler = () => {
-    console.log("Forget password was clicked");
-    setLoginFormModalOpen(false); 
-    setForgetPass(true);
-  };
-  const onCancelForgetPassword = () => {
-    setForgetPass(false);
-  };
-  
-
   // BODY
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Runs when the apps start
   useEffect(() => {
-    const storedUserLoggedINInformation = localStorage.getItem("isLoggedIn");
+    const storedUserLoggedINInformation = sessionStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
+      loggedInMenu();
     }
 
-    const storedCurrentPage = localStorage.getItem("currentPage");
-    if (storedCurrentPage) setPages({ ...pages, [storedCurrentPage]: true });
-    else setPages({ ...pages, isLoginPage: true });
+    let storedCurrentPage = sessionStorage.getItem("currentPage");
+    if (storedCurrentPage)
+      setPages((prev) => {
+        return { ...prev, isMainPage: false, [storedCurrentPage]: true };
+      });
+    else {
+      storedCurrentPage = "isMainPage";
+      setPages((prev) => {
+        return { ...prev, isMainPage: true };
+      });
+    }
 
     console.log(`starting in page: ${storedCurrentPage}`);
   }, []);
@@ -151,45 +247,47 @@ const [isShowProfile, setShowProfile] = useState(false);
 
   //    Login handler
   const loginHandler = async (userData) => {
-    // setUser(userData);
-    // Save data of the user TODO
-    localStorage.setItem("userName", userData.name);
-    // console.log("after login- "  + userData.name, + " \n " + userData.mail + " \n " + userData.pass + " \n " + userData.token)
+    // Save data of the user
+    console.log("login: ", userData);
+    sessionStorage.setItem("token", userData.token);
+    sessionStorage.setItem("userName", userData.userName);
+
     // Close the login form modal
-    setLoginFormModalOpen(false); 
+    setLoginFormModalOpen(false);
 
     // Add buttons to the menu
-    addButtonsToMenu();
+    loggedInMenu();
 
     // Update user as LoggedIn
-    localStorage.setItem("isLoggedIn", "1");
+    sessionStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
 
     // Update current page
     setPages({
       isRegisterPage: false,
       isGeneralInformationPage: false,
-      isFacultyPage: false,
-      isFeedPage: false,
-      isLoginPage: false,
-      isProfilePage: true,
+      isJobsPage: false,
+      isFeedPage: true,
+      isMainPage: false,
+      isProfilePage: false,
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isProfilePage");
+    sessionStorage.setItem("currentPage", "isProfilePage");
 
-    console.log(`page after login: ${localStorage.getItem("currentPage")}`);
+    console.log(`page after login: ${sessionStorage.getItem("currentPage")}`);
   };
 
   //    LogOut handler
   const onLogOut = () => {
     // Update user as LogOut
     console.log("logout button clicked");
-    localStorage.setItem("isLoggedIn", "0");
+    sessionStorage.removeItem("isLoggedIn", "0");
     setIsLoggedIn(false);
 
-    // Remove data of the user TODO
-    localStorage.removeItem("user");
+    // Remove data of the user
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userName");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -198,15 +296,15 @@ const [isShowProfile, setShowProfile] = useState(false);
     setPages({
       isRegisterPage: false,
       isGeneralInformationPage: false,
-      isFacultyPage: false,
+      isJobsPage: false,
       isFeedPage: false,
-      isLoginPage: true,
+      isMainPage: true,
       isProfilePage: false,
     });
 
     // Save current page
-    localStorage.setItem("currentPage", "isLoginPage");
-    console.log(`page after logout: ${localStorage.getItem("currentPage")}`);
+    sessionStorage.setItem("currentPage", "isMainPage");
+    console.log(`page after logout: ${sessionStorage.getItem("currentPage")}`);
   };
 
   return (
@@ -218,32 +316,54 @@ const [isShowProfile, setShowProfile] = useState(false);
           onConfirm={onConfirmError}
         />
       )}
-      {forgetPass && <ForgetPassword onCancel={onCancelForgetPassword} />}
-      {isLoginFormModalOpen && (<LoginFormModal
-                              toggleLoginFormModal={toggleLoginFormModal} 
-                              onLogin = {loginHandler}
-                              onError={setError}
-                              onForgetPassword={forgetPasswordHandler}
-                            />
-)}      <div className="App">
+      {/* REGISTER-PAGE */}
+      {register && (
+        <Register
+          onCancel={onCancelRegister}
+          onError={setError}
+          onLogin={loginHandler}
+        />
+      )}
+      {/* FORGOT PASSWORD */}
+      {forgetPass && (
+        <ForgetPassword
+          onCancel={onCancelForgetPassword}
+          onError={setError}
+          onLogin={loginHandler}
+        />
+      )}
+      {/* LOGIN PASSWORD */}
+      {isLoginFormModalOpen && (
+        <LoginFormModal
+          toggleLoginFormModal={toggleLoginFormModal}
+          onLogin={loginHandler}
+          onError={setError}
+          onForgetPassword={forgetPasswordHandler}
+          onRegister={registerHandler}
+        />
+      )}
+      <div className="App">
         {/* HEADER */}
         <Header menu={menu} isLoggedIn={isLoggedIn} onLogOut={onLogOut} />
 
         {/* BODY */}
         {/* GENERAL INFORMATION-PAGE */}
         {pages.isGeneralInformationPage && <GeneralInformation />}
-        {/* lOGIN-PAGE */}
-        {pages.isLoginPage && (
+        {/* MAIN-PAGE */}
+        {pages.isMainPage && (
           <Login
             onLogin={loginHandler}
             onError={setError}
             onForgetPassword={forgetPasswordHandler}
           />
         )}
-        {/* REGISTER-PAGE */}
-        {/* FORGOT PASSWORD */}
+
         {/* FEED */}
-        {/* PROFILE */  isShowProfile && <Profile />}
+        {pages.isFeedPage && <Feed />}
+        {/* PROFILE */}
+        {pages.isProfilePage && <Profile />}
+        {/* JOBS */}
+        {pages.isJobsPage && <Jobs />}
       </div>
     </div>
   );

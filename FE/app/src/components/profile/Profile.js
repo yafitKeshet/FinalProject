@@ -12,7 +12,7 @@ import { faImage } from '@fortawesome/free-solid-svg-icons'
 
 import axios from "axios";
 
-const Profile = () => {
+const Profile = (props) => {
   const userData = {
     user_email: '',
     password: '',
@@ -253,5 +253,7 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;
+
+
+
