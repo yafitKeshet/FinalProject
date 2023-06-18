@@ -45,65 +45,17 @@ const App = (props) => {
     setLoginFormModalOpen((prevState) => !prevState);
   };
 
-  //    Menu
-  const INITIAL_MENU = [
-    {
-      onclick: toggleLoginFormModal,
-      data: "התחברות/ הרשמה",
-    },
-    {
-      onclick: () => {
-        console.log("General Info button was clicked");
-      },
-      data: "מידע כללי",
-    },
-  ];
-
-  const [menu, setMenu] = useState(INITIAL_MENU);
-  //    Add button to menu header- on login
-  const loggedInMenu = (props) => {
-    setMenu((prevMenu) => {
-      return [
-        {
-          onclick: () => {
-            // Handle onclick action for "שלום" button
-            console.log("שלום button clicked");
-          },
-          data: `שלום ${localStorage.getItem("userName")}`,
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "FEED" button
-            console.log("FEED button clicked");
-          },
-          data: "FEED",
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "פרופיל" button
-            console.log("פרופיל button clicked");
-          },
-          data: "פרופיל",
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "מידע כללי" button
-            console.log("מידע כללי button clicked");
-          },
-          data: "מידע כללי",
-        },
-        {
-          onclick: () => {
-            // Handle onclick action for "משרות" button
-            console.log("משרות button clicked");
-          },
-          data: "משרות",
-        },
-        { onclick: onLogOut, data: "התנתק" },
-      ];
+  // Main
+  const toggleMain = () => {
+    setPages({
+      isLoginPage: true,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isFacultyPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
     });
   };
-
   // Pages
   const [pages, setPages] = useState({
     isLoginPage: true,
@@ -113,6 +65,81 @@ const App = (props) => {
     isFeedPage: false,
     isProfilePage: false,
   });
+
+  // General Info
+  const toggleGeneralInfo = () => {
+    console.log("General Info button was clicked");
+
+    setPages({
+      isLoginPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: true,
+      isFacultyPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+    });
+
+    // Save current page
+    localStorage.setItem("currentPage", "isGeneralInformationPage");
+
+    console.log(
+      `page after generalInfo btn clicked: ${localStorage.getItem(
+        "currentPage"
+      )}`
+    );
+  };
+
+  //    Menu
+  const INITIAL_MENU = [
+    {
+      onclick: toggleLoginFormModal,
+      data: "התחברות/ הרשמה",
+    },
+    { onclick: toggleMain, data: "עמוד ראשי" },
+    {
+      onclick: toggleGeneralInfo,
+      data: "מידע כללי",
+    },
+  ];
+
+  const [menu, setMenu] = useState(INITIAL_MENU);
+  //    Add button to menu header- on login
+  const loggedInMenu = (props) => {
+    setMenu([
+      {
+        onclick: () => {
+          // Handle onclick action for "שלום" button
+          console.log("שלום button clicked");
+        },
+        data: `שלום ${localStorage.getItem("userName")}`,
+      },
+      INITIAL_MENU[1],
+      INITIAL_MENU[2],
+      {
+        onclick: () => {
+          // Handle onclick action for "FEED" button
+          console.log("FEED button clicked");
+        },
+        data: "FEED",
+      },
+      {
+        onclick: () => {
+          // Handle onclick action for "פרופיל" button
+          console.log("פרופיל button clicked");
+        },
+        data: "פרופיל",
+      },
+
+      {
+        onclick: () => {
+          // Handle onclick action for "משרות" button
+          console.log("משרות button clicked");
+        },
+        data: "משרות",
+      },
+      { onclick: onLogOut, data: "התנתק" },
+    ]);
+  };
 
   //ERRORS
   const [error, setError] = useState();
@@ -133,8 +160,14 @@ const App = (props) => {
     }
 
     const storedCurrentPage = localStorage.getItem("currentPage");
-    if (storedCurrentPage) setPages({ ...pages, [storedCurrentPage]: true });
-    else setPages({ ...pages, isLoginPage: true });
+    if (storedCurrentPage)
+      setPages((prev) => {
+        return { ...prev, isLoginPage: false, [storedCurrentPage]: true };
+      });
+    else
+      setPages((prev) => {
+        return { ...prev, isLoginPage: true };
+      });
 
     console.log(`starting in page: ${storedCurrentPage}`);
   }, []);
