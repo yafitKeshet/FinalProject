@@ -1,5 +1,5 @@
 import "./LoginForm.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
@@ -33,17 +33,6 @@ const LoginForm = (props) => {
   const [mailBackgroundColor, setMailBackgroundColor] = useState("");
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPass, setEnteredPass] = useState("");
-
-  
-  useEffect(() => {
-    // console.log("userName1: " + userName);
-    userData.name = userName;
-  }, [userName]);
-  
-  useEffect(() => {
-    // console.log("userToken1: " + userToken);
-    userData.token = userToken;
-  }, [userToken]);
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
