@@ -1,0 +1,43 @@
+.likes {
+  display: flex;
+  width: fit-content;
+  height: 25px;
+  gap: 2rem;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+.likes-amount {
+  color: #5f6379;
+  display: flex;
+  width: fit-content;
+  gap: 0.2rem;
+  align-items: center;
+}
+
+.likes-amount:hover {
+  background-color: #e5e5e5;
+}
+
+.likes-list {
+}
+.likes-list ul {
+  list-style: none;
+}
+.likes-list .not-all {
+  color: #5f6379;
+  border-bottom: #5f6379 solid 1px;
+}
+.likes-list li {
+  color: white;
+}
+.likes .backdrop {
+  position: absolute;
+  top: 25%;
+  /* top: 0; */
+  width: fit-content;
+  height: fit-content;
+  z-index: 1000;
+  border-radius: 5%;
+  background: rgba(0, 0, 0, 0.75);
+}
