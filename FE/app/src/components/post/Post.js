@@ -6,11 +6,16 @@ import Likes from "./Likes";
 import Button from "../UI/Button";
 
 const Post = (props) => {
+  const isAuthor = props.authorToken === sessionStorage.getItem("token");
+  const onDelete = () => {
+    //TODO DELETE
+    console.log(`post ${props.id} was deleted`);
+  };
   return (
     <Card className="post-card">
       <header className="post-header">
-        {props.isAuthor && (
-          <Button className="post-delete" onClick={props.onDelete}>
+        {isAuthor && (
+          <Button className="post-delete" onClick={onDelete}>
             מחק פוסט
           </Button>
         )}
