@@ -128,9 +128,11 @@ const LoginForm = (props) => {
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
 
             await getUserProfile(token);
+            console.log(userData);
             props.onLogin({
               token: userData.token,
               userName: userData.private_name,
+              userImg: userData.user_image,
             });
           }
         } catch (err) {

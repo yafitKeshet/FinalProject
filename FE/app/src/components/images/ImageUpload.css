@@ -1,0 +1,11 @@
+.auth-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+.auth-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.imageUpload-content {
+}

@@ -20,7 +20,6 @@ const Likes = (props) => {
     setData(newLikes);
   };
 
-  console.log(likes);
   return (
     <div className="likes">
       <div className="likes-amount" onClick={onLike}>

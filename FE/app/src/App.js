@@ -188,7 +188,26 @@ const App = (props) => {
           // Handle onclick action for "שלום" button
           console.log("שלום button clicked");
         },
-        data: `שלום ${sessionStorage.getItem("userName")}`,
+        data: (
+          <div
+            style={{
+              height: "100%",
+              alignItems: "center",
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            <img
+              src="./anonymousImg.png"
+              alt="תמונה של המשתמש"
+              width={40}
+              height={40}
+            />
+            שלום {sessionStorage.getItem("userName")}
+          </div>
+        ),
+
+        // `שלום ${sessionStorage.getItem("userName")}`,
       },
       INITIAL_MENU[1],
       INITIAL_MENU[2],
@@ -245,11 +264,13 @@ const App = (props) => {
   // Login-PAGE
 
   //    Login handler
-  const loginHandler = async (userData) => {
+  const loginHandler = (userData) => {
     // Save data of the user
     console.log("login: ", userData);
+
     sessionStorage.setItem("token", userData.token);
     sessionStorage.setItem("userName", userData.userName);
+    // sessionStorage.setItem("userImg", userData.userImg);
 
     // Close the login form modal
     setLoginFormModalOpen(false);
@@ -278,15 +299,17 @@ const App = (props) => {
   };
 
   //    LogOut handler
-  const onLogOut = () => {
+  const onLogOut = async () => {
     // Update user as LogOut
     console.log("logout button clicked");
     sessionStorage.removeItem("isLoggedIn", "0");
     setIsLoggedIn(false);
+    // let img = await compress(s);
 
     // Remove data of the user
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userName");
+    //sessionStorage.removeItem("userImg");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);

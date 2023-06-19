@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 export enum ScreenTypes {
   AppLoader = "appLoader",
   HomeScreen = "homeScreen",
