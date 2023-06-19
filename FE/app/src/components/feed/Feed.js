@@ -1,14 +1,18 @@
 import React, { useState, useRef } from "react";
 import "./Feed.css";
-import Post from "./Post";
+import Post from "../post/Post";
 
 const Feed = (props) => {
   const [posts, setPosts] = useState("");
   return (
     <Post
+      onError={props.onError}
+      isAuthor={true}
+      date="19/06/2023"
+      img="./users/yafitImg.jpg"
       likes={[]}
       id="1111"
-      title="פוסט"
+      title="כותרת"
       author="יפית מזרחי"
       content="hahaha"
     />

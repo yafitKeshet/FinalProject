@@ -184,10 +184,7 @@ const App = (props) => {
   const loggedInMenu = (props) => {
     setMenu([
       {
-        onclick: () => {
-          // Handle onclick action for "שלום" button
-          console.log("שלום button clicked");
-        },
+        onclick: toggleMain,
         data: (
           <div
             style={{
@@ -207,14 +204,11 @@ const App = (props) => {
             שלום {sessionStorage.getItem("userName")}
           </div>
         ),
-
-        // `שלום ${sessionStorage.getItem("userName")}`,
       },
-      INITIAL_MENU[1],
       INITIAL_MENU[2],
       {
         onclick: toggleFeed,
-        data: "FEED",
+        data: "עמוד הבית",
       },
       {
         onclick: toggleProfile,
@@ -294,7 +288,7 @@ const App = (props) => {
     });
 
     // Save current page
-    sessionStorage.setItem("currentPage", "isProfilePage");
+    sessionStorage.setItem("currentPage", "isFeedPage");
 
     console.log(`page after login: ${sessionStorage.getItem("currentPage")}`);
   };
@@ -382,7 +376,7 @@ const App = (props) => {
         )}
 
         {/* FEED */}
-        {pages.isFeedPage && <Feed />}
+        {pages.isFeedPage && <Feed onError={setError} />}
         {/* PROFILE */}
         {pages.isProfilePage && <Profile />}
         {/* JOBS */}
