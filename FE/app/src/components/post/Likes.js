@@ -9,33 +9,34 @@ const Likes = (props) => {
 
   const onLike = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      };
-
-      let likeRequest = await axios.patch(
-        "http://localhost:8080/feed/like?like=true&id=" + props.id,
-        config
-      );
-
-      if (likeRequest !== undefined && likeRequest.status === 200) {
-        console.log(`post ${props.id} was liked by ${props.userName}`);
-      }
+      fetch(
+        "http://localhost:8080/feed/like?like=" +
+          !likes.includes(props.userMail) +
+          "&id=" +
+          props.id,
+        {
+          headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+          method: "PATCH",
+        }
+      ).then((likeRequest) => {
+        console.log(likeRequest);
+        if (likeRequest !== undefined && likeRequest.status === 200) {
+          console.log(`post ${props.id} was liked by ${props.userMail}`);
+        }
+      });
     } catch (err) {
       console.log(err);
-      console.log("feed request failed");
+      console.log("like request failed");
     }
 
-    console.log(`post ${props.id} was deleted`);
-
     setData((prev) => {
-      let isLike = !prev.includes(props.userName);
+      let isLike = !prev.includes(props.userMail);
 
       let newLikes = isLike
-        ? [...prev, props.userName]
-        : prev.filter((name) => name !== props.userName);
+        ? [...prev, props.userMail]
+        : prev.filter((name) => name !== props.userMail);
 
       return newLikes;
     });
@@ -50,7 +51,7 @@ const Likes = (props) => {
   return (
     <div className="likes">
       <div className="likes-amount" onClick={onLike}>
-        <Like like={likes.includes(props.userName)} />
+        <Like like={likes.includes(props.userMail)} />
         <div>{likes.length}</div>
       </div>
 

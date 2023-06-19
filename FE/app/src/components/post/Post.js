@@ -62,7 +62,7 @@ const Post = (props) => {
         className="post-likes"
         likes={props.likes}
         id={props.id}
-        userName={userData.private_name + " " + userData.last_name}
+        userMail={userData.user_email}
       />
     </Card>
   );
