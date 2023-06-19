@@ -6,8 +6,8 @@ import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Icons from "./components/icons/Icons";
-import Button from "./components/UI/Button";
+// import Icons from "./components/icons/Icons";
+// import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
 import Profile from "./components/profile/Profile";
@@ -254,6 +254,7 @@ const App = (props) => {
     }
 
     console.log(`starting in page: ${storedCurrentPage}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Login-PAGE

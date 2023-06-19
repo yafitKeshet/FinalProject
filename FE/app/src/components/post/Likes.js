@@ -6,30 +6,35 @@ const Likes = (props) => {
   const [likes, setData] = useState(props.likes);
   const [displayAll, setDisplayAll] = useState(false);
 
+  const onLike = () => {
+    //TODO patch
+    setData((prev) => {
+      let isLike = !likes.includes(props.userName);
+
+      let newLikes = isLike
+        ? [...likes, props.userName]
+        : likes.filter((name) => name !== props.userName);
+
+      return newLikes;
+    });
+  };
+
   const onDisplayAll = () => {
     setDisplayAll((prev) => {
       return !prev;
     });
   };
 
-  const onLike = () => {
-    //props.id
-    let newLike = "lonnie";
-    let newLikes = [...likes, newLike];
-    console.log("like :)");
-    setData(newLikes);
-  };
-
   return (
     <div className="likes">
       <div className="likes-amount" onClick={onLike}>
-        <Like />
+        <Like like={likes.includes(props.userName)} />
         <div>{likes.length}</div>
       </div>
 
       <div className="likes-list">
-        {/* {likes.length === 0 && <div>לפוסט זה אין לייקים, תהיה הראשון?</div>} */}
-        {likes.length > 0 && !displayAll && (
+        {likes.length === 1 && <div className="not-all">{likes[0]}</div>}
+        {likes.length > 1 && !displayAll && (
           <div className="not-all" onClick={onDisplayAll}>
             {likes[0]} ועוד {likes.length - 1}
           </div>

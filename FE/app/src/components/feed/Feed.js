@@ -1,20 +1,21 @@
-import React, { useState, useRef } from "react";
+// import React, { useState } from "react";
 import "./Feed.css";
 import Post from "../post/Post";
 
 const Feed = (props) => {
-  const [posts, setPosts] = useState("");
+  // const [posts, setPosts] = useState("");
   return (
     <Post
       onError={props.onError}
-      isAuthor={true}
+      authorToken={sessionStorage.getItem("token")}
       date="19/06/2023"
       img="./users/yafitImg.jpg"
-      likes={[]}
+      likes={["yafit", "mor"]}
       id="1111"
       title="כותרת"
       author="יפית מזרחי"
       content="hahaha"
+      userName="yafit"
     />
   );
   /* <input

@@ -27,7 +27,12 @@ const Post = (props) => {
         <div className="post-content">{props.content} </div>
       </div>
       <Separator />
-      <Likes className="post-likes" likes={props.likes} id={props.id} />
+      <Likes
+        className="post-likes"
+        likes={props.likes}
+        id={props.id}
+        userName={props.userName}
+      />
     </Card>
   );
 };
