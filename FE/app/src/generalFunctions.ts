@@ -1,5 +1,3 @@
-import React from "react";
-
 export const getUserFromJWT = (token) => {
   const base64Url = token.split(".")[1]; // Get the payload part
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Convert from Base64Url to Base64
