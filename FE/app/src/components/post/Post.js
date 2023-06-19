@@ -4,11 +4,37 @@ import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import Likes from "./Likes";
 import Button from "../UI/Button";
+import { getUserFromJWT } from "../../generalFunctions.ts";
+import axios from "axios";
 
 const Post = (props) => {
-  const isAuthor = props.authorToken === sessionStorage.getItem("token");
-  const onDelete = () => {
-    //TODO DELETE
+  const userData = getUserFromJWT(sessionStorage.getItem("token"));
+  const isAuthor = props.authorMail === userData.user_email;
+
+  const onDelete = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      };
+
+      let deletePostsRequest = await axios.delete(
+        "http://localhost:8080/feed?id=" + props.id,
+        config
+      );
+      if (
+        deletePostsRequest !== undefined &&
+        deletePostsRequest.status === 200
+      ) {
+        console.log(`post ${props.id} was deleted`);
+        props.onDeletePost();
+      }
+    } catch (err) {
+      alert("משהו השתבש אנא נסה/נסי שנית");
+      console.log("feed request failed");
+    }
+
     console.log(`post ${props.id} was deleted`);
   };
   return (
@@ -36,7 +62,7 @@ const Post = (props) => {
         className="post-likes"
         likes={props.likes}
         id={props.id}
-        userName={props.userName}
+        userName={userData.private_name + " " + userData.last_name}
       />
     </Card>
   );
