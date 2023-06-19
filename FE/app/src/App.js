@@ -198,10 +198,11 @@ const App = (props) => {
             }}
           >
             <img
-              src="./anonymousImg.png"
+              src={sessionStorage.getItem("userImg")}
               alt="תמונה של המשתמש"
               width={40}
               height={40}
+              style={{ borderRadius: "50%" }}
             />
             שלום {sessionStorage.getItem("userName")}
           </div>
@@ -270,7 +271,7 @@ const App = (props) => {
 
     sessionStorage.setItem("token", userData.token);
     sessionStorage.setItem("userName", userData.userName);
-    // sessionStorage.setItem("userImg", userData.userImg);
+    sessionStorage.setItem("userImg", userData.userImg);
 
     // Close the login form modal
     setLoginFormModalOpen(false);
@@ -309,7 +310,7 @@ const App = (props) => {
     // Remove data of the user
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userName");
-    //sessionStorage.removeItem("userImg");
+    sessionStorage.removeItem("userImg");
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);

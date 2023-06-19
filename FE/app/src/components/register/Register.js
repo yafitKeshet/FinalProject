@@ -240,7 +240,7 @@ const Register = (props) => {
           let date = inputs.birthdayDate.split("-");
           let new_date = date[2] + "/" + date[1] + "/" + date[0];
           let finalImg =
-            inputs.user_image === "" ? "./anonymousImg.png" : inputs.userImage;
+            inputs.userImage === "" ? "./anonymousImg.png" : inputs.userImage;
           console.log(finalImg);
           let registerRequest = await axios.post(
             "http://localhost:8080/signUp",

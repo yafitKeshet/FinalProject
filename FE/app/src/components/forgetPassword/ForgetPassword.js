@@ -301,6 +301,7 @@ const ForgetPassword = (props) => {
                   props.onLogin({
                     token: userData.token,
                     userName: userData.private_name,
+                    userImg: userData.user_image,
                   });
                 }
               } catch (err) {
