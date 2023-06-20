@@ -5,6 +5,7 @@ import Button from "../UI/Button";
 import { getUserFromJWT } from "../../generalFunctions.ts";
 import Separator from "../UI/Separator";
 import Cancel from "../UI/SVG/Cancel";
+import axios from "axios";
 
 const UploadPost = (props) => {
   const userData = getUserFromJWT(sessionStorage.getItem("token"));
@@ -32,8 +33,32 @@ const UploadPost = (props) => {
     });
   };
 
-  const submitHandler = () => {
-    console.log("post upload :)");
+  const submitHandler = async () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    };
+
+    try {
+      let uploadPostRequest = await axios.post(
+        "http://localhost:8080/feed/new",
+        {
+          content: inputs.content,
+          title: inputs.title,
+          faculty: userData.faculty,
+        },
+        config
+      );
+
+      if (uploadPostRequest !== undefined && uploadPostRequest.status === 200) {
+        console.log(`post upload`);
+        props.onSubmit();
+      }
+    } catch (err) {
+      console.log("upload post request failed");
+      alert("משהו השתבש אנא נסה/נסי שוב");
+    }
   };
 
   return (
@@ -53,34 +78,38 @@ const UploadPost = (props) => {
       </div>
       <Separator className="separator" />
       <input
-        className="uploadPost-title"
-        type="text"
-        value={inputs.title}
-        onChange={titleChange}
-        placeholder="הכנס/י כותרת לפוסט"
-      />
-      <input
         className="uploadPost-content"
         type="text"
         value={inputs.content}
         onChange={contentChange}
         placeholder={`מה בא לך לשתף ${userData.private_name}?`}
-        onClick={!isOpen ? toggleIsOpen : () => {}}
+        onClick={toggleIsOpen}
       />
-      <textarea
-        className="uploadPost-content-text"
-        type="text"
-        value={inputs.content}
-        onChange={contentChange}
-        placeholder={`מה בא לך לשתף ${userData.private_name}?`}
-        onClick={!isOpen ? toggleIsOpen : () => {}}
-      />
-      <footer className="uploadPost-footer">
-        <Separator />
-        <Button className="uploadPost-submit" onClick={submitHandler}>
-          פרסם
-        </Button>
-      </footer>
+      <form onSubmit={submitHandler}>
+        <input
+          className="uploadPost-title"
+          type="text"
+          value={inputs.title}
+          onChange={titleChange}
+          placeholder="הכנס/י כותרת לפוסט"
+          required
+        />
+        <textarea
+          className="uploadPost-content-text"
+          type="text"
+          value={inputs.content}
+          onChange={contentChange}
+          placeholder={`מה בא לך לשתף ${userData.private_name}?`}
+          onClick={!isOpen ? toggleIsOpen : () => {}}
+          required
+        />
+        <footer className="uploadPost-footer">
+          <Separator className="separator" />
+          <Button className="uploadPost-submit" type="submit">
+            פרסם
+          </Button>
+        </footer>
+      </form>
     </Card>
   );
 };

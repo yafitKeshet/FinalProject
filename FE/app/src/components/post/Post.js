@@ -32,7 +32,7 @@ const Post = (props) => {
       }
     } catch (err) {
       alert("משהו השתבש אנא נסה/נסי שנית");
-      console.log("feed request failed");
+      console.log("delete post request failed");
     }
   };
   return (

@@ -64,8 +64,7 @@ const LoginForm = (props) => {
         config
       );
       if (userDataRequest !== undefined && userDataRequest.status === 200) {
-        console.log(userDataRequest);
-        // we got user profile data
+        console.log("we got user profile data -> on login");
 
         userData.private_name =
           userDataRequest.data.private_name.charAt(0).toUpperCase() +
@@ -128,7 +127,6 @@ const LoginForm = (props) => {
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
 
             await getUserProfile(token);
-            console.log(userData);
             props.onLogin({
               token: userData.token,
               userName: userData.private_name,

@@ -44,10 +44,7 @@
 }
 
 /********* OPEN ********/
-.uploadPost-card.open {
-  display: flex;
-  flex-direction: column;
-}
+
 .uploadPost-card.open .uploadPost-content {
   display: none;
 }
@@ -65,28 +62,37 @@ h2 {
   display: flex;
   gap: 1rem;
 }
-.uploadPost-card.open input {
-  padding: 0 1rem;
-  background-color: rgba(0, 0, 0, 0);
+.uploadPost-card.open form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .uploadPost-title {
-  width: 50%;
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: large;
+  padding: 0 !important;
+  width: fit-content;
   height: 2rem;
-  text-align: center;
-  border-color: rgba(0, 0, 0, 0.3);
+  text-align: right;
+  border-style: outset;
+
+  outline: none;
 }
 .uploadPost-content-text {
   border-color: rgba(0, 0, 0, 0);
   position: relative;
   text-align: right;
   height: 5rem;
+  resize: none;
   font-size: large;
-}
 
-/* 
-.uploadPost-card.open .uploadPost-form {
+  outline: none;
+}
+.uploadPost-footer {
   display: flex;
-  min-height: 3rem;
+  flex-direction: column;
   align-items: center;
-} */
+  justify-content: center;
+}

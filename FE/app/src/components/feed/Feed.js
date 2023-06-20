@@ -40,6 +40,7 @@ const Feed = (props) => {
       <UploadPost
         onCancel={cancelUploadPost}
         moveToProfile={props.moveToProfile}
+        onSubmit={getPosts}
       />
       {arr.map((post) => (
         <Post
