@@ -16,20 +16,15 @@
 .user-menu {
   display: flex;
   width: 80%;
-  padding-bottom: 10px;
-  align-items:flex-start;
-  align-content: start;
+  align-items: flex-start;
+  align-content: flex-start;
 }
-
-/* .buttons-menu {
-  justify-content: flex-end;
-} */
 
 .logo-header {
   justify-self: end;
 }
 
-.logo-header{
+.logo-header {
   height: 100px;
 }
 

@@ -2,30 +2,85 @@ import React, { useState } from "react";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
-import { StepTypes } from "../enums.ts";
+import { ForgetPassStepTypes } from "../enums/enums.ts";
 import "./ForgetPassword.css";
 import axios from "axios";
+import Cancel from "../UI/SVG/Cancel";
+
+/*
+  errors 
+  STEP 1: insert mail - check if mail exist 
+  STEP 2: insure mail - send code to mail 
+  STEP 3: insert code from mail - check if same code 
+  STEP 4: create new password & confirm pass - update data base - TODO yafit
+  -> Move to Profile Page - TODO yafit
+*/
+const userData = {
+  user_email: "",
+  private_name: "",
+  last_name: "",
+  birthday_date: "",
+  faculty: "",
+  year: "",
+  job_company_name: "",
+  job_start_year: 0,
+  job_description: "",
+  user_image: "",
+  cv_resume: "",
+  token: "",
+};
 
 const ForgetPassword = (props) => {
-  /*
-    errors //TODO
-    STEP 1: insert mail - check if mail exist //TODO -mor
-    STEP 2: insure mail - send code to mail //TODO -mor
-    STEP 3: insert code from mail - check if same code //TODO -mor
-    STEP 4: create new password & confirm pass - update data base //TODO -mor (not yet)
-    -> Move to Profile Page //TODO
-  */
+  // Get User Profile handler
+  const getUserProfile = async (token) => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    try {
+      let userDataRequest = await axios.get(
+        "http://localhost:8080/profile",
+        config
+      );
+      if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        console.log(userDataRequest);
+        // we got user profile data
 
+        userData.private_name =
+          userDataRequest.data.private_name.charAt(0).toUpperCase() +
+          userDataRequest.data.private_name.slice(1);
+        userData.birthday_date = userDataRequest.data.birthday_date;
+        userData.last_name =
+          userDataRequest.data.last_name.charAt(0).toUpperCase() +
+          userDataRequest.data.last_name.slice(1);
+        userData.faculty = userDataRequest.data.faculty;
+        userData.year = userDataRequest.data.year;
+        userData.job_company_name = userDataRequest.data.job_company_name;
+        userData.job_start_year = userDataRequest.data.job_start_year;
+        userData.job_description = userDataRequest.data.job_description;
+        userData.user_image = userDataRequest.data.user_image;
+        userData.cv_resume = userDataRequest.data.cv_resume;
+        userData.token = token;
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 401) {
+        // Unable to get user profile data
+        console.log("failed to get user profile data");
+        return;
+      }
+    }
+  };
   // STEPS
-  const [currentStep, setStep] = useState(StepTypes.step1);
+  const [currentStep, setStep] = useState(ForgetPassStepTypes.step1);
 
   const setBackStep = () => {
     switch (currentStep) {
-      case StepTypes.step2:
-        setStep(StepTypes.step1);
+      case ForgetPassStepTypes.step2:
+        setStep(ForgetPassStepTypes.step1);
         break;
-      case StepTypes.step3:
-        setStep(StepTypes.step2);
+      case ForgetPassStepTypes.step3:
+        setStep(ForgetPassStepTypes.step2);
         break;
       // eslint-disable-next-line no-fallthrough
       default:
@@ -35,14 +90,12 @@ const ForgetPassword = (props) => {
 
   const setNextStep = () => {
     switch (currentStep) {
-      case StepTypes.step1:
-        setStep(StepTypes.step2);
+      case ForgetPassStepTypes.step1:
+        setStep(ForgetPassStepTypes.step2);
         break;
-      case StepTypes.step2:
-        setStep(StepTypes.step3);
+      case ForgetPassStepTypes.step2:
+        setStep(ForgetPassStepTypes.step3);
         break;
-      case StepTypes.step3:
-        setStep(StepTypes.step4);
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -52,12 +105,12 @@ const ForgetPassword = (props) => {
   // HEADERS
   const getHeader = () => {
     switch (currentStep) {
-      case StepTypes.step1:
+      case ForgetPassStepTypes.step1:
         return "איתור החשבון שלך";
-      case StepTypes.step2:
+      case ForgetPassStepTypes.step2:
         return `נשלח לך קוד לדוא"ל שלך`;
-      case StepTypes.step3:
-        return "הזן קוד אבטחה";
+      case ForgetPassStepTypes.step3:
+        return "הזן קוד אבטחה וסיסמא חדשה";
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -67,14 +120,14 @@ const ForgetPassword = (props) => {
   // LABELS
   const getLabel = () => {
     switch (currentStep) {
-      case StepTypes.step1:
+      case ForgetPassStepTypes.step1:
         return [
           {
             label: ` יש להזין את כתובת הדוא"ל או מספר הטלפון כדי לחפש את החשבון שלך.`,
             key: "label1",
           },
         ];
-      case StepTypes.step2:
+      case ForgetPassStepTypes.step2:
         return [
           {
             label: ` נוכל לשלוח קוד התחברות אל:`,
@@ -85,8 +138,7 @@ const ForgetPassword = (props) => {
             key: "label3",
           },
         ];
-
-      case StepTypes.step3:
+      case ForgetPassStepTypes.step3:
         return [
           { label: `שלחנו את הקוד שלך אל: ${inputs.mail}`, key: "label4" },
 
@@ -99,6 +151,7 @@ const ForgetPassword = (props) => {
             key: "label6",
           },
         ];
+
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -106,7 +159,12 @@ const ForgetPassword = (props) => {
   };
 
   // INPUTS
-  const [inputs, setInputs] = useState({ mail: "", code: "" });
+  const [inputs, setInputs] = useState({
+    mail: "",
+    code: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   // Input change handlers
   const onMailChange = (event) => {
@@ -120,63 +178,160 @@ const ForgetPassword = (props) => {
     });
   };
 
+  const onPassChange = (event) => {
+    setInputs((prevState) => {
+      return { ...prevState, password: event.target.value };
+    });
+  };
+  const onConfirmPassChange = (event) => {
+    setInputs((prevState) => {
+      return { ...prevState, confirmPassword: event.target.value };
+    });
+  };
+
   // Submit handler
+  const resetMail = () => {
+    setInputs((prev) => {
+      return { ...prev, mail: "" };
+    });
+  };
+
+  const resetCode = () => {
+    setInputs((prev) => {
+      return { ...prev, code: "" };
+    });
+  };
+
   const submitHandler = async (event) => {
+    console.log(`submit handler: ${currentStep} -> in forgot password`);
     event.preventDefault();
     switch (currentStep) {
-      case StepTypes.step1:
-        // check mail exists (DONE) - mor
-        let checkMailRequest = await axios.get(
-          "http://localhost:8080/userValidation?user_email=" + inputs.mail
+      case ForgetPassStepTypes.step1:
+        // check mail exists
+        try {
+          let checkMailRequest = await axios.get(
+            "http://localhost:8080/userValidation?user_email=" + inputs.mail
           );
-        if (checkMailRequest !== undefined && checkMailRequest.status === 200) {
-          // user mail exists
-          console.log("user mail exists -> in forgot password");
-        }
-        else if (checkMailRequest !== undefined && checkMailRequest.status === 404)
-        {
-          // error msg -TODO -yafit 
-          // (this mail is not registered in our data base)
-          console.log("user mail doesn't exists -> in forgot password");
-        }
-        break;
-      case StepTypes.step2:
-        // send code to mail-mor
-        ///resetPasswordStepOne
-        let resetPasswordRequest = await axios.post("http://localhost:8080//resetPassword1Step");
-        if (resetPasswordRequest !== undefined && resetPasswordRequest.status === 200) {
-          console.log(resetPasswordRequest.data);
-          if (resetPasswordRequest.data == true){ // mail sent properly
-            console.log("user mail sent -> in forgot password");
+          if (
+            checkMailRequest !== undefined &&
+            checkMailRequest.status === 200
+          ) {
+            // user mail exists
+            console.log("user mail exists -> in forgot password");
+          }
+        } catch (err) {
+          if (err.response !== undefined && err.response.status === 404) {
+            console.log("user mail doesn't exists -> in forgot password");
+            props.onError({
+              title: "אין תוצאות חיפוש",
+              message: "החיפוש שלך לא החזיר תוצאות. נסה/נסי שוב עם מידע אחר.",
+            });
+            resetMail();
+            return;
           }
         }
-        else if (resetPasswordRequest !== undefined && resetPasswordRequest.status === 404)
-        {
-          // error msg -TODO -yafit 
-          // mail is not sent, some problem happend , try again
+        break;
+      case ForgetPassStepTypes.step2:
+        // send code to mail
+        try {
+          let resetPasswordRequest = await axios.post(
+            "http://localhost:8080/resetPassword1Step?user_email=" + inputs.mail
+          );
+          if (
+            resetPasswordRequest !== undefined &&
+            resetPasswordRequest.status === 200
+          ) {
+            console.log(resetPasswordRequest.data);
+            if (resetPasswordRequest.data === true) {
+              // mail sent properly
+              console.log("user mail sent -> in forgot password");
+            }
+          }
+        } catch (err) {
+          if (err.response !== undefined && err.response.status === 404) {
+            console.log(
+              "mail is not sent, some problem happend -> in forgot password"
+            );
+            props.onError({
+              title: "קוד אימות לא נשלח",
+              message: "קוד האימות לא נשלח, אנא נסה/נסי שוב.",
+            });
+            return;
+          }
         }
         break;
-      case StepTypes.step3:
-      // check if same code //TODO -mor
-      // error msg -TODO -yafit
-      let resetPasswordSecondRequest = await axios.get("http://localhost:8080//resetPassword2Step", 
-      {
-        temp_password: inputs.code,
-        new_password: inputs.code,
-      });
-      if (resetPasswordSecondRequest !== undefined && resetPasswordSecondRequest.status === 200) {
-        console.log(resetPasswordSecondRequest.data);
-        if (resetPasswordSecondRequest.data == true){ // mail sent properly
-          console.log("password changed -> in forgot password");
+      case ForgetPassStepTypes.step3:
+        // check if same code & save password
+        try {
+          let resetPasswordSecondRequest = await axios.post(
+            "http://localhost:8080/resetPassword2Step",
+            {
+              user_email: inputs.mail,
+              temp_password: inputs.code,
+              new_password: inputs.password,
+            }
+          );
+          if (
+            resetPasswordSecondRequest !== undefined &&
+            resetPasswordSecondRequest.status === 200
+          ) {
+            if (resetPasswordSecondRequest.data === true) {
+              console.log("save new password -> in forgot password");
+
+              // login the user
+              try {
+                let checkPasswordRequest = await axios.post(
+                  "http://localhost:8080/login",
+                  {
+                    user_email: inputs.mail,
+                    password: inputs.password,
+                  }
+                );
+
+                if (
+                  checkPasswordRequest !== undefined &&
+                  checkPasswordRequest.status === 200
+                ) {
+                  // good to go (mail and password are correct)
+                  console.log("good to go (mail and password are correct)");
+                  let token = checkPasswordRequest.data.jwt_token; // user token
+                  token = token.replace(/(?:\r\n|\r|\n)/g, "");
+
+                  await getUserProfile(token);
+                  props.onLogin({
+                    token: userData.token,
+                    userName: userData.private_name,
+                    userImg: userData.user_image,
+                  });
+                }
+              } catch (err) {
+                if (err.response !== undefined && err.response.status === 401) {
+                  // Unauthorized - password doesn't exists
+                  console.log("failed to connect - password doesn't exists");
+                  props.onError({
+                    title: "ההתחברות נכשלה",
+                    message: `סיסמא לא נכונה, אנא נסה סיסמא אחרת.
+                          אם שכחת סיסמא- אנא לחץ על שכחתי סיסמא.`,
+                  });
+                  return;
+                }
+              }
+            }
+          }
+        } catch (err) {
+          if (err.response !== undefined && err.response.status === 400) {
+            console.log("entered code was wrong -> in forgot password");
+            props.onError({
+              title: "קוד שגוי",
+              message: "המספר שהזנת לא תואם לקוד שלך. נסה/נסי שוב.",
+            });
+            resetCode();
+            return;
+          }
         }
-      }
-      else if (resetPasswordSecondRequest !== undefined && resetPasswordSecondRequest.status === 404)
-      {
-        // error msg -TODO -yafit 
-        // mail is not sent, some problem happend , try again
-        console.log("password not changed -> in forgot password");
-      }
-      break;
+
+        break;
+
       // eslint-disable-next-line no-fallthrough
       default:
         props.onCancel();
@@ -190,6 +345,7 @@ const ForgetPassword = (props) => {
       <div className="backdrop" onClick={props.onCancel} />
       <Card className="forget-card">
         <header className="forget-header">
+          <Cancel className="forget-cancel-btn" onClick={props.onCancel} />
           <h2> {getHeader()}</h2>
         </header>
         <Separator />
@@ -203,49 +359,75 @@ const ForgetPassword = (props) => {
             );
           })}
 
-          {currentStep === StepTypes.step1 && (
+          {currentStep === ForgetPassStepTypes.step1 && (
             <input
+              type="text"
               onChange={onMailChange}
               value={inputs.mail}
               className="forget-content"
-              type="text"
               placeholder="some@mta.ac.il"
-              pattern="[a-zA-Z0-9._%+-]+@mta.ac.il"
-              title="The email should be of the Academic Tel-Aviv Yafo."
+              pattern="[a-z0-9]+@mta\.ac\.il"
+              title="אנא הכנס/י מייל של המכללה האקדמדית תל אביב-יפו."
               required
             />
           )}
 
-          {currentStep === StepTypes.step3 && (
-            <input
-              onChange={onCodeChange}
-              value={inputs.code}
-              className="forget-content"
-              type="text"
-              placeholder="הזן/הזני את הקוד"
-              pattern="[0-9]{6}"
-              title="נא להכניס קוד בן 6 ספרות"
-              required
-            />
+          {currentStep === ForgetPassStepTypes.step3 && (
+            <>
+              <input
+                onChange={onCodeChange}
+                value={inputs.code}
+                className="forget-content"
+                type="text"
+                placeholder="הזן/הזני את הקוד"
+                pattern="[0-9]{6}"
+                title="נא להכניס קוד בן 6 ספרות"
+                required
+              />
+
+              <label className="forget-content" key={"label7"}>
+                הכנס/י סיסמא חדשה.
+              </label>
+              <input
+                onChange={onPassChange}
+                value={inputs.password}
+                className="forget-content"
+                type="password"
+                required
+              />
+              <label className="forget-content" key={"label8"}>
+                אנא חזור/חזרי על הסיסמא.
+              </label>
+              <input
+                onChange={onConfirmPassChange}
+                value={inputs.confirmPassword}
+                pattern={inputs.password.toString()}
+                title="סיסמאות לא תואמות."
+                className="forget-content"
+                type="password"
+                required
+              />
+            </>
           )}
         </div>
         <Separator />
 
         <footer className="forget-actions">
-          {(currentStep === StepTypes.step2 ||
-            currentStep === StepTypes.step3) && (
+          {(currentStep === ForgetPassStepTypes.step2 ||
+            currentStep === ForgetPassStepTypes.step3) && (
             <Button className="forget-back" onClick={setBackStep}>
-              {(currentStep === StepTypes.step2 && "זה לא המייל שלי") ||
-                (currentStep === StepTypes.step3 && "לא קבלתי קוד")}
+              {(currentStep === ForgetPassStepTypes.step2 &&
+                "זה לא המייל שלי") ||
+                (currentStep === ForgetPassStepTypes.step3 && "לא קבלתי קוד")}
             </Button>
           )}
-          <Button className="forget-cancel" onClick={props.onCancel}>
+          {/* <Button className="forget-cancel" onClick={props.onCancel}>
             ביטול
-          </Button>
+          </Button> */}
           <Button className="forget-send" type="submit">
-            {(currentStep === StepTypes.step1 && "חיפוש") ||
-              ((currentStep === StepTypes.step2 ||
-                currentStep === StepTypes.step3) &&
+            {(currentStep === ForgetPassStepTypes.step1 && "חיפוש") ||
+              ((currentStep === ForgetPassStepTypes.step2 ||
+                currentStep === ForgetPassStepTypes.step3) &&
                 "המשך")}
           </Button>
         </footer>

@@ -5,22 +5,34 @@ import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
 
+const userData = {
+  user_email: "",
+  private_name: "",
+  last_name: "",
+  birthday_date: "",
+  faculty: "",
+  year: "",
+  job_company_name: "",
+  job_start_year: 0,
+  job_description: "",
+  user_image: "",
+  cv_resume: "",
+  token: "",
+};
+
 const LoginForm = (props) => {
   // Input Colors
   const [passBorderColor, setPassBorderColor] = useState("#ccc");
   const [passBackgroundColor, setPassBackgroundColor] = useState("");
-  const [confirmPassBorderColor, setConfirmPassBorderColor] = useState("#ccc");
-  const [confirmPassBackgroundColor, setConfirmPassBackgroundColor] =
-    useState("");
+  // const [confirmPassBorderColor, setConfirmPassBorderColor] = useState("#ccc");
+  // const [confirmPassBackgroundColor, setConfirmPassBackgroundColor] =
+  // useState("");
 
   // Input fields
   const [mailBorderColor, setMailBorderColor] = useState("#ccc");
   const [mailBackgroundColor, setMailBackgroundColor] = useState("");
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPass, setEnteredPass] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userToken, setUserToken] = useState("");
-  const [enteredConfirmPass, setEnteredConfirmPass] = useState("");
 
   // Input fields handlers
   const mailChangeHandler = (event) => {
@@ -39,42 +51,45 @@ const LoginForm = (props) => {
     setPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
 
-  const confirmPassChangeHandler = (event) => {
-    let isValid =
-      event.target.value.length > 0 && event.target.value === enteredPass;
-    setEnteredConfirmPass(event.target.value);
-    setConfirmPassBorderColor(isValid ? "green" : "red");
-    setConfirmPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
-  };
-
   // Get User Profile handler
   const getUserProfile = async (token) => {
-     // MOR TODO: after using token as local storage: change the way you treat it here:
-            token = token.replace(/(?:\r\n|\r|\n)/g, '');
-            setUserToken(token);
-            const config = {
-              headers: {
-                Authorization: 'Bearer ' + token,
-              },
-            };
-            console.log(token);
-            try {
-              let userDataRequest = await axios.get('http://localhost:8080/profile', config);
-              if (userDataRequest !== undefined && userDataRequest.status === 200) {
-                // we got user profile data
-                let username = userDataRequest.data.private_name + " " + userDataRequest.data.last_name;
-                console.log("we got user profile data , userName: " + username);
-                setUserName(username);
-              }
-            } catch (err) {
-              if (err.response !== undefined && err.response.status === 401) {
-                // Unable to get user profile data
-                console.log("failed to get user profile data");
-                return;
-              }
-            }
-  };
+    const config = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    try {
+      let userDataRequest = await axios.get(
+        "http://localhost:8080/profile",
+        config
+      );
+      if (userDataRequest !== undefined && userDataRequest.status === 200) {
+        console.log("we got user profile data -> on login");
 
+        userData.private_name =
+          userDataRequest.data.private_name.charAt(0).toUpperCase() +
+          userDataRequest.data.private_name.slice(1);
+        userData.birthday_date = userDataRequest.data.birthday_date;
+        userData.last_name =
+          userDataRequest.data.last_name.charAt(0).toUpperCase() +
+          userDataRequest.data.last_name.slice(1);
+        userData.faculty = userDataRequest.data.faculty;
+        userData.year = userDataRequest.data.year;
+        userData.job_company_name = userDataRequest.data.job_company_name;
+        userData.job_start_year = userDataRequest.data.job_start_year;
+        userData.job_description = userDataRequest.data.job_description;
+        userData.user_image = userDataRequest.data.user_image;
+        userData.cv_resume = userDataRequest.data.cv_resume;
+        userData.token = token;
+      }
+    } catch (err) {
+      if (err.response !== undefined && err.response.status === 401) {
+        // Unable to get user profile data
+        console.log("failed to get user profile data");
+        return;
+      }
+    }
+  };
 
   // Login handler
   const submitHandler = async (event) => {
@@ -94,19 +109,30 @@ const LoginForm = (props) => {
         // user mail exists, need to check password
         console.log("user mail exists, checking password");
         try {
-          let checkPasswordRequest = await axios.post("http://localhost:8080/login", {
-            user_email: enteredMail,
-            password: enteredPass,
-          });
+          let checkPasswordRequest = await axios.post(
+            "http://localhost:8080/login",
+            {
+              user_email: enteredMail,
+              password: enteredPass,
+            }
+          );
 
-          if (checkPasswordRequest !== undefined && checkPasswordRequest.status === 200) {
+          if (
+            checkPasswordRequest !== undefined &&
+            checkPasswordRequest.status === 200
+          ) {
             // good to go (mail and password are correct)
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
-            // YAFIT TODO: move user to the main page
-            getUserProfile(token);
-          }
+            token = token.replace(/(?:\r\n|\r|\n)/g, "");
 
+            await getUserProfile(token);
+            props.onLogin({
+              token: userData.token,
+              userName: userData.private_name,
+              userImg: userData.user_image,
+            });
+          }
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
             // Unauthorized - password doesn't exists
@@ -130,22 +156,8 @@ const LoginForm = (props) => {
         return;
       }
     }
-
-    // TODO
-    // 3. Get user data.
-    const userData = {
-      mail: enteredMail,
-      pass: enteredPass,
-      name: userName,
-      token: userToken
-    };
-
     setEnteredMail("");
     setEnteredPass("");
-    setEnteredConfirmPass("");
-
-    // TODO
-    props.onLogin(userData);
   };
 
   // Register handler
@@ -162,8 +174,8 @@ const LoginForm = (props) => {
               value={enteredMail}
               onChange={mailChangeHandler}
               placeholder="some@mta.ac.il"
-              pattern="[a-z0-9._%+-]+@mta.ac.il"
-              title="The email should be of the Academic Tel-Aviv Yafo."
+              pattern="[a-z0-9]+@mta\.ac\.il"
+              title="אנא הכנס/י מייל של המכללה האקדמדית תל אביב-יפו."
               style={{
                 border: `2px solid ${mailBorderColor}`,
                 backgroundColor: `${mailBackgroundColor}`,
@@ -184,21 +196,6 @@ const LoginForm = (props) => {
               required
             ></input>
           </div>
-          {/* <div className="login-control">
-            <label>אימות סיסמא</label>
-            <input
-              type="password"
-              value={enteredConfirmPass}
-              onChange={confirmPassChangeHandler}
-              pattern={enteredPass.toString()}
-              style={{
-                border: `2px solid ${confirmPassBorderColor}`,
-                backgroundColor: `${confirmPassBackgroundColor}`,
-              }}
-              title="Password not match."
-              required
-            ></input>
-          </div> */}
         </div>
 
         <div className="login-actions">
@@ -208,15 +205,12 @@ const LoginForm = (props) => {
           </Button>
 
           {/* TODO: onClick */}
-          <Button
-            className="login-btn btn"
-            onClick={props.onForgetPassword}
-          >
+          <Button className="login-btn btn" onClick={props.onForgetPassword}>
             שכחתי סיסמא
           </Button>
           <Separator className="separator" />
           {/* TODO: onClick */}
-          <Button className="register-btn btn">
+          <Button className="register-btn btn" onClick={props.onRegister}>
             <p>
               אין לך משתמש ?
               <br />
