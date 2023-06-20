@@ -425,7 +425,7 @@ const Register = (props) => {
                             </option>
                           );
                         default:
-                          break;
+                          return {};
                       }
                     })}
                   </select>
@@ -480,7 +480,7 @@ const Register = (props) => {
                           );
 
                         default:
-                          break;
+                          return {};
                       }
                     })}
                   </select>

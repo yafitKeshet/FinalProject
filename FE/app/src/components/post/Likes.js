@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Likes.css";
-import axios from "axios";
 import Like from "../UI/SVG/Like";
 
 const Likes = (props) => {
