@@ -1,0 +1,92 @@
+.uploadPost-card {
+  position: relative;
+  width: 40%;
+  text-align: right;
+  padding: 1rem 2rem;
+}
+.uploadPost-card img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.separator {
+  margin-bottom: 1rem;
+}
+
+/******** CLOSE *********/
+
+.uploadPost-card.close {
+  display: flex;
+  gap: 1rem;
+}
+
+.uploadPost-card.close h2,
+.uploadPost-card.close h4,
+.uploadPost-card.close .separator,
+.uploadPost-card.close .uploadPost-title,
+.uploadPost-card.close .uploadPost-cancel,
+.uploadPost-card.close .uploadPost-content-text,
+.uploadPost-card.close .uploadPost-footer {
+  display: none;
+}
+.uploadPost-card.close input {
+  font-size: large;
+  border-color: rgba(0, 0, 0, 0);
+  padding: 0 1rem;
+  text-align: right;
+  border-radius: 50px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.uploadPost-card.close input:hover {
+  translate: 1sec;
+  background-color: rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease-in-out;
+}
+
+/********* OPEN ********/
+.uploadPost-card.open {
+  display: flex;
+  flex-direction: column;
+}
+.uploadPost-card.open .uploadPost-content {
+  display: none;
+}
+.uploadPost-cancel {
+  position: absolute;
+  left: 1rem;
+}
+h2 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #0a416e;
+}
+.uploadPost-card.open .uploadPost-author {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+.uploadPost-card.open input {
+  padding: 0 1rem;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.uploadPost-title {
+  width: 50%;
+  height: 2rem;
+  text-align: center;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+.uploadPost-content-text {
+  border-color: rgba(0, 0, 0, 0);
+  position: relative;
+  text-align: right;
+  height: 5rem;
+  font-size: large;
+}
+
+/* 
+.uploadPost-card.open .uploadPost-form {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+} */

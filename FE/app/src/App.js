@@ -377,7 +377,9 @@ const App = (props) => {
         )}
 
         {/* FEED */}
-        {pages.isFeedPage && <Feed onError={setError} />}
+        {pages.isFeedPage && (
+          <Feed onError={setError} moveToProfile={toggleProfile} />
+        )}
         {/* PROFILE */}
         {pages.isProfilePage && <Profile />}
         {/* JOBS */}

@@ -20,7 +20,6 @@ const Likes = (props) => {
           method: "PATCH",
         }
       ).then((likeRequest) => {
-        console.log(likeRequest);
         if (likeRequest !== undefined && likeRequest.status === 200) {
           console.log(`post ${props.id} was liked by ${props.userMail}`);
         }

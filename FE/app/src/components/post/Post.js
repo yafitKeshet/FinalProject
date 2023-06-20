@@ -34,8 +34,6 @@ const Post = (props) => {
       alert("משהו השתבש אנא נסה/נסי שנית");
       console.log("feed request failed");
     }
-
-    console.log(`post ${props.id} was deleted`);
   };
   return (
     <Card className="post-card">

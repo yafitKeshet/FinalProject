@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Feed.css";
 import Post from "../post/Post";
 import axios from "axios";
+import UploadPost from "../post/UploadPost";
 
 const Feed = (props) => {
   const [posts, setPosts] = useState({});
@@ -29,10 +30,17 @@ const Feed = (props) => {
     getPosts();
   }, []);
 
+  const cancelUploadPost = () => {
+    console.log("post cancel");
+  };
   let arr = Object.values(posts);
-  console.log(arr);
+  //console.log(arr);
   return (
     <div>
+      <UploadPost
+        onCancel={cancelUploadPost}
+        moveToProfile={props.moveToProfile}
+      />
       {arr.map((post) => (
         <Post
           onError={props.onError}
