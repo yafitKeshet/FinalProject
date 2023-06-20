@@ -28,6 +28,7 @@
   position: relative;
 }
 .post-header h2 {
+  text-align: right;
   margin: 0;
   font-size: 1.5rem;
   color: #0a416e;

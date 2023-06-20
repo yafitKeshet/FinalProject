@@ -1,0 +1,16 @@
+.feed {
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  height: 93vh;
+  overflow: hidden;
+}
+.feed-card {
+  padding-top: 1rem;
+  width: 80%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: scroll;
+}

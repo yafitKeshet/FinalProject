@@ -33,7 +33,8 @@ const UploadPost = (props) => {
     });
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (event) => {
+    event.preventDefault();
     const config = {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -53,6 +54,8 @@ const UploadPost = (props) => {
 
       if (uploadPostRequest !== undefined && uploadPostRequest.status === 200) {
         console.log(`post upload`);
+        toggleIsOpen();
+        setInputs({ title: "", content: "" });
         props.onSubmit();
       }
     } catch (err) {
