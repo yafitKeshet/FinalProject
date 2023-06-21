@@ -4,20 +4,15 @@ import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import Likes from "./Likes";
 import Button from "../UI/Button";
-import { getUserFromJWT } from "../../generalFunctions.ts";
 import axios from "axios";
+import { getConfig } from "../user/user.ts";
 
 const Post = (props) => {
-  const userData = getUserFromJWT(sessionStorage.getItem("token"));
-  const isAuthor = props.authorMail === userData.user_email;
+  const isAuthor = props.authorMail === props.user.user_email;
 
   const onDelete = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      };
+      const config = getConfig(props.user.token);
 
       let deletePostsRequest = await axios.delete(
         "http://localhost:8080/feed?id=" + props.id,
@@ -60,7 +55,7 @@ const Post = (props) => {
         className="post-likes"
         likes={props.likes}
         id={props.id}
-        userMail={userData.user_email}
+        userMail={props.user.user_email}
       />
     </Card>
   );

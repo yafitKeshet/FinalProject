@@ -4,10 +4,10 @@ import Post from "../post/Post";
 import axios from "axios";
 import UploadPost from "../post/UploadPost";
 import Card from "../UI/Card";
-import { getUserFromJWT } from "../../generalFunctions.ts";
 import Button from "../UI/Button";
+import { getConfig } from "../user/user.ts";
+
 const Feed = (props) => {
-  const userData = getUserFromJWT(sessionStorage.getItem("token"));
   const [posts, setPosts] = useState({});
   const [filter, setFilter] = useState(false);
 
@@ -28,7 +28,7 @@ const Feed = (props) => {
   const filterPosts = () => {
     let filtered = posts;
     filtered = filtered.filter((post) => {
-      return post.author.faculty === userData.faculty;
+      return post.author.faculty === props.user.faculty;
     });
 
     setPosts(filtered);
@@ -36,11 +36,7 @@ const Feed = (props) => {
 
   const getPosts = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      };
+      const config = getConfig(props.user.token);
 
       let postsRequest = await axios.get("http://localhost:8080/feed", config);
       if (postsRequest !== undefined && postsRequest.status === 200) {
@@ -57,10 +53,13 @@ const Feed = (props) => {
     console.log("post cancel");
   };
 
+  console.log(props.user);
+
   return (
     <div className="feed">
       <Card className="feed-card">
         <UploadPost
+          user={props.user}
           onCancel={cancelUploadPost}
           moveToProfile={props.moveToProfile}
           onSubmit={getPosts}
@@ -70,6 +69,7 @@ const Feed = (props) => {
         </div>
         {Object.values(posts).map((post) => (
           <Post
+            user={props.user}
             authorMail={post.author.user_email}
             date="19/06/2023"
             img={post.author.user_image}

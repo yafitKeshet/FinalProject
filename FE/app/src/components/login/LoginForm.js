@@ -5,28 +5,10 @@ import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
 
-const userData = {
-  user_email: "",
-  private_name: "",
-  last_name: "",
-  birthday_date: "",
-  faculty: "",
-  year: "",
-  job_company_name: "",
-  job_start_year: 0,
-  job_description: "",
-  user_image: "",
-  cv_resume: "",
-  token: "",
-};
-
 const LoginForm = (props) => {
   // Input Colors
   const [passBorderColor, setPassBorderColor] = useState("#ccc");
   const [passBackgroundColor, setPassBackgroundColor] = useState("");
-  // const [confirmPassBorderColor, setConfirmPassBorderColor] = useState("#ccc");
-  // const [confirmPassBackgroundColor, setConfirmPassBackgroundColor] =
-  // useState("");
 
   // Input fields
   const [mailBorderColor, setMailBorderColor] = useState("#ccc");
@@ -51,53 +33,11 @@ const LoginForm = (props) => {
     setPassBackgroundColor(isValid ? "rgb(117, 250, 113)" : "#f86262");
   };
 
-  // Get User Profile handler
-  const getUserProfile = async (token) => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    };
-    try {
-      let userDataRequest = await axios.get(
-        "http://localhost:8080/profile",
-        config
-      );
-      if (userDataRequest !== undefined && userDataRequest.status === 200) {
-        console.log("we got user profile data -> on login");
-
-        userData.private_name =
-          userDataRequest.data.private_name.charAt(0).toUpperCase() +
-          userDataRequest.data.private_name.slice(1);
-        userData.birthday_date = userDataRequest.data.birthday_date;
-        userData.last_name =
-          userDataRequest.data.last_name.charAt(0).toUpperCase() +
-          userDataRequest.data.last_name.slice(1);
-        userData.faculty = userDataRequest.data.faculty;
-        userData.year = userDataRequest.data.year;
-        userData.job_company_name = userDataRequest.data.job_company_name;
-        userData.job_start_year = userDataRequest.data.job_start_year;
-        userData.job_description = userDataRequest.data.job_description;
-        userData.user_image = userDataRequest.data.user_image;
-        userData.cv_resume = userDataRequest.data.cv_resume;
-        userData.token = token;
-      }
-    } catch (err) {
-      if (err.response !== undefined && err.response.status === 401) {
-        // Unable to get user profile data
-        console.log("failed to get user profile data");
-        return;
-      }
-    }
-  };
-
   // Login handler
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    // DONE ↓
     // 1. Check if mail existing- userValidation.
-    // & DONE ↓
     // 2. Check if mail and password existing- login.
     let checkMailRequest = null;
 
@@ -126,12 +66,7 @@ const LoginForm = (props) => {
             let token = checkPasswordRequest.data.jwt_token; // user token
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
 
-            await getUserProfile(token);
-            props.onLogin({
-              token: userData.token,
-              userName: userData.private_name,
-              userImg: userData.user_image,
-            });
+            props.onLogin(token);
           }
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
