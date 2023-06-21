@@ -1,0 +1,98 @@
+.rows {
+  display: flex;
+  padding: 0;
+  gap: 0.5rem;
+  align-items: center;
+}
+.columns {
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.job-card {
+  width: 40%;
+  text-align: right;
+  padding: 1rem 2rem;
+}
+.job-header {
+  position: relative;
+}
+.job-pin {
+  height: 40px !important;
+  width: 40px !important;
+  position: absolute;
+  right: -3rem;
+  top: -2rem;
+}
+.job-delete {
+  border-radius: 5%;
+  position: absolute;
+  left: 0;
+}
+.job-title.rows {
+  gap: 1rem;
+}
+.job-title img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.job-title h2 {
+  align-self: flex-start;
+  text-align: right;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0a416e;
+}
+
+.job-details {
+  list-style: none;
+}
+.job-title ul {
+  margin: 0;
+  padding: 0;
+}
+
+.columns .job-detail {
+  margin-left: 22%;
+  align-self: flex-end;
+}
+
+.detail-icon {
+  height: 30px !important;
+  width: 30px !important;
+  border-radius: 50%;
+}
+
+.job-contents {
+  min-height: 3rem;
+}
+
+.job-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-content: center;
+  justify-content: flex-end;
+}
+.job-save,
+.job-send {
+  border-radius: 4px;
+  border: none;
+}
+
+.job-save {
+  background-color: #008000;
+}
+.job-save:hover {
+  background-color: #2cae2c;
+}
+.job-send {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background-color: #a52a2a;
+}
+.job-send:hover {
+  background-color: #b94343;
+}

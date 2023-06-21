@@ -6,6 +6,7 @@ import UploadPost from "../post/UploadPost";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import { getConfig } from "../user/user.ts";
+import Jobs from "../UI/SVG/Jobs";
 
 const Feed = (props) => {
   const [posts, setPosts] = useState({});
@@ -58,6 +59,7 @@ const Feed = (props) => {
   return (
     <div className="feed">
       <Card className="feed-card">
+        <Jobs />
         <UploadPost
           user={props.user}
           onCancel={cancelUploadPost}
