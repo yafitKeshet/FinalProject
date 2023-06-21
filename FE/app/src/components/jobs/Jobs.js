@@ -69,7 +69,7 @@ const Jobs = (props) => {
         <div className="upload-job">יהיה פה העלאת משרה</div>
         <div className="all-jobs">
           <JobsICN className="jobs-icon" />
-          <div className="open-job">
+          <div className="job-open">
             {tempJobs.map((job) => (
               <Job
                 isOpen={openJobId === job.job_id}
