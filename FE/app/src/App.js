@@ -203,13 +203,13 @@ const App = (props) => {
             }}
           >
             <img
-              src={sessionStorage.getItem("userImg")}
+              src={user.user_image}
               alt="תמונה של המשתמש"
               width={40}
               height={40}
               style={{ borderRadius: "50%" }}
             />
-            שלום {sessionStorage.getItem("userName")}
+            שלום {user.private_name}
           </div>
         ),
       },
