@@ -393,7 +393,7 @@ const App = (props) => {
           <Profile user={user} onUpdateUser={onUpdateUser} />
         )}
         {/* JOBS */}
-        {pages.isJobsPage && <Jobs />}
+        {pages.isJobsPage && <Jobs user={user} />}
       </div>
     </div>
   );
