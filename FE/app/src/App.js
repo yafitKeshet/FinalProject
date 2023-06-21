@@ -240,8 +240,9 @@ const App = (props) => {
     const storedUserLoggedINInformation = sessionStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
-      let user = getUserFromJWT(sessionStorage.getItem("token"));
-      setUser(user);
+      let token = sessionStorage.getItem("token");
+      let user = getUserFromJWT(token);
+      setUser({ ...user, token: token });
       loggedInMenu();
     }
 
@@ -266,9 +267,7 @@ const App = (props) => {
   //    Login handler
   const loginHandler = (token) => {
     let user = getUserFromJWT(token);
-    setUser((prev) => {
-      return { ...prev, token: token };
-    });
+    setUser({ ...user, token: token });
     console.log(user);
 
     // Save data of the use

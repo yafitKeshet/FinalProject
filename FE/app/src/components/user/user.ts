@@ -10,7 +10,6 @@ export const getConfig = (token) => {
 export const getUserProfile = async (token) => {
   const user = {
     private_name: "",
-
     birthday_date: "",
     last_name: "",
     faculty: "",

@@ -53,6 +53,8 @@ const Feed = (props) => {
     console.log("post cancel");
   };
 
+  console.log(props.user);
+
   return (
     <div className="feed">
       <Card className="feed-card">

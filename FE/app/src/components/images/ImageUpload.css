@@ -1,11 +1,19 @@
 .auth-wrapper {
   display: flex;
   gap: 1rem;
+  position: relative;
 }
 .auth-inner {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.imageUpload-content {
+
+.removeImg {
+  position: absolute;
+  left: 0;
+  font-size: 0.8rem;
+  border-radius: 5%;
+  padding: 0.2rem 0.5rem;
+  top: 0;
 }
