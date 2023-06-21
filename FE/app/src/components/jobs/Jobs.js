@@ -11,25 +11,27 @@ const Jobs = (props) => {
     number_of_employees: ["50", "100"],
   };
   return (
-    <Card className="jobs-card">
-      <Job
-        user={props.user}
-        job_id="string"
-        publisher_email="yafitmi@mta.ac.il"
-        published_time="21-06-2023"
-        applies={0}
-        title="גוגל מחפשת עובדים"
-        time_required="FullTime"
-        description="תיאוררררררררררר"
-        company={company}
-        faculty_relevance="ComputerScience"
-        experience="Junior"
-        key={Math.random()}
-        onDeleteJob={getJobs}
-      >
-        משרות
-      </Job>
-    </Card>
+    <div className="jobs">
+      <Card className="jobs-card">
+        <Job
+          user={props.user}
+          job_id="string"
+          publisher_email="yafitmi@mta.ac.il"
+          published_time="21-06-2023"
+          applies={0}
+          title="גוגל מחפשת עובדים"
+          time_required="FullTime"
+          description="תיאוררררררררררר"
+          company={company}
+          faculty_relevance="ComputerScience"
+          experience="Junior"
+          key={Math.random()}
+          onDeleteJob={getJobs}
+        >
+          משרות
+        </Job>
+      </Card>
+    </div>
   );
 };
 export default Jobs;

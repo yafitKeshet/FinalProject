@@ -22,8 +22,8 @@
   height: 40px !important;
   width: 40px !important;
   position: absolute;
-  right: -3rem;
-  top: -2rem;
+  right: -2.5rem;
+  top: -1.8rem;
 }
 .job-delete {
   border-radius: 5%;
@@ -55,7 +55,6 @@
 }
 
 .columns .job-detail {
-  margin-left: 22%;
   align-self: flex-end;
 }
 

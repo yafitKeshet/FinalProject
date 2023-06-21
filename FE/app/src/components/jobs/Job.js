@@ -44,7 +44,7 @@ const Job = (props) => {
 
   return (
     <Card className="job-card columns">
-      <header className="job-header">
+      <header className="job-header columns">
         <Pin className="job-pin" />
         {isAuthor && (
           <Button className="job-delete" onClick={onDelete}>
@@ -85,6 +85,7 @@ const Job = (props) => {
           <li className="job-detail rows">
             <div>{props.publisher_email}</div>
             <img
+              onClick={onImg}
               className="detail-icon"
               src={publish_image}
               alt="תמונה של מפרסם המשרה"
