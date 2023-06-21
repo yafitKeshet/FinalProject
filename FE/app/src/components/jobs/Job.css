@@ -1,3 +1,6 @@
+.job-card.close {
+  display: none;
+}
 .rows {
   display: flex;
   padding: 0;

@@ -1,35 +1,90 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Jobs.css";
 import Job from "./Job";
 import Card from "../UI/Card";
+import JobsList from "./JobsList";
+
+const tempJobs = [
+  {
+    job_id: "1",
+    publisher_email: "yafitmi@mta.ac.il",
+    published_time: "21-06-2023",
+    applies: 0,
+    title: "גוגל מחפשת עובדים",
+    time_required: "FullTime",
+    description: "תיאוררררררררררר",
+    company: {
+      name: "google",
+      logo: "./companies/googleLogo.png",
+      number_of_employees: ["50", "100"],
+    },
+    faculty_relevance: "ComputerScience",
+    experience: "Junior",
+  },
+  {
+    job_id: "2",
+    publisher_email: "yaftmi@mta.ac.il",
+    published_time: "21-06-2023",
+    applies: 0,
+    title: "גוגל מחפשת עובדים",
+    time_required: "FullTime",
+    description: "תיאוררררררררררר",
+    company: {
+      name: "google",
+      logo: "./companies/googleLogo.png",
+      number_of_employees: ["50", "100"],
+    },
+    faculty_relevance: "ComputerScience",
+    experience: "Junior",
+  },
+  {
+    job_id: "3",
+    publisher_email: "yafitmi@mta.ac.il",
+    published_time: "21-06-2023",
+    applies: 0,
+    title: "גוגל מחפשת עובדים",
+    time_required: "FullTime",
+    description: "תיאוררררררררררר",
+    company: {
+      name: "google",
+      logo: "./companies/googleLogo.png",
+      number_of_employees: ["50", "100"],
+    },
+    faculty_relevance: "ComputerScience",
+    experience: "Junior",
+  },
+];
 
 const Jobs = (props) => {
+  //TODO
   const getJobs = () => {};
-  const company = {
-    name: "google",
-    logo: "./companies/googleLogo.png",
-    number_of_employees: ["50", "100"],
-  };
+
+  const [openJobId, setOpenJobId] = useState(tempJobs[0].job_id);
+  console.log(openJobId);
+
   return (
     <div className="jobs">
       <Card className="jobs-card">
-        <Job
-          user={props.user}
-          job_id="string"
-          publisher_email="yafitmi@mta.ac.il"
-          published_time="21-06-2023"
-          applies={0}
-          title="גוגל מחפשת עובדים"
-          time_required="FullTime"
-          description="תיאוררררררררררר"
-          company={company}
-          faculty_relevance="ComputerScience"
-          experience="Junior"
-          key={Math.random()}
-          onDeleteJob={getJobs}
-        >
-          משרות
-        </Job>
+        <JobsList items={tempJobs} />
+        <div className="open-job"></div>
+        {tempJobs.map((job) => (
+          <Job
+            isOpen={openJobId === job.job_id}
+            user={props.user}
+            job_id={job.job_id}
+            publisher_email={job.publisher_email}
+            published_time={job.published_time}
+            applies={job.applies}
+            title={job.title}
+            time_required={job.time_required}
+            description={job.description}
+            company={job.company}
+            faculty_relevance={job.faculty_relevance}
+            experience={job.experience}
+            key={Math.random()}
+            onDeleteJob={getJobs}
+          />
+        ))}
       </Card>
     </div>
   );

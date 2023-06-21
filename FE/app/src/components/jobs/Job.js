@@ -42,8 +42,9 @@ const Job = (props) => {
   const onSave = () => {};
   const onSubmit = () => {};
 
+  const open = props.isOpen;
   return (
-    <Card className="job-card columns">
+    <Card className={`job-card columns ${open ? "" : "close"}`}>
       <header className="job-header columns">
         <Pin className="job-pin" />
         {isAuthor && (
@@ -68,49 +69,55 @@ const Job = (props) => {
             </ul>
           </div>
         </div>
-        <ul className="job-details columns">
-          <li className="job-detail rows">
-            <div>{props.time_required}</div>
-            <Suitcase className="detail-icon" />
-          </li>
-          <li className="job-detail rows">
-            <div>
-              {props.company.number_of_employees[0] +
-                "-" +
-                props.company.number_of_employees[1] +
-                " עובדים"}
-            </div>
-            <Building className="detail-icon" />
-          </li>
-          <li className="job-detail rows">
-            <div>{props.publisher_email}</div>
-            <img
-              onClick={onImg}
-              className="detail-icon"
-              src={publish_image}
-              alt="תמונה של מפרסם המשרה"
-            />
-          </li>
-          <li className="job-detail rows">
-            <div>{props.experience}</div>
-            <CheckList className="detail-icon" />
-          </li>
-        </ul>
+        {open && (
+          <ul className="job-details columns">
+            <li className="job-detail rows">
+              <div>{props.time_required}</div>
+              <Suitcase className="detail-icon" />
+            </li>
+            <li className="job-detail rows">
+              <div>
+                {props.company.number_of_employees[0] +
+                  "-" +
+                  props.company.number_of_employees[1] +
+                  " עובדים"}
+              </div>
+              <Building className="detail-icon" />
+            </li>
+            <li className="job-detail rows">
+              <div>{props.publisher_email}</div>
+              <img
+                onClick={onImg}
+                className="detail-icon"
+                src={publish_image}
+                alt="תמונה של מפרסם המשרה"
+              />
+            </li>
+            <li className="job-detail rows">
+              <div>{props.experience}</div>
+              <CheckList className="detail-icon" />
+            </li>
+          </ul>
+        )}
       </header>
-      <Separator />
-      <div className="job-contents">
-        <div>{props.description}</div>
-      </div>
-      <Separator />
-      <div className="job-actions">
-        <Button className="job-save" onClick={onSave}>
-          שמירת משרה
-        </Button>
-        <Button className="job-send" onClick={onSubmit}>
-          הגש מועמדות
-          <Send />
-        </Button>
-      </div>
+      {open && <Separator />}
+      {open && (
+        <div className="job-contents">
+          <div>{props.description}</div>
+        </div>
+      )}
+      {open && <Separator />}
+      {open && (
+        <div className="job-actions">
+          <Button className="job-save" onClick={onSave}>
+            שמירת משרה
+          </Button>
+          <Button className="job-send" onClick={onSubmit}>
+            הגש מועמדות
+            <Send />
+          </Button>
+        </div>
+      )}
     </Card>
   );
 };
