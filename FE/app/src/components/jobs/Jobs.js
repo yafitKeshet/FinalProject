@@ -3,6 +3,7 @@ import "./Jobs.css";
 import Job from "./Job";
 import Card from "../UI/Card";
 import JobsList from "./JobsList";
+import JobsICN from "../UI/SVG/JobsICN";
 
 const tempJobs = [
   {
@@ -65,26 +66,28 @@ const Jobs = (props) => {
   return (
     <div className="jobs">
       <Card className="jobs-card">
+        <JobsICN className="jobs-icon" />
+        <div className="open-job">
+          {tempJobs.map((job) => (
+            <Job
+              isOpen={openJobId === job.job_id}
+              user={props.user}
+              job_id={job.job_id}
+              publisher_email={job.publisher_email}
+              published_time={job.published_time}
+              applies={job.applies}
+              title={job.title}
+              time_required={job.time_required}
+              description={job.description}
+              company={job.company}
+              faculty_relevance={job.faculty_relevance}
+              experience={job.experience}
+              key={Math.random()}
+              onDeleteJob={getJobs}
+            />
+          ))}
+        </div>
         <JobsList items={tempJobs} />
-        <div className="open-job"></div>
-        {tempJobs.map((job) => (
-          <Job
-            isOpen={openJobId === job.job_id}
-            user={props.user}
-            job_id={job.job_id}
-            publisher_email={job.publisher_email}
-            published_time={job.published_time}
-            applies={job.applies}
-            title={job.title}
-            time_required={job.time_required}
-            description={job.description}
-            company={job.company}
-            faculty_relevance={job.faculty_relevance}
-            experience={job.experience}
-            key={Math.random()}
-            onDeleteJob={getJobs}
-          />
-        ))}
       </Card>
     </div>
   );

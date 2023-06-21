@@ -1,13 +1,24 @@
 .jobs-card {
-  padding-top: 1rem;
+  position: relative;
+  padding: 1rem;
   width: 80%;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow-y: scroll;
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  /* display: flex; */
+  /* gap: 1rem; */
+  /* overflow-y: scroll; */
 }
-
+.jobs-icon {
+  position: absolute;
+  width: 180px !important;
+  height: 150px !important;
+  rotate: -20deg;
+  top: -2.5rem;
+  left: -4rem;
+}
+.open-job {
+}
 .jobs {
   padding: 2rem 0;
   display: flex;

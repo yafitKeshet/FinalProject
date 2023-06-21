@@ -1,7 +1,7 @@
 import React from "react";
-import "./Jobs.css";
+import "./JobsICN.css";
 
-const Jobs = (props) => {
+const JobsICN = (props) => {
   return (
     <svg
       className={`jobs-icon  ${props.className}`}
@@ -36,4 +36,4 @@ const Jobs = (props) => {
   );
 };
 
-export default Jobs;
+export default JobsICN;
