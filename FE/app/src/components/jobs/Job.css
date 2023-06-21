@@ -1,6 +1,13 @@
 .job-card.close {
   display: none;
 }
+.job-card.list {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.chosen {
+  background-color: rgba(173, 216, 230, 0.3);
+}
 .rows {
   display: flex;
   padding: 0;

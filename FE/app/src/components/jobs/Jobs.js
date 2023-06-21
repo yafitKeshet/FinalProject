@@ -11,7 +11,7 @@ const tempJobs = [
     publisher_email: "yafitmi@mta.ac.il",
     published_time: "21-06-2023",
     applies: 0,
-    title: "גוגל מחפשת עובדים",
+    title: "משרה שאני פרסמתי",
     time_required: "FullTime",
     description: "תיאוררררררררררר",
     company: {
@@ -27,7 +27,7 @@ const tempJobs = [
     publisher_email: "yaftmi@mta.ac.il",
     published_time: "21-06-2023",
     applies: 0,
-    title: "גוגל מחפשת עובדים",
+    title: "משרה שלא אני פרסמתי",
     time_required: "FullTime",
     description: "תיאוררררררררררר",
     company: {
@@ -61,33 +61,41 @@ const Jobs = (props) => {
   const getJobs = () => {};
 
   const [openJobId, setOpenJobId] = useState(tempJobs[0].job_id);
-  console.log(openJobId);
+  console.log("open job id: ", openJobId);
 
   return (
     <div className="jobs">
       <Card className="jobs-card">
-        <JobsICN className="jobs-icon" />
-        <div className="open-job">
-          {tempJobs.map((job) => (
-            <Job
-              isOpen={openJobId === job.job_id}
-              user={props.user}
-              job_id={job.job_id}
-              publisher_email={job.publisher_email}
-              published_time={job.published_time}
-              applies={job.applies}
-              title={job.title}
-              time_required={job.time_required}
-              description={job.description}
-              company={job.company}
-              faculty_relevance={job.faculty_relevance}
-              experience={job.experience}
-              key={Math.random()}
-              onDeleteJob={getJobs}
-            />
-          ))}
+        <div className="upload-job">יהיה פה העלאת פוסט</div>
+        <div className="all-jobs">
+          <JobsICN className="jobs-icon" />
+          <div className="open-job">
+            {tempJobs.map((job) => (
+              <Job
+                isOpen={openJobId === job.job_id}
+                user={props.user}
+                job_id={job.job_id}
+                publisher_email={job.publisher_email}
+                published_time={job.published_time}
+                applies={job.applies}
+                title={job.title}
+                time_required={job.time_required}
+                description={job.description}
+                company={job.company}
+                faculty_relevance={job.faculty_relevance}
+                experience={job.experience}
+                key={Math.random()}
+                onDeleteJob={getJobs}
+              />
+            ))}
+          </div>
+          <JobsList
+            items={tempJobs}
+            user={props.user}
+            chosenJobId={openJobId}
+            onClick={setOpenJobId}
+          />
         </div>
-        <JobsList items={tempJobs} />
       </Card>
     </div>
   );
