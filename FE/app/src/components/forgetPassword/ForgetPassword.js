@@ -6,7 +6,6 @@ import { ForgetPassStepTypes } from "../enums/enums.ts";
 import "./ForgetPassword.css";
 import axios from "axios";
 import Cancel from "../UI/SVG/Cancel";
-import { getConfig } from "../user/user.ts";
 
 /*
   errors 
@@ -16,20 +15,6 @@ import { getConfig } from "../user/user.ts";
   STEP 4: create new password & confirm pass - update data base - TODO yafit
   -> Move to Profile Page - TODO yafit
 */
-const userData = {
-  user_email: "",
-  private_name: "",
-  last_name: "",
-  birthday_date: "",
-  faculty: "",
-  year: "",
-  job_company_name: "",
-  job_start_year: 0,
-  job_description: "",
-  user_image: "",
-  cv_resume: "",
-  token: "",
-};
 
 const ForgetPassword = (props) => {
   // STEPS

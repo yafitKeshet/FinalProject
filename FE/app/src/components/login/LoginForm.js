@@ -4,7 +4,6 @@ import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
-import { getUserProfile } from "../user/user.ts";
 
 const LoginForm = (props) => {
   // Input Colors

@@ -17,6 +17,12 @@ import { getUserFromJWT } from "./components/user/user.ts";
 
 const App = (props) => {
   const [user, setUser] = useState({});
+
+  const onUpdateUser = (token) => {
+    sessionStorage.setItem("token", token);
+    let user = getUserFromJWT(token);
+    setUser({ ...user, token: token });
+  };
   // HEADER
 
   // POPUP
@@ -268,7 +274,6 @@ const App = (props) => {
   const loginHandler = (token) => {
     let user = getUserFromJWT(token);
     setUser({ ...user, token: token });
-    console.log(user);
 
     // Save data of the use
     sessionStorage.setItem("token", token);
@@ -384,7 +389,9 @@ const App = (props) => {
           <Feed onError={setError} moveToProfile={toggleProfile} user={user} />
         )}
         {/* PROFILE */}
-        {pages.isProfilePage && <Profile />}
+        {pages.isProfilePage && (
+          <Profile user={user} onUpdateUser={onUpdateUser} />
+        )}
         {/* JOBS */}
         {pages.isJobsPage && <Jobs />}
       </div>
