@@ -241,7 +241,6 @@ const Register = (props) => {
           let new_date = date[2] + "/" + date[1] + "/" + date[0];
           let finalImg =
             inputs.userImage === "" ? "./anonymousImg.png" : inputs.userImage;
-          console.log(finalImg);
           let registerRequest = await axios.post(
             "http://localhost:8080/signUp",
             {
@@ -263,11 +262,7 @@ const Register = (props) => {
             console.log("register succeed");
             let token = registerRequest.data.jwt_token; // user token
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-            props.onLogin({
-              token: token,
-              userName: inputs.firstName,
-              userImg: finalImg,
-            });
+            props.onLogin(token);
           }
         } catch (err) {
           console.log(err);

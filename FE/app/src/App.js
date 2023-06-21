@@ -13,8 +13,10 @@ import Register from "./components/register/Register";
 import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
+import { getUserFromJWT } from "./components/user/user.ts";
 
 const App = (props) => {
+  const [user, setUser] = useState({});
   // HEADER
 
   // POPUP
@@ -238,6 +240,8 @@ const App = (props) => {
     const storedUserLoggedINInformation = sessionStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
+      let user = getUserFromJWT(sessionStorage.getItem("token"));
+      setUser(user);
       loggedInMenu();
     }
 
@@ -260,13 +264,15 @@ const App = (props) => {
   // Login-PAGE
 
   //    Login handler
-  const loginHandler = (userData) => {
-    // Save data of the user
-    console.log("login: ", userData);
+  const loginHandler = (token) => {
+    let user = getUserFromJWT(token);
+    setUser((prev) => {
+      return { ...prev, token: token };
+    });
+    console.log(user);
 
-    sessionStorage.setItem("token", userData.token);
-    sessionStorage.setItem("userName", userData.userName);
-    sessionStorage.setItem("userImg", userData.userImg);
+    // Save data of the use
+    sessionStorage.setItem("token", token);
 
     // Close the login form modal
     setLoginFormModalOpen(false);
@@ -298,14 +304,12 @@ const App = (props) => {
   const onLogOut = async () => {
     // Update user as LogOut
     console.log("logout button clicked");
-    sessionStorage.removeItem("isLoggedIn", "0");
+    sessionStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
-    // let img = await compress(s);
 
     // Remove data of the user
     sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userName");
-    sessionStorage.removeItem("userImg");
+    setUser({});
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -378,7 +382,7 @@ const App = (props) => {
 
         {/* FEED */}
         {pages.isFeedPage && (
-          <Feed onError={setError} moveToProfile={toggleProfile} />
+          <Feed onError={setError} moveToProfile={toggleProfile} user={user} />
         )}
         {/* PROFILE */}
         {pages.isProfilePage && <Profile />}
