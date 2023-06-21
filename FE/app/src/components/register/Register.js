@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
@@ -7,6 +7,7 @@ import axios from "axios";
 import "./Register.css";
 import Mark from "../UI/SVG/Mark";
 import Cancel from "../UI/SVG/Cancel";
+import ImageUpload from "../images/ImageUpload";
 
 /*
     errors 
@@ -145,7 +146,7 @@ const Register = (props) => {
   };
   const onUserImageChange = (event) => {
     setInputs((prevState) => {
-      return { ...prevState, userImage: event.target.value };
+      return { ...prevState, userImage: event };
     });
   };
 
@@ -238,7 +239,8 @@ const Register = (props) => {
         try {
           let date = inputs.birthdayDate.split("-");
           let new_date = date[2] + "/" + date[1] + "/" + date[0];
-
+          let finalImg =
+            inputs.userImage === "" ? "./anonymousImg.png" : inputs.userImage;
           let registerRequest = await axios.post(
             "http://localhost:8080/signUp",
             {
@@ -252,7 +254,7 @@ const Register = (props) => {
               job_company_name: inputs.jobCompanyName,
               job_start_year: 0,
               job_description: inputs.jobDescription,
-              user_image: inputs.userImage,
+              user_image: finalImg,
             }
           );
           if (registerRequest !== undefined && registerRequest.status === 200) {
@@ -260,7 +262,7 @@ const Register = (props) => {
             console.log("register succeed");
             let token = registerRequest.data.jwt_token; // user token
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-            props.onLogin({ token: token, userName: inputs.firstName });
+            props.onLogin(token);
           }
         } catch (err) {
           console.log(err);
@@ -418,7 +420,7 @@ const Register = (props) => {
                             </option>
                           );
                         default:
-                          break;
+                          return {};
                       }
                     })}
                   </select>
@@ -473,7 +475,7 @@ const Register = (props) => {
                           );
 
                         default:
-                          break;
+                          return {};
                       }
                     })}
                   </select>
@@ -531,15 +533,9 @@ const Register = (props) => {
                   type="text"
                 />
                 <div>
-                  <label className="register-content">העלה/העלי תמונה</label>
-                  <input
-                    onChange={onUserImageChange}
-                    type="file"
-                    value={inputs.userImage}
-                    id="img"
-                    className="register-content"
-                    name="img"
-                    accept="image/*"
+                  <ImageUpload
+                    content="אנא בחר/י תמונה"
+                    onUserImageChange={onUserImageChange}
                   />
                 </div>
               </div>

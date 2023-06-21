@@ -6,15 +6,22 @@ import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Icons from "./components/icons/Icons";
-import Button from "./components/UI/Button";
-import Profile from './components/profile/Profile';
+// import Icons from "./components/icons/Icons";
+// import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
+import { getUserFromJWT } from "./components/user/user.ts";
 
 const App = (props) => {
+  const [user, setUser] = useState({});
+
+  const onUpdateUser = (token) => {
+    sessionStorage.setItem("token", token);
+    let user = getUserFromJWT(token);
+    setUser({ ...user, token: token });
+  };
   // HEADER
 
   // POPUP
@@ -181,20 +188,34 @@ const App = (props) => {
 
   const [menu, setMenu] = useState(INITIAL_MENU);
   //    Add button to menu header- on login
-  const loggedInMenu = (props) => {
+  const loggedInMenu = (user) => {
     setMenu([
       {
-        onclick: () => {
-          // Handle onclick action for "שלום" button
-          console.log("שלום button clicked");
-        },
-        data: `שלום ${sessionStorage.getItem("userName")}`,
+        onclick: toggleMain,
+        data: (
+          <div
+            style={{
+              height: "100%",
+              alignItems: "center",
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            <img
+              src={user.user_image}
+              alt="תמונה של המשתמש"
+              width={40}
+              height={40}
+              style={{ borderRadius: "50%" }}
+            />
+            שלום {user.private_name}
+          </div>
+        ),
       },
-      INITIAL_MENU[1],
       INITIAL_MENU[2],
       {
         onclick: toggleFeed,
-        data: "FEED",
+        data: "עמוד הבית",
       },
       {
         onclick: toggleProfile,
@@ -224,7 +245,10 @@ const App = (props) => {
     const storedUserLoggedINInformation = sessionStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
-      loggedInMenu();
+      let token = sessionStorage.getItem("token");
+      let user = getUserFromJWT(token);
+      setUser({ ...user, token: token });
+      loggedInMenu(user);
     }
 
     let storedCurrentPage = sessionStorage.getItem("currentPage");
@@ -240,23 +264,24 @@ const App = (props) => {
     }
 
     console.log(`starting in page: ${storedCurrentPage}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Login-PAGE
 
   //    Login handler
-  const loginHandler = async (userData) => {
-    // Save data of the user
-    console.log("login: ", userData);
-    sessionStorage.setItem("token", userData.token);
-    sessionStorage.setItem("userName", userData.userName);
+  const loginHandler = (token) => {
+    let user = getUserFromJWT(token);
+    setUser({ ...user, token: token });
+
+    // Save data of the use
+    sessionStorage.setItem("token", token);
 
     // Close the login form modal
     setLoginFormModalOpen(false);
 
     // Add buttons to the menu
-    loggedInMenu();
-
+    loggedInMenu(user);
     // Update user as LoggedIn
     sessionStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
@@ -272,21 +297,21 @@ const App = (props) => {
     });
 
     // Save current page
-    sessionStorage.setItem("currentPage", "isProfilePage");
+    sessionStorage.setItem("currentPage", "isFeedPage");
 
     console.log(`page after login: ${sessionStorage.getItem("currentPage")}`);
   };
 
   //    LogOut handler
-  const onLogOut = () => {
+  const onLogOut = async () => {
     // Update user as LogOut
     console.log("logout button clicked");
-    sessionStorage.removeItem("isLoggedIn", "0");
+    sessionStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
 
     // Remove data of the user
     sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userName");
+    setUser({});
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -358,9 +383,13 @@ const App = (props) => {
         )}
 
         {/* FEED */}
-        {pages.isFeedPage && <Feed />}
+        {pages.isFeedPage && (
+          <Feed onError={setError} moveToProfile={toggleProfile} user={user} />
+        )}
         {/* PROFILE */}
-        {pages.isProfilePage && <Profile />}
+        {pages.isProfilePage && (
+          <Profile user={user} onUpdateUser={onUpdateUser} />
+        )}
         {/* JOBS */}
         {pages.isJobsPage && <Jobs />}
       </div>
