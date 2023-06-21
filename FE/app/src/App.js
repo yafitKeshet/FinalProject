@@ -189,7 +189,7 @@ const App = (props) => {
 
   const [menu, setMenu] = useState(INITIAL_MENU);
   //    Add button to menu header- on login
-  const loggedInMenu = (props) => {
+  const loggedInMenu = (user) => {
     setMenu([
       {
         onclick: toggleMain,
@@ -249,7 +249,7 @@ const App = (props) => {
       let token = sessionStorage.getItem("token");
       let user = getUserFromJWT(token);
       setUser({ ...user, token: token });
-      loggedInMenu();
+      loggedInMenu(user);
     }
 
     let storedCurrentPage = sessionStorage.getItem("currentPage");
@@ -282,8 +282,7 @@ const App = (props) => {
     setLoginFormModalOpen(false);
 
     // Add buttons to the menu
-    loggedInMenu();
-
+    loggedInMenu(user);
     // Update user as LoggedIn
     sessionStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
