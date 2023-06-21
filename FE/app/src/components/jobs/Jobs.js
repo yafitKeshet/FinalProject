@@ -66,7 +66,7 @@ const Jobs = (props) => {
   return (
     <div className="jobs">
       <Card className="jobs-card">
-        <div className="upload-job">יהיה פה העלאת פוסט</div>
+        <div className="upload-job">יהיה פה העלאת משרה</div>
         <div className="all-jobs">
           <JobsICN className="jobs-icon" />
           <div className="open-job">
