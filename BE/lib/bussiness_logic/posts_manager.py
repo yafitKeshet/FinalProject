@@ -3,6 +3,7 @@ import uuid
 from typing import List
 
 from fastapi import HTTPException
+from pydantic.datetime_parse import datetime
 from starlette import status
 
 from ..utils.db.models.post import Post
@@ -37,7 +38,7 @@ class PostsManager:
         post_to_add_dict = {
             Post.author_email.name: user.user_email,
             Post.faculty.name: user.faculty,
-            Post.post_id.name: str(uuid.uuid4())
+            Post.post_id.name: str(uuid.uuid4()),
         }
         post_to_add_dict.update(new_post.dict())
 
@@ -45,6 +46,7 @@ class PostsManager:
         self.db_session.commit()
         # Create response
         post_to_add_dict["author"] = self.db_session.get_user_query(user.user_email).first().dict()
+        post_to_add_dict["published_time"] = datetime.now()
         response = PostOut(**post_to_add_dict)
         return response
 
