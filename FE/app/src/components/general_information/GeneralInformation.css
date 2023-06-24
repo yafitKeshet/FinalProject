@@ -1,0 +1,87 @@
+.faculties,
+.about {
+  text-align: right;
+  padding: 0 5rem;
+}
+
+.generalInfo-title {
+  text-align: center;
+  font-size: 5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.75px;
+  margin-bottom: 1rem;
+}
+.faculties-grid {
+  display: grid;
+  column-gap: 6.4rem;
+  row-gap: 3.5rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+.faculty {
+  height: 370px;
+  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
+  border-radius: 11px;
+  overflow: hidden;
+  transition: all 0.4s;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.faculty:hover {
+  transform: translateY(-1.2rem);
+  box-shadow: 0 3.2rem 6.4rem rgba(0, 0, 0, 0.06);
+}
+.faculty-img {
+  width: 100%;
+  height: 75%;
+}
+.generalInfo-sub-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.75px;
+  padding: 1rem 0;
+  margin: 0;
+}
+.faculty h2 {
+  text-align: center;
+}
+.faculty-header {
+  background: white;
+  padding: 1rem 0;
+}
+
+.faculty-header h2 {
+  margin: 0;
+  color: #0a416e;
+}
+.about-contents.flex {
+  display: flex;
+  gap: 2rem;
+
+  align-items: center;
+}
+.faculty-contents {
+  height: 100%;
+  padding: 0 1rem;
+  text-align: right;
+}
+
+.about-contents img {
+  height: 10rem;
+}
+.about p {
+  padding-top: 0.2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  font-size: 1.5rem;
+}
+.about h5,
+.faculty-contents h5 {
+  /* letter-spacing: 0.1px; */
+  line-height: 1.1;
+  font-size: 1.5rem;
+  font-weight: 500;
+}

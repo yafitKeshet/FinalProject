@@ -1,12 +1,14 @@
-.icons{
-    list-style-type: none !important;
-    display: inline-flex;
-    vertical-align: middle;
-    gap: 10px;
-    align-items: start;
-    align-content: start;
-  }
+.icons {
+  margin-left: 3rem;
+  list-style-type: none !important;
+  display: inline-flex;
+  vertical-align: middle;
+  gap: 10px;
+  align-items: flex-start;
+  align-content: flex-start;
+  margin-right: 30%;
+}
 
-  path{
-    color: white;
-  }
+path {
+  color: white;
+}

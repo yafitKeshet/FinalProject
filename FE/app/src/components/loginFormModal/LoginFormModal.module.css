@@ -7,7 +7,20 @@
   z-index: 10;
   background: rgba(0, 0, 0, 0.75);
 }
-
+.loginHeader {
+  background: white;
+  padding-bottom: 1rem;
+}
+.loginHeader h2 {
+  text-align: center;
+  margin: 0;
+  color: #0a416e;
+}
+.loginCancelBtn {
+  position: absolute;
+  left: 3%;
+  top: 8%;
+}
 .modal {
   position: fixed;
   top: 30vh;
@@ -15,6 +28,7 @@
   width: 80%;
   z-index: 100;
   overflow: hidden;
+  padding: 1rem;
 }
 
 .okayBtn {
