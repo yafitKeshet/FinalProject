@@ -6,7 +6,7 @@ from fastapi.openapi.models import Response
 from typing_extensions import Annotated
 
 
-from ..utils.db.user_db import UserDBSession, get_db_session
+from ..utils.db.user_db import UserDBSession, get_db_session, db
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
 from ..utils.rest_models import UserProfileOut, UpdateUserProfile, UserCV
@@ -30,6 +30,20 @@ def get_profile(
         user: Annotated[User, Depends(get_current_active_user)]
 ):
     return UserProfileOut(**user.__dict__)
+
+@router.get(
+    "/profileByMail",
+    name="Get user profile by mail",
+    status_code=status.HTTP_200_OK,
+    response_model=UserProfileOut
+)
+def get_profile_by_mail(
+        email: str,
+        db: UserDBSession = Depends(get_db_session)
+
+):
+    profile = db.get_user_query(email).first()
+    return UserProfileOut(**profile.__dict__)
 
 
 # 200 - Success
