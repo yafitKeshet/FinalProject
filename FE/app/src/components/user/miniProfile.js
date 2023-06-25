@@ -14,7 +14,7 @@ const MiniProfile = (props) => {
   const onCancel = () => {
     props.onCancel(false);
   };
-  console.log(props.user.job_start_year);
+  console.log(props.user);
   return (
     <div className="mini-profile">
       <div className="backdrop" onClick={onCancel} />

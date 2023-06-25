@@ -96,7 +96,7 @@ input {
 svg.sticky {
   position: absolute;
   z-index: 1000;
-  top: 25%;
+  top: 6px;
   left: 5px;
 }
 input[type="date"] {
@@ -108,4 +108,24 @@ input[type="date"] {
 
 select {
   appearance: none;
+}
+.checkBox-div {
+  height: 3rem;
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+.checkBox-div input {
+  width: auto !important;
+}
+.register-description {
+  resize: none;
+  height: 100%;
+}
+input[type="number"] {
+}
+::-webkit-outer-spin-button,
+::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
