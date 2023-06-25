@@ -9,6 +9,8 @@ from .base import Base
 from .models.recommendations import Recommendation
 from .models.user import User
 from .models.course import Course
+from .models.question import Question
+from .models.question_comment import QuestionComment
 from .models.user_temp_password import UserTempPassword
 
 

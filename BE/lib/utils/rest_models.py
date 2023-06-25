@@ -205,7 +205,6 @@ class CommentOut(ProjectBaseModel):
 class QuestionNew(ProjectBaseModel):
     title: str
     content: str
-    faculty: Faculty
 
 
 class QuestionOut(ProjectBaseModel):

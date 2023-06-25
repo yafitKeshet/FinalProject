@@ -46,7 +46,7 @@ def get_all_questions(
     status_code=status.HTTP_200_OK,
     response_model=QuestionOut
 )
-def new_post(
+def new_question(
     new_question: QuestionNew,
     user: Annotated[User, Depends(get_current_active_user)],
     db: UserDBSession = Depends(get_db_session)
@@ -54,7 +54,7 @@ def new_post(
     new_question_id = str(uuid.uuid4())
     question_to_add_dict = {
         QuestionTable.author_email.name: user.user_email,
-        QuestionTable.faculty.name: user.faculty,
+        QuestionTable.faculty.name: user.faculty.name,
         QuestionTable.question_id.name: new_question_id
     }
     question_to_add_dict.update(new_question.dict())
@@ -62,8 +62,8 @@ def new_post(
     db.add(QuestionTable(**question_to_add_dict))
     db.commit()
     # Create response
-    new_created_question = db.query(QuestionTable).filter (QuestionTable.question_id == new_question_id).first()
-    question_to_add_dict["author"] = db.get_user_query(user.user_email).first().dict()
+    new_created_question = db.query(QuestionTable).filter (QuestionTable.question_id == new_question_id).first().__dict__
+    new_created_question["author"] = db.get_user_query(user.user_email).first().dict()
     response = QuestionOut(**new_created_question)
     return response
 
