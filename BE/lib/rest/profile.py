@@ -32,6 +32,22 @@ def get_profile(
     return UserProfileOut(**user.__dict__)
 
 
+
+@router.get(
+    "/profile/{user_email}",
+    name="Get user profile",
+    status_code=status.HTTP_200_OK,
+    response_model=UserProfileOut
+)
+def get_profile(
+    user: Annotated[User, Depends(get_current_active_user)],
+    user_email: str,
+    db: UserDBSession = Depends(get_db_session)
+):
+    user_desired = db.get_user_query(user_email).first()
+    return UserProfileOut(**user_desired.__dict__)
+
+
 # 200 - Success
 # 400 - invalid structure
 # 404 - User was not found
