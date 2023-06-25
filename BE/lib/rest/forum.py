@@ -41,6 +41,33 @@ def get_all_questions(
     return return_value
 
 
+@router.get(
+    "/forum/question/{question_id}",
+    name="Delete a question",
+    status_code=status.HTTP_200_OK,
+    response_model=QuestionOut
+)
+def get_singlequestion(
+    question_id: str,
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: UserDBSession = Depends(get_db_session)
+):
+    existing_question = db.query(QuestionTable).filter(QuestionTable.question_id == question_id).first()
+    if not existing_question:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Question was not found")
+
+    question = existing_question.__dict__
+    current_comments: List[dict] = []
+    for c in existing_question.question_comments:
+        c_as_dict = c.__dict__
+        c_as_dict["author"] = db.get_user_query(c.author_email).first().dict()
+        current_comments.append(c_as_dict)
+    question["question_comments"] = [CommentOut(**cc) for cc in current_comments]
+    question["author"] = db.get_user_query(existing_question.author_email).first().dict()
+    return_value = QuestionOut(**question)
+    return return_value
+
+
 @router.post(
     "/forum/newQuestion",
     name="Write new question",
