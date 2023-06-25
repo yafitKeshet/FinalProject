@@ -5,7 +5,7 @@ import Separator from "../UI/Separator";
 import Likes from "./Likes";
 import Button from "../UI/Button";
 import axios from "axios";
-import { getConfig } from "../user/user.ts";
+import { getConfig, getUserFromEmail } from "../user/user.ts";
 import MiniProfile from "../user/miniProfile";
 
 const Post = (props) => {
@@ -24,23 +24,24 @@ const Post = (props) => {
     if (isAuthor) {
       authorProfile = props.user;
     } else {
-      try {
-        let config = getConfig(props.user.token);
-        let authorProfileRequest = await axios.get(
-          "http://localhost:8080/profile/" + props.authorMail,
-          config
-        );
-        if (
-          authorProfileRequest !== undefined &&
-          authorProfileRequest.status === 200
-        ) {
-          console.log("we got author profile-> on feed");
-          authorProfile = authorProfileRequest.data;
-        }
-      } catch (err) {
-        console.log(err);
-      }
+      let authorProfileRequest = await getUserFromEmail({
+        token: props.user.token,
+        email: props.authorMail,
+      });
+      authorProfile = authorProfileRequest;
     }
+    setAuthorProfile({ isOpen: true, profile: authorProfile });
+  };
+
+  const userMailClicked = async (email) => {
+    console.log(email);
+    let authorProfile = {};
+    let authorProfileRequest = await getUserFromEmail({
+      token: props.user.token,
+      email: email,
+    });
+    authorProfile = authorProfileRequest;
+
     setAuthorProfile({ isOpen: true, profile: authorProfile });
   };
   const onDelete = async () => {
@@ -95,6 +96,7 @@ const Post = (props) => {
         likes={props.likes}
         id={props.id}
         userMail={props.user.user_email}
+        onClick={userMailClicked}
       />
     </Card>
   );
