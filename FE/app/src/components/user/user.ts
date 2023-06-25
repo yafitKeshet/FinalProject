@@ -9,6 +9,8 @@ export const getConfig = (token) => {
 };
 export const getUserProfile = async (token) => {
   const user = {
+    email: "",
+    password: "",
     private_name: "",
     birthday_date: "",
     last_name: "",
@@ -46,6 +48,8 @@ export const getUserProfile = async (token) => {
       user.user_image = userDataRequest.data.user_image;
       user.cv_resume = userDataRequest.data.cv_resume;
       user.token = token;
+      user.email = userDataRequest.data.user_email;
+      user.password = userDataRequest.data.password;
 
       return user;
     }
