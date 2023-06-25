@@ -159,7 +159,7 @@ def delete_comment(
 
 
 @router.patch(
-    "/forum/question/like",
+    "/forum/comment/like",
     name="Like a question Comment",
     description="Like OR unlike a question. We determine if user like or not according to the Likes set in comments scheme."
                 "FrontEnd - Notice: Update State OR Get request (on comments OR questions) should happen in order to update state)."
@@ -183,7 +183,7 @@ def like_question_comments(
     existing_comment.likes = likes
     db.add(existing_comment)
     db.commit()
-    existing_post = db.query(QuestionCommentTable).filter(QuestionCommentTable.comment_id == comment_id).first()
-    return list(existing_post.likes)
+    existing_comment = db.query(QuestionCommentTable).filter(QuestionCommentTable.comment_id == comment_id).first()
+    return list(existing_comment.likes)
 
 
