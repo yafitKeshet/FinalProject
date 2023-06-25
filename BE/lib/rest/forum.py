@@ -35,7 +35,8 @@ def get_all_questions(
             c_as_dict["author"] = db.get_user_query(c.author_email).first().dict()
             current_comments.append(c_as_dict)
         question["question_comments"] = [CommentOut(**cc) for cc in current_comments]
-        return_value.append(question)
+        question["author"] = db.get_user_query(q.author_email).first().dict()
+        return_value.append(QuestionOut(**question))
     return return_value
 
 
