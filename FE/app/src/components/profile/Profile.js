@@ -1,44 +1,45 @@
-import React, { useState, useEffect} from 'react';
-import './Profile.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
-import { faLock } from '@fortawesome/free-solid-svg-icons'
-import { faCakeCandles } from '@fortawesome/free-solid-svg-icons'
-import { faSchool } from '@fortawesome/free-solid-svg-icons'
-import { faCalendar } from '@fortawesome/free-solid-svg-icons'
-import { faBriefcase } from '@fortawesome/free-solid-svg-icons'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { faImage } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios';
-import {getUserFromJWT} from "../user/user.ts";
+import React, { useState, useEffect } from "react";
+import "./Profile.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faCakeCandles } from "@fortawesome/free-solid-svg-icons";
+import { faSchool } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { getUserFromJWT } from "../user/user.ts";
 
 const Profile = (props) => {
   const userProfileData = {
-    user_email: '',
-    password: '',
-    private_name: '',
-    last_name: '',
-    birthday_date: '',
-    faculty: '',
-    year: '',
-    job_company_name: '',
+    user_email: "",
+    password: "",
+    private_name: "",
+    last_name: "",
+    birthday_date: "",
+    faculty: "",
+    year: "",
+    job_company_name: "",
     job_start_year: 0,
-    job_description: '',
-    user_image: '',
+    job_description: "",
+    user_image: "",
   };
 
-  
-  
   // Get User Profile handler
   const getUserProfile = async () => {
     const config = {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     };
 
     try {
-      let userDataRequest = await axios.get('http://localhost:8080/profile', config);
+      let userDataRequest = await axios.get(
+        "http://localhost:8080/profile",
+        config
+      );
       if (userDataRequest !== undefined && userDataRequest.status === 200) {
         // Retrieve user profile data
         let userData = userDataRequest.data;
@@ -60,7 +61,7 @@ const Profile = (props) => {
     } catch (err) {
       if (err.response !== undefined && err.response.status === 401) {
         // Unable to get user profile data
-        console.log('Failed to get user profile data');
+        console.log("Failed to get user profile data");
       }
     }
   };
@@ -88,35 +89,29 @@ const Profile = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  
-  const changePassword = () => {
-   
-  };
+
+  const changePassword = () => {};
 
   const onUpdate = async () => {
     try {
-      fetch(
-        "http://localhost:8080/profile",
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: "Bearer " + props.user.token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            faculty: formData.faculty,
-            year: formData.year,
-            job_company_name: formData.job_company_name,
-            job_start_year: formData.job_start_year,
-            job_description: formData.job_description,
-            user_image: formData.user_image,
-          }),
-        }).then((profileRequest) => {
+      fetch("http://localhost:8080/profile", {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + props.user.token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          faculty: formData.faculty,
+          year: formData.year,
+          job_company_name: formData.job_company_name,
+          job_start_year: formData.job_start_year,
+          job_description: formData.job_description,
+          user_image: formData.user_image,
+        }),
+      }).then((profileRequest) => {
         if (profileRequest !== undefined && profileRequest.status === 200) {
           console.log("profileRequest- succeed");
-        }
-        else 
-        {
+        } else {
           // YAFIT TO DO - POPUP OF FAILED UPDATE
           console.log("profileRequest- failed");
         }
@@ -138,10 +133,18 @@ const Profile = (props) => {
 
   return (
     <div className="profile-container">
-      <h2 className='title'>עמוד פרופיל</h2>
-      <form className='profile-form' onSubmit={handleSubmit}>
+      <h2 className="title">עמוד פרופיל</h2>
+      <form className="profile-form" onSubmit={handleSubmit}>
         <div className="profile-fields">
-          <label>דוא"ל<FontAwesomeIcon icon={faEnvelope} size="lg" style={{ color: "#273f68", }} /></label>
+          <label>
+            דוא"ל
+            <FontAwesomeIcon
+              icon={faEnvelope}
+              className="profile-icon"
+              size="lg"
+              style={{ color: "#273f68" }}
+            />
+          </label>
           <span>{formData.user_email}</span>
           {/* {isEditMode ? (
             <input
@@ -169,7 +172,10 @@ const Profile = (props) => {
           )}
         </div> */}
         <div className="profile-fields">
-          <label>שם פרטי<FontAwesomeIcon icon={faUser} size="lg" /></label>
+          <label>
+            שם פרטי
+            <FontAwesomeIcon icon={faUser} className="profile-icon" size="lg" />
+          </label>
           <span>{formData.private_name}</span>
 
           {/* {isEditMode ? (
@@ -184,7 +190,10 @@ const Profile = (props) => {
           )} */}
         </div>
         <div className="profile-fields">
-          <label>שם משפחה<FontAwesomeIcon icon={faUser} size="lg" /></label>
+          <label>
+            שם משפחה
+            <FontAwesomeIcon icon={faUser} size="lg" className="profile-icon" />
+          </label>
           <span>{formData.last_name}</span>
 
           {/* {isEditMode ? (
@@ -199,7 +208,14 @@ const Profile = (props) => {
           )} */}
         </div>
         <div className="profile-fields">
-          <label>תאריך לידה<FontAwesomeIcon icon={faCakeCandles} size="lg" /></label>
+          <label>
+            תאריך לידה
+            <FontAwesomeIcon
+              icon={faCakeCandles}
+              size="lg"
+              className="profile-icon"
+            />
+          </label>
           <span>{formData.birthday_date}</span>
 
           {/* {isEditMode ? (
@@ -214,7 +230,14 @@ const Profile = (props) => {
           )} */}
         </div>
         <div className="profile-fields">
-          <label>פקולטה<FontAwesomeIcon icon={faSchool} size="lg" /></label>
+          <label>
+            פקולטה
+            <FontAwesomeIcon
+              icon={faSchool}
+              size="lg"
+              className="profile-icon"
+            />
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -227,7 +250,14 @@ const Profile = (props) => {
           )}
         </div>
         <div className="profile-fields">
-          <label>שנת לימודים נוכחית/ בוגר<FontAwesomeIcon icon={faCalendar} size="lg" /></label>
+          <label>
+            שנת לימודים נוכחית/ בוגר
+            <FontAwesomeIcon
+              icon={faCalendar}
+              size="lg"
+              className="profile-icon"
+            />
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -240,7 +270,14 @@ const Profile = (props) => {
           )}
         </div>
         <div className="profile-fields">
-          <label>שם חברה<FontAwesomeIcon icon={faBriefcase} size="lg" /></label>
+          <label>
+            שם חברה
+            <FontAwesomeIcon
+              icon={faBriefcase}
+              size="lg"
+              className="profile-icon"
+            />
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -253,7 +290,14 @@ const Profile = (props) => {
           )}
         </div>
         <div className="profile-fields">
-          <label>שנת תחילת עבודה<FontAwesomeIcon icon={faBriefcase} size="lg" /></label>
+          <label>
+            שנת תחילת עבודה
+            <FontAwesomeIcon
+              icon={faBriefcase}
+              size="lg"
+              className="profile-icon"
+            />
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -266,7 +310,15 @@ const Profile = (props) => {
           )}
         </div>
         <div className="profile-fields">
-          <label>תיאור העבודה<FontAwesomeIcon icon={faBriefcase} size="lg" style={{ color: '#273f68' }} /></label>
+          <label>
+            תיאור העבודה
+            <FontAwesomeIcon
+              icon={faBriefcase}
+              size="lg"
+              style={{ color: "#273f68" }}
+              className="profile-icon"
+            />
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -279,7 +331,14 @@ const Profile = (props) => {
           )}
         </div>
         <div className="profile-fields">
-          <label>תמונת פרופיל<FontAwesomeIcon icon={faImage} size="lg" /></label>
+          <label>
+            תמונת פרופיל
+            <FontAwesomeIcon
+              icon={faImage}
+              size="lg"
+              className="profile-icon"
+            />
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -293,7 +352,9 @@ const Profile = (props) => {
         </div>
         {isEditMode ? (
           <div className="buttons">
-            <button onClick={onUpdate} type="submit">שמור</button>
+            <button onClick={onUpdate} type="submit">
+              שמור
+            </button>
             <button onClick={toggleEditMode}>ביטול</button>
           </div>
         ) : (
@@ -305,12 +366,6 @@ const Profile = (props) => {
   );
 };
 export default Profile;
-
-
-
-
-
-
 
 // import React, { useState, useEffect} from 'react';
 // import './Profile.css';
@@ -324,7 +379,6 @@ export default Profile;
 // import { faUser } from '@fortawesome/free-solid-svg-icons'
 // import { faImage } from '@fortawesome/free-solid-svg-icons'
 // import axios  from 'axios';
-
 
 // const Profile = (props) => {
 //   const userProfileData = {
@@ -568,6 +622,3 @@ export default Profile;
 //   );
 // };
 // export default Profile;
-
-
-
