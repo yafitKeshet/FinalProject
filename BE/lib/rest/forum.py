@@ -69,6 +69,7 @@ def new_question(
     response = QuestionOut(**new_created_question)
     return response
 
+
 @router.delete(
     "/forum/question",
     name="Delete a question",
@@ -95,8 +96,6 @@ def delete_question(
     return True
 
 
-
-
 @router.post(
     "/forum/comment",
     name="Write new comment (on a question)",
@@ -118,8 +117,9 @@ def new_question_comment(
 
     new_comment_id = str(uuid.uuid4())
     comment_to_add_dict = {
-        QuestionTable.author_email.name: user.user_email,
-        QuestionTable.question_id.name: new_comment_id
+        QuestionCommentTable.author_email.name: user.user_email,
+        QuestionCommentTable.comment_id.name: new_comment_id,
+        QuestionCommentTable.question_id.name: new_comment.question_id
     }
     comment_to_add_dict.update(new_comment.dict())
 
@@ -173,9 +173,9 @@ def like_question_comments(
         user: Annotated[User, Depends(get_current_active_user)],
         db: UserDBSession = Depends(get_db_session)
 ):
-    existing_comment = db.query(QuestionCommentTable).filter(QuestionCommentTable.post_id == comment_id).first()
+    existing_comment = db.query(QuestionCommentTable).filter(QuestionCommentTable.comment_id == comment_id).first()
     if not existing_comment:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post was not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment was not found")
     if like:
         likes = existing_comment.add_like(user.user_email)
     else:
