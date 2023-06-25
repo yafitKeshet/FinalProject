@@ -1,4 +1,3 @@
-import uuid
 from typing import List
 
 from sqlalchemy import Column, String, JSON

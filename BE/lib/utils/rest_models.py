@@ -214,7 +214,7 @@ class QuestionOut(ProjectBaseModel):
     title: str
     content: str
     faculty: Faculty
-    question_comments: List[CommentOut]
+    question_comments: List[CommentOut] = []
     published_time: datetime
 
 

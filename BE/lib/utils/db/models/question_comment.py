@@ -11,7 +11,7 @@ class QuestionComment(Base):
     __tablename__ = "question_comment"
 
     comment_id = Column(String, primary_key=True, unique=True, index=True)
-    author = Column(String, nullable=False)
+    author_email = Column(String, nullable=False)
     content = Column(String)
     published_time = Column(DateTime, default=datetime.utcnow)
     likes = Column(JSON, nullable=True, default=[])  # Use ARRAY data type for likes
