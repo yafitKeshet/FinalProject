@@ -67,16 +67,15 @@ def new_question(
     response = QuestionOut(**new_created_question)
     return response
 
-
 @router.delete(
-    "/forum/{question_id}",
+    "/forum/question",
     name="Delete a question",
     status_code=status.HTTP_200_OK,
     response_model=bool
 )
 def delete_question(
-    user: Annotated[User, Depends(get_current_active_user)],
     question_id: str,
+    user: Annotated[User, Depends(get_current_active_user)],
     db: UserDBSession = Depends(get_db_session)
 ):
     existing_question = db.query(QuestionTable).filter(QuestionTable.question_id == question_id).first()
