@@ -37,12 +37,16 @@
   font-size: 1.5rem;
   color: #0a416e;
 }
-.mini-profile-header img {
+.mini-profile-img {
   height: 60px;
   width: 60px;
   border-radius: 50%;
 }
-
+.mini-profile-contents {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
 .mini-profile-content {
   gap: 1rem;
   display: flex;
