@@ -77,3 +77,20 @@ export const getUserFromJWT = (token) => {
 
   return JSON.parse(jsonPayload).sub;
 };
+
+export const getUserFromEmail = async (props) => {
+  try {
+    let config = getConfig(props.token);
+    let profileRequest = await axios.get(
+      "http://localhost:8080/profile/" + props.email,
+      config
+    );
+    if (profileRequest !== undefined && profileRequest.status === 200) {
+      console.log("we got author profile-> on feed");
+      return profileRequest.data;
+    }
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+};
