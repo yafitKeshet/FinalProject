@@ -34,7 +34,6 @@ const Post = (props) => {
   };
 
   const userMailClicked = async (email) => {
-    console.log(email);
     let authorProfile = {};
     let authorProfileRequest = await getUserFromEmail({
       token: props.user.token,

@@ -49,18 +49,11 @@ const Feed = (props) => {
     }
   };
 
-  const cancelUploadPost = () => {
-    console.log("post cancel");
-  };
-
-  console.log(props.user);
-
   return (
     <div className="feed">
       <Card className="feed-card">
         <UploadPost
           user={props.user}
-          onCancel={cancelUploadPost}
           moveToProfile={props.moveToProfile}
           onSubmit={getPosts}
         />
