@@ -17,6 +17,7 @@ const App = (props) => {
   const [user, setUser] = useState({});
 
   const onUpdateUser = (token) => {
+    console.log("new token: ", token);
     sessionStorage.setItem("token", token);
     let user = getUserFromJWT(token);
     setUser({ ...user, token: token });

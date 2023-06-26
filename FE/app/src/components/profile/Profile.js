@@ -10,89 +10,48 @@ import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { getUserFromJWT } from "../user/user.ts";
+import { getUserFromJWT, getUserProfile } from "../user/user.ts";
+import Card from "../UI/Card";
+import { getFaculty, getYear, Faculty, Year } from "../enums/enums.ts";
+import Separator from "../UI/Separator";
+import Edit from "../UI/SVG/Edit";
+import Button from "../UI/Button";
 
 const Profile = (props) => {
-  const userProfileData = {
-    user_email: "",
-    password: "",
-    private_name: "",
-    last_name: "",
-    birthday_date: "",
-    faculty: "",
-    year: "",
-    job_company_name: "",
-    job_start_year: 0,
-    job_description: "",
-    user_image: "",
-  };
+  const [userData, setUserData] = useState(props.user);
+  // {
+  //   user:,
+  //   posts: {},
+  //   jobs: {},
+  // });
+  const [editMode, setEditMode] = useState(false);
+  let isWorked = userData.job_start_year !== 0;
+  const [checked, setChecked] = useState(isWorked);
 
-  // Get User Profile handler
-  const getUserProfile = async () => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    };
-
-    try {
-      let userDataRequest = await axios.get(
-        "http://localhost:8080/profile",
-        config
-      );
-      if (userDataRequest !== undefined && userDataRequest.status === 200) {
-        // Retrieve user profile data
-        let userData = userDataRequest.data;
-        // Update the form data with the retrieved values
-        setFormData({
-          user_email: userData.user_email,
-          password: userData.password,
-          private_name: userData.private_name,
-          last_name: userData.last_name,
-          birthday_date: userData.birthday_date,
-          faculty: userData.faculty,
-          year: userData.year,
-          job_company_name: userData.job_company_name,
-          job_start_year: userData.job_start_year,
-          job_description: userData.job_description,
-          user_image: userData.user_image,
-        });
-      }
-    } catch (err) {
-      if (err.response !== undefined && err.response.status === 401) {
-        // Unable to get user profile data
-        console.log("Failed to get user profile data");
-      }
+  const editBtnClicked = () => {
+    if (editMode) {
+      setUserData(props.user);
     }
-  };
-
-  useEffect(() => {
-    getUserProfile();
-  }, []);
-
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [formData, setFormData] = useState(userProfileData);
-  const [savedFormData, setSavedFormData] = useState(userProfileData);
-
-  const toggleEditMode = () => {
-    if (isEditMode) {
-      setIsEditMode(false);
-      setFormData(savedFormData);
-    } else {
-      setIsEditMode(true);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    setEditMode((prev) => {
+      return !prev;
     });
   };
 
-  const changePassword = () => {};
+  const onRemoveImg = () => {
+    setUserData((prev) => {
+      return { ...prev, user_image: "./anonymousImg.png" };
+    });
+  };
 
-  const onUpdate = async () => {
+  const covertToBase64 = (e) => {
+    let newPath = e.target.value.replace("C:\\fakepath\\", "./users/");
+
+    setUserData((prev) => {
+      return { ...prev, user_image: newPath };
+    });
+  };
+  const onUpdate = () => {
+    console.log("updating to: ", userData);
     try {
       fetch("http://localhost:8080/profile", {
         method: "PATCH",
@@ -101,22 +60,21 @@ const Profile = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          faculty: formData.faculty,
-          year: formData.year,
-          job_company_name: formData.job_company_name,
-          job_start_year: formData.job_start_year,
-          job_description: formData.job_description,
-          user_image: formData.user_image,
+          faculty: userData.faculty,
+          year: userData.year,
+          job_company_name: userData.job_company_name,
+          job_start_year: userData.job_start_year,
+          job_description: userData.job_description,
+          user_image: userData.user_image,
         }),
       }).then((profileRequest) => {
         if (profileRequest !== undefined && profileRequest.status === 200) {
-          console.log("profileRequest- succeed");
-        } else {
-          // YAFIT TO DO - POPUP OF FAILED UPDATE
-          console.log("profileRequest- failed");
+          console.log("profileRequest- succeed ");
+          getUserProfile(userData.token).then((profileRequest) => {
+            console.log("after: ", profileRequest);
+            props.onUpdateUser(profileRequest.token);
+          });
         }
-
-        getUserProfile();
       });
     } catch (err) {
       console.log(err);
@@ -124,501 +82,344 @@ const Profile = (props) => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Save the form data
-    setSavedFormData(formData);
-    toggleEditMode();
+  // Input change handlers
+  const onMailChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, user_email: event.target.value };
+    });
   };
 
+  // const onPassChange = (event) => {
+  //   setInputs((prevState) => {
+  //     return { ...prevState, password: event.target.value };
+  //   });
+  // };
+  // const onConfirmPassChange = (event) => {
+  //   setInputs((prevState) => {
+  //     return { ...prevState, confirmPassword: event.target.value };
+  //   });
+  // };
+  const onFirstNameChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, private_name: event.target.value };
+    });
+  };
+
+  const onLastNameChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, last_name: event.target.value };
+    });
+  };
+  const onBirthdayDateChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, birthday_date: event.target.value };
+    });
+  };
+  const onFacultyChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, faculty: event.target.value };
+    });
+  };
+
+  const onYearChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, year: event.target.value };
+    });
+  };
+
+  const onCheckBox = () => {
+    if (checked) {
+      setUserData((prevState) => {
+        return {
+          ...prevState,
+          job_company_name: props.user.job_company_name,
+          job_start_year: props.user.job_start_year,
+          job_description: props.user.job_description,
+        };
+      });
+    }
+    setChecked((prev) => {
+      return !prev;
+    });
+  };
+  const onJobCompanyNameChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, job_company_name: event.target.value };
+    });
+  };
+
+  const onJobStartYearChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, job_start_year: event.target.value };
+    });
+  };
+  const onJobDescriptionChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, job_description: event.target.value };
+    });
+  };
+  const onUserImageChange = (event) => {
+    setUserData((prevState) => {
+      return { ...prevState, user_image: event };
+    });
+  };
+  const currentDate = new Date();
   return (
-    <div className="profile-container">
-      <h2 className="title">עמוד פרופיל</h2>
-      <form className="profile-form" onSubmit={handleSubmit}>
-        <div className="profile-fields">
-          <label>
-            דוא"ל
-            <FontAwesomeIcon
-              icon={faEnvelope}
-              className="profile-icon"
-              size="lg"
-              style={{ color: "#273f68" }}
-            />
-          </label>
-          <span>{formData.user_email}</span>
-          {/* {isEditMode ? (
-            <input
-              type="text"
-              name="user_email"
-              value={formData.user_email}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.user_email}</span>
-          )} */}
-        </div>
-        {/* <div className="profile-fields">
-          <label>סיסמא<FontAwesomeIcon icon={faLock} size="lg" /></label>
-          <span>{formData.password}</span>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.password}</span>
-          )}
-        </div> */}
-        <div className="profile-fields">
-          <label>
-            שם פרטי
-            <FontAwesomeIcon icon={faUser} className="profile-icon" size="lg" />
-          </label>
-          <span>{formData.private_name}</span>
+    <div className="profile">
+      <Card className="userCard">
+        <header>
+          {!editMode && <Edit className="edit-icon" onClick={editBtnClicked} />}
+          <div className="fields">
+            <h2 className="userCard-title">
+              {userData.private_name + " " + userData.last_name}
+            </h2>
+            <div className="userCard-fields">
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                className="profile-icon"
+                size="lg"
+              />
+              <span>{userData.user_email}</span>
+            </div>
+            <div className="userCard-fields">
+              <FontAwesomeIcon
+                icon={faCakeCandles}
+                size="lg"
+                className="profile-icon"
+              />
+              <span>{userData.birthday_date}</span>
+            </div>
+            <div className="userCard-fields">
+              <FontAwesomeIcon
+                icon={faSchool}
+                size="lg"
+                className="profile-icon"
+              />
+              {editMode ? (
+                <select
+                  className="edit-content"
+                  onChange={onFacultyChange}
+                  value={userData.faculty}
+                  required
+                >
+                  {Object.keys(Faculty).map((faculty) => {
+                    switch (faculty) {
+                      case Faculty.ComputerScience:
+                        return (
+                          <option
+                            value={faculty}
+                            key={Math.random().toString()}
+                          >
+                            מדעי המחשב
+                          </option>
+                        );
+                      case Faculty.Economy:
+                        return (
+                          <option
+                            value={faculty}
+                            key={Math.random().toString()}
+                          >
+                            כלכלה
+                          </option>
+                        );
+                      case Faculty.Psychology:
+                        return (
+                          <option
+                            value={faculty}
+                            key={Math.random().toString()}
+                          >
+                            פסיכולוגיה
+                          </option>
+                        );
+                      case Faculty.Social:
+                        return (
+                          <option
+                            value={faculty}
+                            key={Math.random().toString()}
+                          >
+                            סוציולוגיה
+                          </option>
+                        );
+                      default:
+                        return {};
+                    }
+                  })}
+                </select>
+              ) : (
+                <span>{getFaculty(userData.faculty)} </span>
+              )}
+            </div>
+            <div className="userCard-fields">
+              <FontAwesomeIcon
+                icon={faCalendar}
+                size="lg"
+                className="profile-icon"
+              />
+              {editMode ? (
+                <select
+                  className="edit-content"
+                  onChange={onYearChange}
+                  value={userData.year}
+                  required
+                >
+                  {Object.keys(Year).map((year) => {
+                    switch (year) {
+                      case Year.First:
+                        return (
+                          <option value={year} key={Math.random().toString()}>
+                            שנה ראשונה
+                          </option>
+                        );
+                      case Year.Second:
+                        return (
+                          <option value={year} key={Math.random().toString()}>
+                            שנה שנייה
+                          </option>
+                        );
+                      case Year.Third:
+                        return (
+                          <option value={year} key={Math.random().toString()}>
+                            שנה שלישית
+                          </option>
+                        );
+                      case Year.Fourth:
+                        return (
+                          <option value={year} key={Math.random().toString()}>
+                            שנה רביעית
+                          </option>
+                        );
+                      case Year.Fifth:
+                        return (
+                          <option value={year} key={Math.random().toString()}>
+                            שנה חמישית
+                          </option>
+                        );
+                      case Year.Graduated:
+                        return (
+                          <option value={year} key={Math.random().toString()}>
+                            סיימתי את הלימודים
+                          </option>
+                        );
 
-          {/* {isEditMode ? (
-            <input
-              type="text"
-              name="private_name"
-              value={formData.private_name}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.private_name}</span>
-          )} */}
-        </div>
-        <div className="profile-fields">
-          <label>
-            שם משפחה
-            <FontAwesomeIcon icon={faUser} size="lg" className="profile-icon" />
-          </label>
-          <span>{formData.last_name}</span>
-
-          {/* {isEditMode ? (
-            <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.last_name}</span>
-          )} */}
-        </div>
-        <div className="profile-fields">
-          <label>
-            תאריך לידה
-            <FontAwesomeIcon
-              icon={faCakeCandles}
-              size="lg"
-              className="profile-icon"
-            />
-          </label>
-          <span>{formData.birthday_date}</span>
-
-          {/* {isEditMode ? (
-            <input
-              type="text"
-              name="birthday_date"
-              value={formData.birthday_date}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.birthday_date}</span>
-          )} */}
-        </div>
-        <div className="profile-fields">
-          <label>
-            פקולטה
-            <FontAwesomeIcon
-              icon={faSchool}
-              size="lg"
-              className="profile-icon"
-            />
-          </label>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="faculty"
-              value={formData.faculty}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.faculty}</span>
-          )}
-        </div>
-        <div className="profile-fields">
-          <label>
-            שנת לימודים נוכחית/ בוגר
-            <FontAwesomeIcon
-              icon={faCalendar}
-              size="lg"
-              className="profile-icon"
-            />
-          </label>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="year"
-              value={formData.year}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.year}</span>
-          )}
-        </div>
-        <div className="profile-fields">
-          <label>
-            שם חברה
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              size="lg"
-              className="profile-icon"
-            />
-          </label>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="job_company_name"
-              value={formData.job_company_name}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.job_company_name}</span>
-          )}
-        </div>
-        <div className="profile-fields">
-          <label>
-            שנת תחילת עבודה
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              size="lg"
-              className="profile-icon"
-            />
-          </label>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="job_start_year"
-              value={formData.job_start_year}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.job_start_year}</span>
-          )}
-        </div>
-        <div className="profile-fields">
-          <label>
-            תיאור העבודה
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              size="lg"
-              style={{ color: "#273f68" }}
-              className="profile-icon"
-            />
-          </label>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="job_description"
-              value={formData.job_description}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{formData.job_description}</span>
-          )}
-        </div>
-        <div className="profile-fields">
-          <label>
-            תמונת פרופיל
-            <FontAwesomeIcon
-              icon={faImage}
-              size="lg"
-              className="profile-icon"
-            />
-          </label>
-          {isEditMode ? (
-            <input
-              type="text"
-              name="user_image"
-              value={formData.user_image}
-              onChange={handleChange}
-            />
-          ) : (
-            <img src={formData.user_image} alt="Profile" />
-          )}
-        </div>
-        {isEditMode ? (
-          <div className="buttons">
-            <button onClick={onUpdate} type="submit">
-              שמור
-            </button>
-            <button onClick={toggleEditMode}>ביטול</button>
+                      default:
+                        return {};
+                    }
+                  })}
+                </select>
+              ) : (
+                <span>{getYear(userData.year)}</span>
+              )}
+            </div>
+            {editMode && (
+              <div className="checkBox-div">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={onCheckBox}
+                />
+                <label>אני עובד/ת</label>
+              </div>
+            )}
           </div>
-        ) : (
-          <button onClick={toggleEditMode}>עריכת פרופיל</button>
+          <div className="profile-img">
+            <img src={userData.user_image} alt="תמונה של המשתמש" />
+            {editMode && (
+              <div>
+                <div className="auth-inner" style={{ width: "auto" }}>
+                  <input
+                    accept="image/*"
+                    type="file"
+                    onChange={covertToBase64}
+                  />
+                </div>
+                <Button className="remove-img edit-btn" onClick={onRemoveImg}>
+                  מחק תמונה
+                </Button>
+              </div>
+            )}
+          </div>
+        </header>
+        {checked && (
+          <div>
+            <Separator />
+            <div className="job-details">
+              <div className="userCard-fields">
+                <FontAwesomeIcon
+                  icon={faBriefcase}
+                  size="lg"
+                  className="profile-icon"
+                />
+                <span>פרטי עבודה:</span>
+              </div>
+              {!editMode && (
+                <p>
+                  עובד ב-{userData.job_company_name} משנת{" "}
+                  {userData.job_start_year}
+                </p>
+              )}
+              {!editMode && <p>תיאור עבודה: {userData.job_description}</p>}
+              {editMode && (
+                <input
+                  onChange={onJobCompanyNameChange}
+                  value={userData.jobCompanyName}
+                  placeholder={
+                    isWorked
+                      ? `שם מקום עבודה: ${userData.job_company_name}`
+                      : "שם מקום עבודה"
+                  }
+                  className="edit-content"
+                  type="text"
+                  required
+                />
+              )}
+              {editMode && (
+                <input
+                  onChange={onJobStartYearChange}
+                  value={userData.jobStartYear}
+                  placeholder={
+                    isWorked
+                      ? `שנת התחלת עבודה: ${userData.job_start_year}`
+                      : "שנת התחלת עבודה"
+                  }
+                  className="edit-content"
+                  type="number"
+                  max={currentDate.getFullYear()}
+                  min="1900"
+                  required
+                />
+              )}
+              {editMode && (
+                <textarea
+                  onChange={onJobDescriptionChange}
+                  value={userData.jobDescription}
+                  placeholder={
+                    isWorked
+                      ? `תיאור מקום עבודה: \n ${userData.job_description}`
+                      : "תיאור מקום עבודה"
+                  }
+                  className="edit-content"
+                  type="text"
+                  required
+                />
+              )}
+            </div>
+          </div>
         )}
-        <button onClick={changePassword}>שינוי סיסמא</button>
-      </form>
+        {editMode && (
+          <footer>
+            <Separator />
+            <div className="edit-actions">
+              <Button onClick={editBtnClicked} className="edit-btn">
+                ביטול
+              </Button>
+              <Button onClick={onUpdate} className="edit-btn">
+                שמור
+              </Button>
+            </div>
+          </footer>
+        )}
+      </Card>
     </div>
   );
 };
 export default Profile;
-
-// import React, { useState, useEffect} from 'react';
-// import './Profile.css';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
-// import { faLock } from '@fortawesome/free-solid-svg-icons'
-// import { faCakeCandles } from '@fortawesome/free-solid-svg-icons'
-// import { faSchool } from '@fortawesome/free-solid-svg-icons'
-// import { faCalendar } from '@fortawesome/free-solid-svg-icons'
-// import { faBriefcase } from '@fortawesome/free-solid-svg-icons'
-// import { faUser } from '@fortawesome/free-solid-svg-icons'
-// import { faImage } from '@fortawesome/free-solid-svg-icons'
-// import axios  from 'axios';
-
-// const Profile = (props) => {
-//   const userProfileData = {
-//     user_email: '',
-//     password: '',
-//     private_name: '',
-//     last_name: '',
-//     birthday_date: '',
-//     faculty: '',
-//     year: '',
-//     job_company_name: '',
-//     job_start_year: 0,
-//     job_description: '',
-//     user_image: '',
-//   };
-
-//   // Get User Profile handler
-//   const getUserProfile = async () => {
-//     const config = {
-//       headers: {
-//         Authorization: 'Bearer ' + sessionStorage.getItem("token"),
-//       },
-//     };
-
-//     try {
-//       let userDataRequest = await axios.get('http://localhost:8080/profile', config);
-//       if (userDataRequest !== undefined && userDataRequest.status === 200) {
-//         // Retrieve user profile data
-//         let userData = userDataRequest.data;
-//         // Update the form data with the retrieved values
-//         setFormData({
-//           user_email: userData.user_email,
-//           password: userData.password,
-//           private_name: userData.private_name,
-//           last_name: userData.last_name,
-//           birthday_date: userData.birthday_date,
-//           faculty: userData.faculty,
-//           year: userData.year,
-//           job_company_name: userData.job_company_name,
-//           job_start_year: userData.job_start_year,
-//           job_description: userData.job_description,
-//           user_image: userData.user_image,
-//         });
-//       }
-//     } catch (err) {
-//       if (err.response !== undefined && err.response.status === 401) {
-//         // Unable to get user profile data
-//         console.log('Failed to get user profile data');
-//       }
-//     }
-//   };
-
-//   useEffect(() => {
-//     getUserProfile();
-//   }, []);
-
-//   const [isEditMode, setIsEditMode] = useState(false);
-//   const [formData, setFormData] = useState(userProfileData);
-//   const [savedFormData, setSavedFormData] = useState(userProfileData);
-
-//   const toggleEditMode = () => {
-//     if (isEditMode) {
-//       setIsEditMode(false);
-//       setFormData(savedFormData);
-//     } else {
-//       setIsEditMode(true);
-//     }
-//   };
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // Save the form data
-//     setSavedFormData(formData);
-//     toggleEditMode();
-//   };
-
-//   return (
-//     <div className="profile-container">
-//       <h2 className='title'>עמוד פרופיל</h2>
-//       <form className='profile-form' onSubmit={handleSubmit}>
-//         <div className="profile-fields">
-//           <label>דוא"ל<FontAwesomeIcon icon={faEnvelope} size="lg" style={{ color: "#273f68", }} /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="user_email"
-//               value={formData.user_email}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.user_email}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>סיסמא<FontAwesomeIcon icon={faLock} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="password"
-//               value={formData.password}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.password}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>שם פרטי<FontAwesomeIcon icon={faUser} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="private_name"
-//               value={formData.private_name}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.private_name}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>שם משפחה<FontAwesomeIcon icon={faUser} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="last_name"
-//               value={formData.last_name}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.last_name}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>תאריך לידה<FontAwesomeIcon icon={faCakeCandles} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="birthday_date"
-//               value={formData.birthday_date}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.birthday_date}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>פקולטה<FontAwesomeIcon icon={faSchool} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="faculty"
-//               value={formData.faculty}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.faculty}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>שנת לימודים נוכחית/ בוגר<FontAwesomeIcon icon={faCalendar} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="year"
-//               value={formData.year}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.year}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>שם חברה<FontAwesomeIcon icon={faBriefcase} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="job_company_name"
-//               value={formData.job_company_name}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.job_company_name}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>שנת תחילת עבודה<FontAwesomeIcon icon={faBriefcase} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="job_start_year"
-//               value={formData.job_start_year}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.job_start_year}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>תיאור העבודה<FontAwesomeIcon icon={faBriefcase} size="lg" style={{ color: '#273f68' }} /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="job_description"
-//               value={formData.job_description}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <span>{formData.job_description}</span>
-//           )}
-//         </div>
-//         <div className="profile-fields">
-//           <label>תמונת פרופיל<FontAwesomeIcon icon={faImage} size="lg" /></label>
-//           {isEditMode ? (
-//             <input
-//               type="text"
-//               name="user_image"
-//               value={formData.user_image}
-//               onChange={handleChange}
-//             />
-//           ) : (
-//             <img src={formData.user_image} alt="Profile" />
-//           )}
-//         </div>
-//         {isEditMode ? (
-//           <div className="buttons">
-//             <button type="submit">שמור</button>
-//             <button onClick={toggleEditMode}>ביטול</button>
-//           </div>
-//         ) : (
-//           <button onClick={toggleEditMode}>עריכת פרופיל</button>
-//         )}
-//       </form>
-//     </div>
-//   );
-// };
-// export default Profile;

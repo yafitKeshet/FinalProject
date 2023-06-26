@@ -1,92 +1,112 @@
-.title {
-  font-size: 65px;
+.profile {
+  display: grid;
+  padding: 2rem 0;
+  overflow: hidden;
+}
+
+/***** USER CARD *****/
+.userCard {
+  justify-self: center;
+  width: 50%;
+  padding: 1rem;
+  align-items: center;
+}
+.userCard header {
+  position: relative;
+
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: 2fr 1fr;
+  justify-content: center;
+  align-items: flex-start;
+}
+.userCard .edit-icon {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.userCard .edit-icon path {
+  fill: #0a416e !important;
+}
+.userCard .fields {
+  padding: 0 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.userCard header h2 {
+  text-align: left;
+  font-size: 40px;
   font-weight: 750;
   color: #2e43c0;
-  /* border: #2b1a3c;
-    text-shadow: 5px 5px 15px #4f0895, 5px 5px 10px #b393d3, 5px 5px 10px #451079,
-      15px 15px 20px #2b1a3c; */
+
   text-shadow: #efe9e9 5px 5px 5px, #000 5px 5px 5px, #0c5fb8 5px 0px 55px,
     #6583d0 5px 5px 5px, #5722f6 0px 0px 1px, #000000 5px 5px 15px;
   margin-bottom: 1%;
   margin-right: 10%;
 }
-
-.profile-container {
+.userCard-fields {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+.userCard-fields span {
+  font-weight: bold;
+  color: #0a416e;
+}
+.profile-icon {
+  color: #0a416e;
+  width: 25px;
+  height: 25px;
+}
+.profile-img img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid white;
+}
+.profile-img div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  font-size: 20px;
 }
 
-.profile-header {
+.userCard .job-details {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1rem 6rem;
 }
-
-.profile-header h1 {
-  color: #0a416e;
-}
-
-.profile-fields {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  font-size: 20px;
-}
-
-.profile-fields label {
+.userCard .job-details p {
+  padding-right: 35px;
+  margin: 0;
+  text-align: right;
   font-weight: bold;
   color: #0a416e;
-  margin-bottom: 5px;
-  width: 100%;
 }
+.edit-content {
+  resize: none;
+  width: 50%;
+  text-align: center;
+  font: inherit;
+  border-color: #ccc;
+  border-radius: 6px;
+  border-width: 2px;
+  border-width: 2px;
+}
+.edit-actions {
+  justify-content: center;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0 0 0;
+}
+.edit-btn {
+  border-radius: 5px;
+  width: fit-content;
+}
+/***** POSTS *****/
 
-.profile-fields input {
-  width: 100%;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-.profile-fields span {
-  width: 100%;
-  color: white;
-  padding: 5px;
-  border-radius: 3px;
-  background-color: #0a416e;
-}
-
-.edit-button {
-  display: block;
-  margin-top: 10px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  background-color: #0a416e;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-right: 14.5%;
-}
-
-.save-button {
-  display: block;
-  margin-top: 10px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  background-color: #0a416e;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-right: 70%;
-}
-
-.profile-icon {
-  color: #0a416e;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.profile-form {
-  width: 30%;
-}
+/***** JOBS *****/
