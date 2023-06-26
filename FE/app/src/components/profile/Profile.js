@@ -70,10 +70,9 @@ const Profile = (props) => {
       }).then((profileRequest) => {
         if (profileRequest !== undefined && profileRequest.status === 200) {
           console.log("profileRequest- succeed ");
-          getUserProfile(userData.token).then((profileRequest) => {
-            console.log("after: ", profileRequest);
-            props.onUpdateUser(profileRequest.token);
-          });
+          // TODO- GET NEW TOKEN
+          //  props.onUpdateUser(profileRequest.token);
+          setEditMode(false);
         }
       });
     } catch (err) {
