@@ -10,29 +10,30 @@ import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { getUserFromJWT, getUserProfile } from "../user/user.ts";
+import { getConfig } from "../user/user.ts";
 import Card from "../UI/Card";
 import { getFaculty, getYear, Faculty, Year } from "../enums/enums.ts";
 import Separator from "../UI/Separator";
 import Edit from "../UI/SVG/Edit";
 import Button from "../UI/Button";
+import Post from "../UI/SVG/Post";
+import Jobs from "../UI/SVG/Jobs";
 
 const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
-  const onCardClicked = (card) => {
-    console.log("carddd");
-    setOpen(open === card ? "" : card);
-  };
-  const [userData, setUserData] = useState(props.user);
-  // {
-  //   user:,
-  //   posts: {},
-  //   jobs: {},
-  // });
   const [editMode, setEditMode] = useState(false);
+  const [posts, setPosts] = useState();
+  const [userData, setUserData] = useState(props.user);
   let isWorked = userData.job_start_year !== 0;
   const [checked, setChecked] = useState(isWorked);
 
+  const onCardClicked = (card) => {
+    if (open !== card) {
+      setEditMode(false);
+      setOpen(open === card ? "" : card);
+    }
+  };
+  /***** USER CARD *****/
   const editBtnClicked = () => {
     if (editMode) {
       setUserData(props.user);
@@ -42,19 +43,6 @@ const Profile = (props) => {
     });
   };
 
-  const onRemoveImg = () => {
-    setUserData((prev) => {
-      return { ...prev, user_image: "./anonymousImg.png" };
-    });
-  };
-
-  const covertToBase64 = (e) => {
-    let newPath = e.target.value.replace("C:\\fakepath\\", "./users/");
-
-    setUserData((prev) => {
-      return { ...prev, user_image: newPath };
-    });
-  };
   const onUpdate = () => {
     console.log("updating to: ", userData);
     try {
@@ -87,38 +75,6 @@ const Profile = (props) => {
   };
 
   // Input change handlers
-  const onMailChange = (event) => {
-    setUserData((prevState) => {
-      return { ...prevState, user_email: event.target.value };
-    });
-  };
-
-  // const onPassChange = (event) => {
-  //   setInputs((prevState) => {
-  //     return { ...prevState, password: event.target.value };
-  //   });
-  // };
-  // const onConfirmPassChange = (event) => {
-  //   setInputs((prevState) => {
-  //     return { ...prevState, confirmPassword: event.target.value };
-  //   });
-  // };
-  const onFirstNameChange = (event) => {
-    setUserData((prevState) => {
-      return { ...prevState, private_name: event.target.value };
-    });
-  };
-
-  const onLastNameChange = (event) => {
-    setUserData((prevState) => {
-      return { ...prevState, last_name: event.target.value };
-    });
-  };
-  const onBirthdayDateChange = (event) => {
-    setUserData((prevState) => {
-      return { ...prevState, birthday_date: event.target.value };
-    });
-  };
   const onFacultyChange = (event) => {
     setUserData((prevState) => {
       return { ...prevState, faculty: event.target.value };
@@ -162,12 +118,38 @@ const Profile = (props) => {
       return { ...prevState, job_description: event.target.value };
     });
   };
-  const onUserImageChange = (event) => {
-    setUserData((prevState) => {
-      return { ...prevState, user_image: event };
+  const onRemoveImg = () => {
+    setUserData((prev) => {
+      return { ...prev, user_image: "./anonymousImg.png" };
     });
   };
+
+  const onUserImageChange = (e) => {
+    let newPath = e.target.value.replace("C:\\fakepath\\", "./users/");
+
+    setUserData((prev) => {
+      return { ...prev, user_image: newPath };
+    });
+  };
+
   const currentDate = new Date();
+
+  /***** USER POSTS *****/
+  const getUserPosts = async () => {
+    try {
+      const config = getConfig(props.user.token);
+
+      let postsRequest = await axios.get("http://localhost:8080/feed", config);
+      if (postsRequest !== undefined && postsRequest.status === 200) {
+        console.log("posts: ", postsRequest.data);
+        setPosts(postsRequest.data);
+      }
+    } catch (err) {
+      alert("משהו השתבש אנא נסה/נסי שנית");
+      console.log("feed request failed");
+    }
+  };
+
   return (
     <div className="profile">
       <Card
@@ -177,6 +159,7 @@ const Profile = (props) => {
         }}
       >
         <div className="close">
+          <FontAwesomeIcon icon={faUser} className="profile-icon" size="lg" />
           <h2> פרטי פרופיל</h2>
         </div>
         <header className="open">
@@ -341,7 +324,7 @@ const Profile = (props) => {
                   <input
                     accept="image/*"
                     type="file"
-                    onChange={covertToBase64}
+                    onChange={onUserImageChange}
                   />
                 </div>
                 <Button className="remove-img edit-btn" onClick={onRemoveImg}>
@@ -438,6 +421,7 @@ const Profile = (props) => {
         }}
       >
         <div className="close">
+          <Post className="profile-icon" />
           <h2> פוסטים</h2>
         </div>
       </Card>
@@ -448,6 +432,7 @@ const Profile = (props) => {
         }}
       >
         <div className="close">
+          <Jobs className="profile-icon" />
           <h2> משרות</h2>
         </div>
       </Card>
