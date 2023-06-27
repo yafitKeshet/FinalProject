@@ -13,13 +13,7 @@ const Jobs = (props) => {
       strokeWidth="11.1"
     >
       <g id="SVGRepo_bgCarrier"></g>
-      <g
-        id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke="#CCCCCC"
-        strokeWidth="1.85"
-      ></g>
+      <g id="SVGRepo_tracerCarrier" stroke="#CCCCCC" strokeWidth="1.85"></g>
       <g id="SVGRepo_iconCarrier">
         {" "}
         <g>

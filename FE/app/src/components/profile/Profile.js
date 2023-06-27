@@ -424,6 +424,7 @@ const Profile = (props) => {
           <Post className="profile-icon" />
           <h2> פוסטים</h2>
         </div>
+        <div className="open"> בלה בלה בלה יהיו פה פוסטים של המשתמש</div>
       </Card>
       <Card
         className={`userJobs ${open === "userJobs" ? "open" : "close"} card`}
@@ -435,6 +436,7 @@ const Profile = (props) => {
           <Jobs className="profile-icon" />
           <h2> משרות</h2>
         </div>
+        <div className="open"> בלה בלה בלה יהיו פה משרות של המשתמש</div>
       </Card>
     </div>
   );
