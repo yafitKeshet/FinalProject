@@ -132,5 +132,13 @@
   width: fit-content;
 }
 /***** POSTS *****/
+.userPosts {
+  /* padding-right: 5rem; */
+  overflow-x: scroll;
+}
+.userPost-posts {
+  display: flex;
+  gap: 0.5rem;
+}
 
 /***** JOBS *****/

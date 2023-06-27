@@ -18,11 +18,12 @@ import Edit from "../UI/SVG/Edit";
 import Button from "../UI/Button";
 import Post from "../UI/SVG/Post";
 import Jobs from "../UI/SVG/Jobs";
+import ProfilePost from "./ProfilePost";
 
 const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
   const [editMode, setEditMode] = useState(false);
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState({});
   const [userData, setUserData] = useState(props.user);
   let isWorked = userData.job_start_year !== 0;
   const [checked, setChecked] = useState(isWorked);
@@ -141,8 +142,12 @@ const Profile = (props) => {
 
       let postsRequest = await axios.get("http://localhost:8080/feed", config);
       if (postsRequest !== undefined && postsRequest.status === 200) {
-        console.log("posts: ", postsRequest.data);
-        setPosts(postsRequest.data);
+        let filtered = postsRequest.data.filter((post) => {
+          return post.author.user_email === userData.user_email;
+        });
+        console.log("user posts: ", filtered);
+
+        setPosts(filtered);
       }
     } catch (err) {
       alert("משהו השתבש אנא נסה/נסי שנית");
@@ -150,6 +155,9 @@ const Profile = (props) => {
     }
   };
 
+  useEffect(() => {
+    getUserPosts();
+  }, []);
   return (
     <div className="profile">
       <Card
@@ -424,7 +432,23 @@ const Profile = (props) => {
           <Post className="profile-icon" />
           <h2> פוסטים</h2>
         </div>
-        <div className="open"> בלה בלה בלה יהיו פה פוסטים של המשתמש</div>
+        <div className="userPost-posts open">
+          {Object.values(posts).map((post) => (
+            <ProfilePost
+              user={props.user}
+              authorMail={post.author.user_email}
+              date="19/06/2023"
+              img={post.author.user_image}
+              likes={post.likes}
+              id={post.post_id}
+              title={post.title}
+              author={post.author.private_name + " " + post.author.last_name}
+              content={post.content}
+              key={Math.random()}
+              onDeletePost={getUserPosts}
+            />
+          ))}
+        </div>
       </Card>
       <Card
         className={`userJobs ${open === "userJobs" ? "open" : "close"} card`}
