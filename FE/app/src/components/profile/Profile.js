@@ -20,10 +20,15 @@ import Button from "../UI/Button";
 const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
   const onCardClicked = (card) => {
+    console.log("carddd");
     setOpen(open === card ? "" : card);
   };
-
   const [userData, setUserData] = useState(props.user);
+  // {
+  //   user:,
+  //   posts: {},
+  //   jobs: {},
+  // });
   const [editMode, setEditMode] = useState(false);
   let isWorked = userData.job_start_year !== 0;
   const [checked, setChecked] = useState(isWorked);
@@ -166,7 +171,7 @@ const Profile = (props) => {
   return (
     <div className="profile">
       <Card
-        className={`userCard ${open === "userCard" ? "open" : "close"} card`}
+        className={`userCard ${open === "userCard" ? "open" : "close"}  card`}
         onClick={() => {
           onCardClicked("userCard");
         }}
@@ -347,7 +352,7 @@ const Profile = (props) => {
           </div>
         </header>
         {checked && (
-          <div className="open">
+          <div className="userCard-section open">
             <Separator />
             <div className="job-details">
               <div className="userCard-fields">
@@ -413,7 +418,7 @@ const Profile = (props) => {
           </div>
         )}
         {editMode && (
-          <footer className="open">
+          <footer className="userCard-section open">
             <Separator />
             <div className="edit-actions">
               <Button onClick={editBtnClicked} className="edit-btn">
