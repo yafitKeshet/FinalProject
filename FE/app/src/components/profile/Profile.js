@@ -18,12 +18,12 @@ import Edit from "../UI/SVG/Edit";
 import Button from "../UI/Button";
 
 const Profile = (props) => {
+  const [open, setOpen] = useState("userCard");
+  const onCardClicked = (card) => {
+    setOpen(open === card ? "" : card);
+  };
+
   const [userData, setUserData] = useState(props.user);
-  // {
-  //   user:,
-  //   posts: {},
-  //   jobs: {},
-  // });
   const [editMode, setEditMode] = useState(false);
   let isWorked = userData.job_start_year !== 0;
   const [checked, setChecked] = useState(isWorked);
@@ -165,8 +165,16 @@ const Profile = (props) => {
   const currentDate = new Date();
   return (
     <div className="profile">
-      <Card className="userCard">
-        <header>
+      <Card
+        className={`userCard ${open === "userCard" ? "open" : "close"} card`}
+        onClick={() => {
+          onCardClicked("userCard");
+        }}
+      >
+        <div className="close">
+          <h2> פרטי פרופיל</h2>
+        </div>
+        <header className="open">
           {!editMode && <Edit className="edit-icon" onClick={editBtnClicked} />}
           <div className="fields">
             <h2 className="userCard-title">
@@ -339,7 +347,7 @@ const Profile = (props) => {
           </div>
         </header>
         {checked && (
-          <div>
+          <div className="open">
             <Separator />
             <div className="job-details">
               <div className="userCard-fields">
@@ -405,7 +413,7 @@ const Profile = (props) => {
           </div>
         )}
         {editMode && (
-          <footer>
+          <footer className="open">
             <Separator />
             <div className="edit-actions">
               <Button onClick={editBtnClicked} className="edit-btn">
@@ -417,6 +425,26 @@ const Profile = (props) => {
             </div>
           </footer>
         )}
+      </Card>
+      <Card
+        className={`userPosts ${open === "userPosts" ? "open" : "close"} card`}
+        onClick={() => {
+          onCardClicked("userPosts");
+        }}
+      >
+        <div className="close">
+          <h2> פוסטים</h2>
+        </div>
+      </Card>
+      <Card
+        className={`userJobs ${open === "userJobs" ? "open" : "close"} card`}
+        onClick={() => {
+          onCardClicked("userJobs");
+        }}
+      >
+        <div className="close">
+          <h2> משרות</h2>
+        </div>
       </Card>
     </div>
   );

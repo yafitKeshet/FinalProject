@@ -28,7 +28,7 @@ const Feed = (props) => {
   const filterPosts = () => {
     let filtered = posts;
     filtered = filtered.filter((post) => {
-      return post.author.faculty === props.user.faculty;
+      return post.faculty === props.user.faculty;
     });
 
     setPosts(filtered);

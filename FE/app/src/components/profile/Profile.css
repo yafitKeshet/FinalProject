@@ -1,14 +1,22 @@
 .profile {
   display: grid;
-  padding: 2rem 0;
+  gap: 1rem;
+  padding: 1rem 0;
   overflow: hidden;
 }
-
-/***** USER CARD *****/
-.userCard {
+.card {
   justify-self: center;
   width: 50%;
   padding: 1rem;
+}
+/***** OPEN/CLOSE *****/
+.close .open,
+.close .open,
+.close .open {
+  display: none;
+}
+/***** USER CARD *****/
+.userCard {
   align-items: center;
 }
 .userCard header {
