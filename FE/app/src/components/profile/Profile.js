@@ -29,10 +29,10 @@ const Profile = (props) => {
   const [checked, setChecked] = useState(isWorked);
 
   const onCardClicked = (card) => {
-    if (open !== card) {
-      setEditMode(false);
-      setOpen(open === card ? "" : card);
-    }
+    // if (open !== card) {
+    setEditMode(false);
+    setOpen(open === card ? "" : card);
+    // }
   };
   /***** USER CARD *****/
   const editBtnClicked = () => {
@@ -160,308 +160,330 @@ const Profile = (props) => {
   }, []);
   return (
     <div className="profile">
-      <Card
-        className={`userCard ${open === "userCard" ? "open" : "close"}  card`}
-        onClick={() => {
-          onCardClicked("userCard");
-        }}
-      >
-        <div className="close">
-          <FontAwesomeIcon icon={faUser} className="profile-icon" size="lg" />
-          <h2> פרטי פרופיל</h2>
-        </div>
-        <header className="open">
-          {!editMode && <Edit className="edit-icon" onClick={editBtnClicked} />}
-          <div className="fields">
-            <h2 className="userCard-title">
-              {userData.private_name + " " + userData.last_name}
-            </h2>
-            <div className="userCard-fields">
-              <FontAwesomeIcon
-                icon={faEnvelope}
-                className="profile-icon"
-                size="lg"
-              />
-              <span>{userData.user_email}</span>
-            </div>
-            <div className="userCard-fields">
-              <FontAwesomeIcon
-                icon={faCakeCandles}
-                size="lg"
-                className="profile-icon"
-              />
-              <span>{userData.birthday_date}</span>
-            </div>
-            <div className="userCard-fields">
-              <FontAwesomeIcon
-                icon={faSchool}
-                size="lg"
-                className="profile-icon"
-              />
-              {editMode ? (
-                <select
-                  className="edit-content"
-                  onChange={onFacultyChange}
-                  value={userData.faculty}
-                  required
-                >
-                  {Object.keys(Faculty).map((faculty) => {
-                    switch (faculty) {
-                      case Faculty.ComputerScience:
-                        return (
-                          <option
-                            value={faculty}
-                            key={Math.random().toString()}
-                          >
-                            מדעי המחשב
-                          </option>
-                        );
-                      case Faculty.Economy:
-                        return (
-                          <option
-                            value={faculty}
-                            key={Math.random().toString()}
-                          >
-                            כלכלה
-                          </option>
-                        );
-                      case Faculty.Psychology:
-                        return (
-                          <option
-                            value={faculty}
-                            key={Math.random().toString()}
-                          >
-                            פסיכולוגיה
-                          </option>
-                        );
-                      case Faculty.Social:
-                        return (
-                          <option
-                            value={faculty}
-                            key={Math.random().toString()}
-                          >
-                            סוציולוגיה
-                          </option>
-                        );
-                      default:
-                        return {};
-                    }
-                  })}
-                </select>
-              ) : (
-                <span>{getFaculty(userData.faculty)} </span>
-              )}
-            </div>
-            <div className="userCard-fields">
-              <FontAwesomeIcon
-                icon={faCalendar}
-                size="lg"
-                className="profile-icon"
-              />
-              {editMode ? (
-                <select
-                  className="edit-content"
-                  onChange={onYearChange}
-                  value={userData.year}
-                  required
-                >
-                  {Object.keys(Year).map((year) => {
-                    switch (year) {
-                      case Year.First:
-                        return (
-                          <option value={year} key={Math.random().toString()}>
-                            שנה ראשונה
-                          </option>
-                        );
-                      case Year.Second:
-                        return (
-                          <option value={year} key={Math.random().toString()}>
-                            שנה שנייה
-                          </option>
-                        );
-                      case Year.Third:
-                        return (
-                          <option value={year} key={Math.random().toString()}>
-                            שנה שלישית
-                          </option>
-                        );
-                      case Year.Fourth:
-                        return (
-                          <option value={year} key={Math.random().toString()}>
-                            שנה רביעית
-                          </option>
-                        );
-                      case Year.Fifth:
-                        return (
-                          <option value={year} key={Math.random().toString()}>
-                            שנה חמישית
-                          </option>
-                        );
-                      case Year.Graduated:
-                        return (
-                          <option value={year} key={Math.random().toString()}>
-                            סיימתי את הלימודים
-                          </option>
-                        );
-
-                      default:
-                        return {};
-                    }
-                  })}
-                </select>
-              ) : (
-                <span>{getYear(userData.year)}</span>
-              )}
-            </div>
-            {editMode && (
-              <div className="checkBox-div">
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={onCheckBox}
-                />
-                <label>אני עובד/ת</label>
-              </div>
-            )}
+      <div className="profile-section">
+        <Card
+          className="profile-card card"
+          onClick={() => {
+            onCardClicked("userCard");
+          }}
+        >
+          <div>
+            <FontAwesomeIcon icon={faUser} className="profile-icon" size="lg" />
+            <h2> פרטי פרופיל</h2>
           </div>
-          <div className="profile-img">
-            <img src={userData.user_image} alt="תמונה של המשתמש" />
-            {editMode && (
-              <div>
-                <div className="auth-inner" style={{ width: "auto" }}>
-                  <input
-                    accept="image/*"
-                    type="file"
-                    onChange={onUserImageChange}
-                  />
-                </div>
-                <Button className="remove-img edit-btn" onClick={onRemoveImg}>
-                  מחק תמונה
-                </Button>
-              </div>
+        </Card>
+        <Card
+          className={`userCard ${open === "userCard" ? "open" : "close"}  card`}
+        >
+          <header className="open">
+            {!editMode && (
+              <Edit className="edit-icon" onClick={editBtnClicked} />
             )}
-          </div>
-        </header>
-        {checked && (
-          <div className="userCard-section open">
-            <Separator />
-            <div className="job-details">
+            <div className="fields">
+              <h2 className="userCard-title">
+                {userData.private_name + " " + userData.last_name}
+              </h2>
               <div className="userCard-fields">
                 <FontAwesomeIcon
-                  icon={faBriefcase}
+                  icon={faEnvelope}
+                  className="profile-icon"
+                  size="lg"
+                />
+                <span>{userData.user_email}</span>
+              </div>
+              <div className="userCard-fields">
+                <FontAwesomeIcon
+                  icon={faCakeCandles}
                   size="lg"
                   className="profile-icon"
                 />
-                <span>פרטי עבודה:</span>
+                <span>{userData.birthday_date}</span>
               </div>
-              {!editMode && (
-                <p>
-                  עובד ב-{userData.job_company_name} משנת{" "}
-                  {userData.job_start_year}
-                </p>
-              )}
-              {!editMode && <p>תיאור עבודה: {userData.job_description}</p>}
-              {editMode && (
-                <input
-                  onChange={onJobCompanyNameChange}
-                  value={userData.jobCompanyName}
-                  placeholder={
-                    isWorked
-                      ? `שם מקום עבודה: ${userData.job_company_name}`
-                      : "שם מקום עבודה"
-                  }
-                  className="edit-content"
-                  type="text"
-                  required
+              <div className="userCard-fields">
+                <FontAwesomeIcon
+                  icon={faSchool}
+                  size="lg"
+                  className="profile-icon"
                 />
-              )}
-              {editMode && (
-                <input
-                  onChange={onJobStartYearChange}
-                  value={userData.jobStartYear}
-                  placeholder={
-                    isWorked
-                      ? `שנת התחלת עבודה: ${userData.job_start_year}`
-                      : "שנת התחלת עבודה"
-                  }
-                  className="edit-content"
-                  type="number"
-                  max={currentDate.getFullYear()}
-                  min="1900"
-                  required
+                {editMode ? (
+                  <select
+                    className="edit-content"
+                    onChange={onFacultyChange}
+                    value={userData.faculty}
+                    required
+                  >
+                    {Object.keys(Faculty).map((faculty) => {
+                      switch (faculty) {
+                        case Faculty.ComputerScience:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              מדעי המחשב
+                            </option>
+                          );
+                        case Faculty.Economy:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              כלכלה
+                            </option>
+                          );
+                        case Faculty.Psychology:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              פסיכולוגיה
+                            </option>
+                          );
+                        case Faculty.Social:
+                          return (
+                            <option
+                              value={faculty}
+                              key={Math.random().toString()}
+                            >
+                              סוציולוגיה
+                            </option>
+                          );
+                        default:
+                          return {};
+                      }
+                    })}
+                  </select>
+                ) : (
+                  <span>{getFaculty(userData.faculty)} </span>
+                )}
+              </div>
+              <div className="userCard-fields">
+                <FontAwesomeIcon
+                  icon={faCalendar}
+                  size="lg"
+                  className="profile-icon"
                 />
-              )}
+                {editMode ? (
+                  <select
+                    className="edit-content"
+                    onChange={onYearChange}
+                    value={userData.year}
+                    required
+                  >
+                    {Object.keys(Year).map((year) => {
+                      switch (year) {
+                        case Year.First:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה ראשונה
+                            </option>
+                          );
+                        case Year.Second:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה שנייה
+                            </option>
+                          );
+                        case Year.Third:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה שלישית
+                            </option>
+                          );
+                        case Year.Fourth:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה רביעית
+                            </option>
+                          );
+                        case Year.Fifth:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              שנה חמישית
+                            </option>
+                          );
+                        case Year.Graduated:
+                          return (
+                            <option value={year} key={Math.random().toString()}>
+                              סיימתי את הלימודים
+                            </option>
+                          );
+
+                        default:
+                          return {};
+                      }
+                    })}
+                  </select>
+                ) : (
+                  <span>{getYear(userData.year)}</span>
+                )}
+              </div>
               {editMode && (
-                <textarea
-                  onChange={onJobDescriptionChange}
-                  value={userData.jobDescription}
-                  placeholder={
-                    isWorked
-                      ? `תיאור מקום עבודה: \n ${userData.job_description}`
-                      : "תיאור מקום עבודה"
-                  }
-                  className="edit-content"
-                  type="text"
-                  required
-                />
+                <div className="checkBox-div">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={onCheckBox}
+                  />
+                  <label>אני עובד/ת</label>
+                </div>
               )}
             </div>
+            <div className="profile-img">
+              <img src={userData.user_image} alt="תמונה של המשתמש" />
+              {editMode && (
+                <div>
+                  <div className="auth-inner" style={{ width: "auto" }}>
+                    <input
+                      accept="image/*"
+                      type="file"
+                      onChange={onUserImageChange}
+                    />
+                  </div>
+                  <Button className="remove-img edit-btn" onClick={onRemoveImg}>
+                    מחק תמונה
+                  </Button>
+                </div>
+              )}
+            </div>
+          </header>
+          {checked && (
+            <div className="userCard-section open">
+              <Separator />
+              <div className="job-details">
+                <div className="userCard-fields">
+                  <FontAwesomeIcon
+                    icon={faBriefcase}
+                    size="lg"
+                    className="profile-icon"
+                  />
+                  <span>פרטי עבודה:</span>
+                </div>
+                {!editMode && (
+                  <p>
+                    עובד ב-{userData.job_company_name} משנת{" "}
+                    {userData.job_start_year}
+                  </p>
+                )}
+                {!editMode && <p>תיאור עבודה: {userData.job_description}</p>}
+                {editMode && (
+                  <input
+                    onChange={onJobCompanyNameChange}
+                    value={userData.jobCompanyName}
+                    placeholder={
+                      isWorked
+                        ? `שם מקום עבודה: ${userData.job_company_name}`
+                        : "שם מקום עבודה"
+                    }
+                    className="edit-content"
+                    type="text"
+                    required
+                  />
+                )}
+                {editMode && (
+                  <input
+                    onChange={onJobStartYearChange}
+                    value={userData.jobStartYear}
+                    placeholder={
+                      isWorked
+                        ? `שנת התחלת עבודה: ${userData.job_start_year}`
+                        : "שנת התחלת עבודה"
+                    }
+                    className="edit-content"
+                    type="number"
+                    max={currentDate.getFullYear()}
+                    min="1900"
+                    required
+                  />
+                )}
+                {editMode && (
+                  <textarea
+                    onChange={onJobDescriptionChange}
+                    value={userData.jobDescription}
+                    placeholder={
+                      isWorked
+                        ? `תיאור מקום עבודה: \n ${userData.job_description}`
+                        : "תיאור מקום עבודה"
+                    }
+                    className="edit-content"
+                    type="text"
+                    required
+                  />
+                )}
+              </div>
+            </div>
+          )}
+          {editMode && (
+            <footer className="userCard-section open">
+              <Separator />
+              <div className="edit-actions">
+                <Button onClick={editBtnClicked} className="edit-btn">
+                  ביטול
+                </Button>
+                <Button onClick={onUpdate} className="edit-btn">
+                  שמור
+                </Button>
+              </div>
+            </footer>
+          )}
+        </Card>
+      </div>
+      <div className="profile-section">
+        <Card
+          className="profile-card card"
+          onClick={() => {
+            onCardClicked("userPosts");
+          }}
+        >
+          <div>
+            <Post className="profile-icon" />
+            <h2> פוסטים</h2>
           </div>
-        )}
-        {editMode && (
-          <footer className="userCard-section open">
-            <Separator />
-            <div className="edit-actions">
-              <Button onClick={editBtnClicked} className="edit-btn">
-                ביטול
-              </Button>
-              <Button onClick={onUpdate} className="edit-btn">
-                שמור
-              </Button>
-            </div>
-          </footer>
-        )}
-      </Card>
-      <Card
-        className={`userPosts ${open === "userPosts" ? "open" : "close"} card`}
-        onClick={() => {
-          onCardClicked("userPosts");
-        }}
-      >
-        <div className="close">
-          <Post className="profile-icon" />
-          <h2> פוסטים</h2>
-        </div>
-        <div className="userPost-posts open">
-          {Object.values(posts).map((post) => (
-            <ProfilePost
-              user={props.user}
-              authorMail={post.author.user_email}
-              date="19/06/2023"
-              img={post.author.user_image}
-              likes={post.likes}
-              id={post.post_id}
-              title={post.title}
-              author={post.author.private_name + " " + post.author.last_name}
-              content={post.content}
-              key={Math.random()}
-              onDeletePost={getUserPosts}
-            />
-          ))}
-        </div>
-      </Card>
-      <Card
-        className={`userJobs ${open === "userJobs" ? "open" : "close"} card`}
-        onClick={() => {
-          onCardClicked("userJobs");
-        }}
-      >
-        <div className="close">
-          <Jobs className="profile-icon" />
-          <h2> משרות</h2>
-        </div>
-        <div className="open"> בלה בלה בלה יהיו פה משרות של המשתמש</div>
-      </Card>
+        </Card>
+        <Card
+          className={`userPosts ${
+            open === "userPosts" ? "open" : "close"
+          } card`}
+        >
+          <div className="userPost-posts open">
+            {Object.values(posts).map((post) => (
+              <ProfilePost
+                user={props.user}
+                authorMail={post.author.user_email}
+                date="19/06/2023"
+                img={post.author.user_image}
+                likes={post.likes}
+                id={post.post_id}
+                title={post.title}
+                author={post.author.private_name + " " + post.author.last_name}
+                content={post.content}
+                key={Math.random()}
+                onDeletePost={getUserPosts}
+              />
+            ))}
+          </div>
+        </Card>{" "}
+      </div>
+      <div className="profile-section">
+        <Card
+          className="profile-card card"
+          onClick={() => {
+            onCardClicked("userJobs");
+          }}
+        >
+          <div>
+            <Jobs className="profile-icon" />
+            <h2> משרות</h2>
+          </div>
+        </Card>
+        <Card
+          className={`userJobs ${open === "userJobs" ? "open" : "close"} card`}
+        >
+          <div className="open"> בלה בלה בלה יהיו פה משרות של המשתמש</div>
+        </Card>
+      </div>
     </div>
   );
 };

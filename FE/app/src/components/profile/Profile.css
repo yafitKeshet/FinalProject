@@ -4,28 +4,29 @@
   padding: 1rem 0;
   overflow: hidden;
 }
-.card {
+.profile-section {
   justify-self: center;
   width: 50%;
+}
+.card {
   padding: 1rem;
   align-items: center;
   justify-content: center;
 }
-/***** OPEN/CLOSE *****/
-.card.close .open {
-  display: none;
-}
-.card.close .close {
+.profile-card div {
   width: 240px;
   display: flex;
   gap: 1rem;
   justify-content: flex-start;
 }
-.card.close .close .profile-icon {
+.profile-card .profile-icon {
   width: 40px;
   height: 40px;
 }
-
+/***** OPEN/CLOSE *****/
+.card.close {
+  display: none;
+}
 .card.open .close {
   display: none;
 }
