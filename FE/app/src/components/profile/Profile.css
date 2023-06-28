@@ -133,10 +133,11 @@
 }
 /***** POSTS *****/
 .userPosts {
-  /* padding-right: 5rem; */
-  overflow-x: scroll;
 }
 .userPost-posts {
+  padding: 1rem;
+  width: 100%;
+  overflow-x: scroll;
   display: flex;
   gap: 0.5rem;
 }

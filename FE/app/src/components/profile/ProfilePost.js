@@ -4,6 +4,7 @@ import axios from "axios";
 import Card from "../UI/Card";
 import Button from "../UI/Button.js";
 import Likes from "../post/Likes.js";
+import "./ProfilePost.css";
 
 const ProfilePost = (props) => {
   const onDelete = async () => {
@@ -27,26 +28,25 @@ const ProfilePost = (props) => {
     }
   };
   return (
-    <Card className="post-card">
-      <header className="post-header">
-        <Button className="post-delete" onClick={onDelete}>
-          מחק פוסט
-        </Button>
-
-        <div className="post-author">
+    <Card className="profilePost-card">
+      <Button className="profilePost-delete" onClick={onDelete}>
+        מחק
+      </Button>
+      <header className="profilePost-header">
+        <div className="profilePost-author">
           <img src={props.img} alt="תמונה של המשתמש" />
-          <div className="author-data">
+          <div className="profilePost-author-data">
             <h4>{props.author}</h4>
             <div>{props.date}</div>
           </div>
         </div>
-        <h2 className="post-title">{props.title}</h2>
+        <h2 className="profilePost-title">{props.title}</h2>
       </header>
-      <div className="post-contents">
-        <div className="post-content">{props.content} </div>
+      <div className="profilePost-contents">
+        <div className="profilePost-content">{props.content} </div>
       </div>
       <Likes
-        className="post-likes"
+        className="profilePost-likes"
         likes={props.likes}
         id={props.id}
         userMail={props.user.user_email}
