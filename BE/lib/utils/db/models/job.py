@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from sqlalchemy import Column, String, DateTime, Integer, Enum
 from ..user_db import Base
 from ...enums import JobTime, Faculty, Experience

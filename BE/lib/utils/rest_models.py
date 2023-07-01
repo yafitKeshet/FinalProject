@@ -55,6 +55,7 @@ class UserProfileOut(ProjectBaseModel):
     user_email: str
     private_name: str
     last_name: str
+    saved_jobs: Optional[List[str]]
     birthday_date: Optional[str]
     faculty: Optional[Faculty]
     year: Optional[Year]
@@ -115,10 +116,20 @@ class NewPost(ProjectBaseModel):
     faculty: Faculty
 
 
-class Company(ProjectBaseModel):
+class CompanyIn(ProjectBaseModel):
     name: str
     logo: str  # URL to the logo
-    number_of_employees: Tuple[int, int]
+    about: str
+    website: str
+    number_of_employees: int
+
+
+class CompanyOut(ProjectBaseModel):
+    name: str
+    logo: str  # URL to the logo
+    about: str
+    website: str
+    number_of_employees: int
 
 
 class Job(ProjectBaseModel):
