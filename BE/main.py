@@ -8,7 +8,7 @@ from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 
 # Internal imports
-from lib.rest import course, feed, general, job, login, profile, signup
+from lib.rest import course, feed, general, job, login, profile, signup, forum
 from dotenv import load_dotenv
 
 # Load variables from .env file
@@ -29,6 +29,7 @@ def prepare_app():
     app.include_router(login.router)
     app.include_router(profile.router)
     app.include_router(signup.router)
+    app.include_router(forum.router)
 
     return app
 

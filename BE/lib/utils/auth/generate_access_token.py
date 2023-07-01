@@ -12,7 +12,7 @@ from ..rest_models import UserLogin, Login
 SECRET_KEY = 'a9c5a47a668c690fb675a3d892dbf6507663f1a80aec9316e09834bf9e5c82ff'
 ALGORITHM = "HS256"
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 
 # Create Token:
