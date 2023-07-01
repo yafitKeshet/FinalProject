@@ -39,7 +39,7 @@ def new_post(
     db: UserDBSession = Depends(get_db_session)
 
 ):
-    return PostsManager(db).create_new_post(user, post)
+    return PostsManager(db).create_new_post(user, post, db)
 
 
 @router.patch(

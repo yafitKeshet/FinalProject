@@ -2,13 +2,12 @@ import logging
 import uuid
 from typing import List
 
-from fastapi import HTTPException
-from pydantic.datetime_parse import datetime
+from fastapi import HTTPException, Depends
 from starlette import status
 
 from ..utils.db.models.post import Post
 from ..utils.db.models.user import User
-from ..utils.db.user_db import UserDBSession
+from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.rest_models import PostOut, NewPost
 
 
@@ -34,20 +33,21 @@ class PostsManager:
         # ToDo: Sort according to Faculty or something, or find relevant topic?
         return posts_enriched
 
-    def create_new_post(self, user: User, new_post: NewPost) -> PostOut:
+    def create_new_post(self, user: User, new_post: NewPost, db: UserDBSession = Depends(get_db_session)) -> PostOut:
+        post_id = str(uuid.uuid4())
         post_to_add_dict = {
             Post.author_email.name: user.user_email,
             Post.faculty.name: user.faculty,
-            Post.post_id.name: str(uuid.uuid4()),
+            Post.post_id.name: post_id
         }
         post_to_add_dict.update(new_post.dict())
 
         self.db_session.add(Post(**post_to_add_dict))
         self.db_session.commit()
         # Create response
-        post_to_add_dict["author"] = self.db_session.get_user_query(user.user_email).first().dict()
-        post_to_add_dict["published_time"] = datetime.now()
-        response = PostOut(**post_to_add_dict)
+        new_created_post = db.query(Post).filter (Post.post_id == post_id).first().__dict__
+        new_created_post["author"] = self.db_session.get_user_query(user.user_email).first().dict()
+        response = PostOut(**new_created_post)
         return response
 
     def manage_like_post(self, user: User, post_id: str, like_status: bool) -> List[str]:
