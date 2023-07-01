@@ -10,7 +10,6 @@ class ProjectBaseModel(BaseModel):
     class Config:
         use_enum_values = True
 
-
 # User:
 class SignUpUserProfile(ProjectBaseModel):
     user_email: str
@@ -184,6 +183,36 @@ class CourseUpdate(ProjectBaseModel):
     tests: Optional[List[UploadFile]]
     tests_solution: Optional[List[UploadFile]]
     summary_documents: Optional[List[UploadFile]]
+
+
+# Comment
+class CommentNew(ProjectBaseModel):
+    question_id: str
+    content: str
+
+
+class CommentOut(ProjectBaseModel):
+    comment_id: str
+    content: str
+    author: UserProfileOut
+    published_time: datetime
+    likes: List[str] = []
+
+
+# Question
+class QuestionNew(ProjectBaseModel):
+    title: str
+    content: str
+
+
+class QuestionOut(ProjectBaseModel):
+    question_id: str
+    author: UserProfileOut
+    title: str
+    content: str
+    faculty: Faculty
+    question_comments: List[CommentOut] = []
+    published_time: datetime
 
 
 class JobCV(ProjectBaseModel):
