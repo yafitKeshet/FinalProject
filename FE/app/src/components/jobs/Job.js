@@ -40,7 +40,7 @@ const Job = (props) => {
     props.onClickJob(props.job_id);
   };
   //TODO
-  let publish_image = "./users/yafitImg.jpg";
+
   const onDelete = () => {};
   const onImg = () => {};
   const onSave = () => {};
@@ -99,7 +99,7 @@ const Job = (props) => {
             <img
               onClick={onImg}
               className="detail-icon"
-              src={publish_image}
+              src={props.publish_image}
               alt="תמונה של מפרסם המשרה"
             />
           </li>

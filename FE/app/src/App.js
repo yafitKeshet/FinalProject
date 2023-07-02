@@ -427,7 +427,7 @@ const App = (props) => {
         )}
         {/* JOBS */}
 
-        {pages.isJobsPage && <Jobs user={user} />}
+        {pages.isJobsPage && <Jobs moveToProfile={toggleProfile} user={user} />}
 
         {/* COURSES */}
         {pages.isCoursesPage && <Courses />}

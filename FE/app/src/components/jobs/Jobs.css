@@ -1,4 +1,9 @@
 .jobs-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   position: relative;
   padding: 1rem 2rem;
   width: 80%;
@@ -22,8 +27,8 @@
   width: 180px !important;
   height: 150px !important;
   rotate: -20deg;
-  top: -2.5rem;
-  left: -4rem;
+  top: -1.5rem;
+  left: -2rem;
 }
 .jobs {
   padding: 2rem 0;

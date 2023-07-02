@@ -6,8 +6,16 @@
 .open-job {
   justify-content: center;
 }
-
 .job-filters {
+  display: flex;
+  gap: 1rem;
+}
+.job-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 4rem;
-  background-color: aqua;
+}
+.job-filters-btn {
+  border-radius: 5px;
 }
