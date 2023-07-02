@@ -64,7 +64,7 @@ const Feed = (props) => {
           <Post
             user={props.user}
             authorMail={post.author.user_email}
-            date="19/06/2023"
+            date={post.published_time}
             img={post.author.user_image}
             likes={post.likes}
             id={post.post_id}
