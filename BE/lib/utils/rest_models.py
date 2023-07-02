@@ -107,6 +107,7 @@ class PostOut(ProjectBaseModel):
     title: str
     faculty: Faculty
     likes: Set[str] = set()
+    published_time: datetime
 
 
 class NewPost(ProjectBaseModel):
