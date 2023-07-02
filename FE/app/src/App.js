@@ -14,6 +14,7 @@ import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
 import { getUserFromJWT } from "./components/user/user.ts";
+import Courses from "./components/courses/Courses";
 
 const App = (props) => {
   const [user, setUser] = useState({});
@@ -67,6 +68,7 @@ const App = (props) => {
       isJobsPage: false,
       isFeedPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
     });
 
     // Save current page
@@ -85,6 +87,7 @@ const App = (props) => {
     isJobsPage: false,
     isFeedPage: false,
     isProfilePage: false,
+    isCoursesPage: false,
   });
 
   // General Info
@@ -98,6 +101,7 @@ const App = (props) => {
       isJobsPage: false,
       isFeedPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
     });
 
     // Save current page
@@ -121,6 +125,7 @@ const App = (props) => {
       isFeedPage: false,
       isMainPage: false,
       isProfilePage: true,
+      isCoursesPage: false,
     });
 
     // Save current page
@@ -142,6 +147,7 @@ const App = (props) => {
       isJobsPage: false,
       isFeedPage: true,
       isProfilePage: false,
+      isCoursesPage: false,
     });
 
     // Save current page
@@ -153,7 +159,6 @@ const App = (props) => {
   };
 
   // Jobs
-  // General Info
   const toggleJobs = () => {
     console.log("Jobs button was clicked");
 
@@ -164,10 +169,33 @@ const App = (props) => {
       isJobsPage: true,
       isFeedPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
     });
 
     // Save current page
     sessionStorage.setItem("currentPage", "isJobsPage");
+
+    console.log(
+      `page after jobs btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Courses
+  const toggleCourses = () => {
+    console.log("Courses button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+      isCoursesPage: true,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isCoursesPage");
 
     console.log(
       `page after jobs btn clicked: ${sessionStorage.getItem("currentPage")}`
@@ -226,6 +254,10 @@ const App = (props) => {
       {
         onclick: toggleJobs,
         data: "משרות",
+      },
+      {
+        onclick: toggleCourses,
+        data: "קורסים",
       },
       { onclick: onLogOut, data: "התנתק" },
     ]);
@@ -295,6 +327,7 @@ const App = (props) => {
       isFeedPage: true,
       isMainPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
     });
 
     // Save current page
@@ -325,6 +358,7 @@ const App = (props) => {
       isFeedPage: false,
       isMainPage: true,
       isProfilePage: false,
+      isCoursesPage: false,
     });
 
     // Save current page
@@ -392,7 +426,11 @@ const App = (props) => {
           <Profile user={user} onUpdateUser={onUpdateUser} />
         )}
         {/* JOBS */}
+
         {pages.isJobsPage && <Jobs user={user} />}
+
+        {/* COURSES */}
+        {pages.isCoursesPage && <Courses />}
       </div>
     </div>
   );

@@ -49,18 +49,11 @@ const Feed = (props) => {
     }
   };
 
-  const cancelUploadPost = () => {
-    console.log("post cancel");
-  };
-
-  console.log(props.user);
-
   return (
     <div className="feed">
       <Card className="feed-card">
         <UploadPost
           user={props.user}
-          onCancel={cancelUploadPost}
           moveToProfile={props.moveToProfile}
           onSubmit={getPosts}
         />
@@ -71,7 +64,7 @@ const Feed = (props) => {
           <Post
             user={props.user}
             authorMail={post.author.user_email}
-            date="19/06/2023"
+            date={post.published_time}
             img={post.author.user_image}
             likes={post.likes}
             id={post.post_id}

@@ -54,7 +54,11 @@ const Likes = (props) => {
       </div>
 
       <div className="likes-list">
-        {likes.length === 1 && <div className="not-all">{likes[0]}</div>}
+        {likes.length === 1 && (
+          <div className="not-all" onClick={() => props.onClick(likes[0])}>
+            {likes[0]}
+          </div>
+        )}
         {likes.length > 1 && !displayAll && (
           <div className="not-all" onClick={onDisplayAll}>
             {likes[0]} ועוד {likes.length - 1}
@@ -63,8 +67,10 @@ const Likes = (props) => {
 
         {likes.length > 0 && displayAll && (
           <ul className="backdrop" onClick={onDisplayAll}>
-            {likes.map((name) => (
-              <li key={Math.random()}>{name}</li>
+            {likes.map((mail) => (
+              <li key={Math.random()} onClick={() => props.onClick(mail)}>
+                {mail}
+              </li>
             ))}
           </ul>
         )}
