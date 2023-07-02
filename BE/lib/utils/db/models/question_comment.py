@@ -1,26 +1,23 @@
-import uuid
 from datetime import datetime
 from typing import List
 
-from sqlalchemy import Column, String, JSON, DateTime
-
+from sqlalchemy import Column, String, Integer, ForeignKey, JSON, DateTime
+from sqlalchemy.orm import relationship
 
 from ..user_db import Base
 
 
-class Post(Base):
+class QuestionComment(Base):
+    __tablename__ = "question_comment"
 
-    __tablename__ = "post"
-
-    AUTHOR = "author"
-
-    post_id = Column(String, primary_key=True, unique=True, nullable=False)
+    comment_id = Column(String, primary_key=True, unique=True, index=True)
     author_email = Column(String, nullable=False)
-    faculty = Column(String, nullable=False)
-    title = Column(String, nullable=False)
-    content = Column(String, nullable=False)
-    likes = Column(JSON, nullable=True, default=[])  # Use ARRAY data type for likes
+    content = Column(String)
     published_time = Column(DateTime, default=datetime.utcnow)
+    likes = Column(JSON, nullable=True, default=[])  # Use ARRAY data type for likes
+
+    question_id = Column(String, ForeignKey('question.question_id'))
+    question = relationship("Question", back_populates="question_comments", lazy="joined")
 
     def add_like(self, user_email) -> List[str]:
         likes = self.likes.copy()
