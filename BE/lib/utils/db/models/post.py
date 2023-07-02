@@ -1,6 +1,8 @@
+import uuid
+from datetime import datetime
 from typing import List
 
-from sqlalchemy import Column, String, JSON
+from sqlalchemy import Column, String, JSON, DateTime
 
 
 from ..user_db import Base
@@ -18,6 +20,7 @@ class Post(Base):
     title = Column(String, nullable=False)
     content = Column(String, nullable=False)
     likes = Column(JSON, nullable=True, default=[])  # Use ARRAY data type for likes
+    published_time = Column(DateTime, default=datetime.utcnow)
 
     def add_like(self, user_email) -> List[str]:
         likes = self.likes.copy()
