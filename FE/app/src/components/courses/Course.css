@@ -1,5 +1,9 @@
 .course {
   position: relative;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .course-icn {
   height: 4rem;
@@ -9,11 +13,16 @@
   left: 0rem;
   top: 0rem;
 }
+.course ul {
+  list-style: none;
+  text-align: right;
+  margin: 0;
+}
 .course div header,
 .course header div header {
   display: flex;
   gap: 0.3rem;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 .recommendations h3 {
@@ -22,4 +31,9 @@
 .course-list-icn {
   height: 2rem;
   width: 2rem;
+}
+.course-rating {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }

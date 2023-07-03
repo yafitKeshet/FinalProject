@@ -8,6 +8,7 @@ import CourseIcn from "../UI/SVG/CourseIcn";
 import CourseTeacher from "../UI/SVG/CourseTeacher";
 import CourseDescription from "../UI/SVG/CourseDescription";
 import RecommendationIcn from "../UI/SVG/RecommendationIcn";
+import RatingIcn from "../UI/SVG/RatingIcn";
 
 const Course = (props) => {
   const teachers = props.teachers.replace(",", "").split(" ");
@@ -23,22 +24,27 @@ const Course = (props) => {
           </header>
           <ul>
             {teachers.map((teacher) => (
-              <li key={Math.random()}>{teacher}</li>
+              <li key={Math.random()}>- {teacher}</li>
             ))}
           </ul>
         </div>
       </header>
-      <Separator />
       <div>
         <header>
           <CourseDescription className="course-list-icn" />
           <span>תיאור הקורס:</span>
         </header>
-        <p>{props.description}</p>
+        <ul>
+          <li>{props.description}</li>
+        </ul>
       </div>
-      <Separator />
-      <span> דירוג הקורס: </span>
-      <RatingStar value={props.rating_avg} readOnly={true} />
+      <div className="course-rating">
+        <header>
+          <RatingIcn className="course-list-icn" />
+          <span> דירוג הקורס: </span>
+        </header>
+        <RatingStar value={props.rating_avg} readOnly={true} />
+      </div>
       <Separator />
       <div className="recommendations">
         <header>
