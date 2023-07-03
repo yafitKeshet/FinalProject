@@ -1,8 +1,13 @@
 import React from "react";
 import "./Course.css";
+import RatingStar from "./RatingStar";
 
 const Course = (props) => {
-  return <div>courseeeeeeee</div>;
+  return (
+    <div>
+      <RatingStar />
+    </div>
+  );
 };
 
 export default Course;

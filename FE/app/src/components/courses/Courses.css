@@ -1,0 +1,17 @@
+.courses {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+.courses-card {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.search {
+  width: 40%;
+}
