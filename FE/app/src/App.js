@@ -11,7 +11,6 @@ import Register from "./components/register/Register";
 import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
-// import { getUserFromJWT } from "./components/user/user.ts";
 import Courses from "./components/courses/Courses";
 
 const App = (props) => {

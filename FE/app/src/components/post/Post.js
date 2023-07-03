@@ -69,10 +69,15 @@ const Post = (props) => {
   postTime = new Date(postTime);
   postTime.setHours(postTime.getHours() + 3);
   const timeRemaining = new Date(new Date().getTime() - postTime.getTime());
-
   let date = props.date.substr(0, 10).split("-");
   let new_date = date[2] + "/" + date[1] + "/" + date[0];
-
+  console.log("post: ", props.id, "ppsted: ", postTime);
+  console.log("now: ", new Date());
+  console.log("days: ", Math.floor(timeRemaining / (1000 * 60 * 60 * 24)));
+  console.log(
+    "hours: ",
+    (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
   const hoursRemaining = Math.floor(
     (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
