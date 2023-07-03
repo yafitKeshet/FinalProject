@@ -21,15 +21,13 @@ const Post = (props) => {
 
   const userImgClicked = async () => {
     let authorProfile = {};
-    if (isAuthor) {
-      authorProfile = props.user;
-    } else {
-      let authorProfileRequest = await getUserFromEmail({
-        token: props.user.token,
-        email: props.authorMail,
-      });
-      authorProfile = authorProfileRequest;
-    }
+
+    let authorProfileRequest = await getUserFromEmail({
+      token: props.user.token,
+      email: props.authorMail,
+    });
+    authorProfile = authorProfileRequest;
+
     setAuthorProfile({ isOpen: true, profile: authorProfile });
   };
 

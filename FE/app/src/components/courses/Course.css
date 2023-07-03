@@ -1,0 +1,25 @@
+.course {
+  position: relative;
+}
+.course-icn {
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  transform: rotate(-25deg);
+  left: 0rem;
+  top: 0rem;
+}
+.course div header,
+.course header div header {
+  display: flex;
+  gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
+}
+.recommendations h3 {
+  margin: 0;
+}
+.course-list-icn {
+  height: 2rem;
+  width: 2rem;
+}
