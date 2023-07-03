@@ -9,6 +9,8 @@ export const getConfig = (token) => {
 };
 export const getUserProfile = async (token) => {
   const user = {
+    email: "",
+    password: "",
     private_name: "",
     birthday_date: "",
     last_name: "",
@@ -29,8 +31,6 @@ export const getUserProfile = async (token) => {
       config
     );
     if (userDataRequest !== undefined && userDataRequest.status === 200) {
-      console.log("we got user profile data -> on login");
-
       user.private_name =
         userDataRequest.data.private_name.charAt(0).toUpperCase() +
         userDataRequest.data.private_name.slice(1);
@@ -46,6 +46,8 @@ export const getUserProfile = async (token) => {
       user.user_image = userDataRequest.data.user_image;
       user.cv_resume = userDataRequest.data.cv_resume;
       user.token = token;
+      user.email = userDataRequest.data.user_email;
+      user.password = userDataRequest.data.password;
 
       return user;
     }
@@ -60,6 +62,8 @@ export const getUserProfile = async (token) => {
 };
 
 export const getUserFromJWT = (token) => {
+  console.log("token: ", token);
+
   const base64Url = token.split(".")[1]; // Get the payload part
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Convert from Base64Url to Base64
   const jsonPayload = decodeURIComponent(
@@ -82,7 +86,7 @@ export const getUserFromEmail = async (props) => {
       config
     );
     if (profileRequest !== undefined && profileRequest.status === 200) {
-      console.log("we got author profile-> on feed");
+      console.log("we got author profile");
       return profileRequest.data;
     }
   } catch (err) {

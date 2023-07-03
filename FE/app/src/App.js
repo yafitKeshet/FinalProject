@@ -6,8 +6,6 @@ import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import Icons from "./components/icons/Icons";
-// import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
 import Profile from "./components/profile/Profile";
@@ -20,6 +18,7 @@ const App = (props) => {
   const [user, setUser] = useState({});
 
   const onUpdateUser = (token) => {
+    console.log("new token: ", token);
     sessionStorage.setItem("token", token);
     let user = getUserFromJWT(token);
     setUser({ ...user, token: token });
