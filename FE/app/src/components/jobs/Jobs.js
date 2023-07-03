@@ -5,8 +5,9 @@ import Card from "../UI/Card";
 import JobsList from "./JobsList";
 import JobsICN from "../UI/SVG/JobsICN";
 import UploadJob from "./UploadJob";
-import { getConfig } from "../user/user.ts";
+import { getConfig, getUserProfile } from "../user/user.ts";
 import axios from "axios";
+
 const tempJobs = [
   {
     job_id: "1",
@@ -60,7 +61,7 @@ const tempJobs = [
       logo: "./companies/googleLogo.png",
       number_of_employees: ["50", "100"],
     },
-    faculty_relevance: "Economy",
+    faculty_relevance: "ComputerScience",
     experience: "Junior",
     publish_image: "./users/yafitImg.jpg",
   },
@@ -98,14 +99,15 @@ const Jobs = (props) => {
     //   console.log("job request failed");
     // }
   };
-  const filterjobs = () => {
+  const filterjobs = async () => {
     let filtered = jobs;
+    let user = await getUserProfile(sessionStorage.getItem("token"));
     filtered = filtered.filter((job) => {
-      return job.faculty_relevance === props.user.faculty;
+      return job.faculty_relevance === user.faculty;
     });
 
     setJobs(filtered);
-    console.log("after: ", jobs);
+    console.log("after: ", filtered);
 
     //TODO update job-open
   };

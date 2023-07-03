@@ -282,7 +282,12 @@ const Register = (props) => {
             console.log("register succeed");
             let token = registerRequest.data.jwt_token; // user token
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-            props.onLogin(token);
+            props.onLogin({
+              token: token,
+              user_name: inputs.firstName + " " + inputs.lastName,
+              user_image: finalImg,
+              user_email: inputs.mail,
+            });
           }
         } catch (err) {
           console.log(err);

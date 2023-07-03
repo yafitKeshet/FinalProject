@@ -11,17 +11,28 @@ import Register from "./components/register/Register";
 import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
-import { getUserFromJWT } from "./components/user/user.ts";
+// import { getUserFromJWT } from "./components/user/user.ts";
 import Courses from "./components/courses/Courses";
 
 const App = (props) => {
   const [user, setUser] = useState({});
 
-  const onUpdateUser = (token) => {
-    console.log("new token: ", token);
-    sessionStorage.setItem("token", token);
-    let user = getUserFromJWT(token);
-    setUser({ ...user, token: token });
+  const onUpdateUser = (props) => {
+    sessionStorage.setItem("token", props.token);
+    sessionStorage.setItem("user_name", props.user_name);
+    sessionStorage.setItem("user_image", props.user_image);
+    sessionStorage.setItem("user_email", props.user_email);
+
+    setUser({
+      token: props.token,
+      user_name: props.user_name,
+      user_image: props.user_image,
+      user_email: props.user_email,
+    });
+    loggedInMenu({
+      user_image: props.user_image,
+      private_name: props.user_name.split(" ")[0],
+    });
   };
   // HEADER
 
@@ -278,9 +289,20 @@ const App = (props) => {
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
       let token = sessionStorage.getItem("token");
-      let user = getUserFromJWT(token);
-      setUser({ ...user, token: token });
-      loggedInMenu(user);
+      let user_name = sessionStorage.getItem("user_name");
+      let user_image = sessionStorage.getItem("user_image");
+      let user_email = sessionStorage.getItem("user_email");
+      setUser({
+        token: token,
+        user_name: user_name,
+        user_image: user_image,
+        user_email: user_email,
+      });
+
+      loggedInMenu({
+        user_image: user_image,
+        private_name: user_name.split(" ")[0],
+      });
     }
 
     let storedCurrentPage = sessionStorage.getItem("currentPage");
@@ -302,18 +324,27 @@ const App = (props) => {
   // Login-PAGE
 
   //    Login handler
-  const loginHandler = (token) => {
-    let user = getUserFromJWT(token);
-    setUser({ ...user, token: token });
+  const loginHandler = (props) => {
+    setUser({
+      token: props.token,
+      user_name: props.user_name,
+      user_image: props.user_image,
+      user_email: props.user_email,
+    });
 
-    // Save data of the use
-    sessionStorage.setItem("token", token);
-
+    // Save data of the user
+    sessionStorage.setItem("token", props.token);
+    sessionStorage.setItem("user_name", props.user_name);
+    sessionStorage.setItem("user_image", props.user_image);
+    sessionStorage.setItem("user_email", props.user_email);
     // Close the login form modal
     setLoginFormModalOpen(false);
 
     // Add buttons to the menu
-    loggedInMenu(user);
+    loggedInMenu({
+      user_image: props.user_image,
+      private_name: props.user_name.split(" ")[0],
+    });
     // Update user as LoggedIn
     sessionStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
@@ -344,6 +375,10 @@ const App = (props) => {
 
     // Remove data of the user
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user_name");
+    sessionStorage.removeItem("user_image");
+    sessionStorage.removeItem("user_email");
+
     setUser({});
 
     // Remove buttons from the menu
@@ -422,7 +457,7 @@ const App = (props) => {
         )}
         {/* PROFILE */}
         {pages.isProfilePage && (
-          <Profile user={user} onUpdateUser={onUpdateUser} />
+          <Profile onUpdateUser={onUpdateUser} user={user} />
         )}
         {/* JOBS */}
 

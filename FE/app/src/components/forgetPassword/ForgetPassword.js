@@ -6,6 +6,7 @@ import { ForgetPassStepTypes } from "../enums/enums.ts";
 import "./ForgetPassword.css";
 import axios from "axios";
 import Cancel from "../UI/SVG/Cancel";
+import { getUserProfile } from "../user/user.ts";
 
 /*
   errors 
@@ -243,7 +244,15 @@ const ForgetPassword = (props) => {
                   let token = checkPasswordRequest.data.jwt_token; // user token
                   token = token.replace(/(?:\r\n|\r|\n)/g, "");
 
-                  props.onLogin(token);
+                  let user = await getUserProfile(token);
+                  props.onLogin(
+                    props.onLogin({
+                      token: user.token,
+                      user_name: user.private_name + " " + user.last_name,
+                      user_image: user.user_image,
+                      user_email: user.email,
+                    })
+                  );
                 }
               } catch (err) {
                 if (err.response !== undefined && err.response.status === 401) {

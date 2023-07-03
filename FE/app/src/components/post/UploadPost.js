@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UploadPost.css";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Separator from "../UI/Separator";
 import Cancel from "../UI/SVG/Cancel";
 import axios from "axios";
-import { getConfig } from "../user/user.ts";
+import { getConfig, getUserProfile } from "../user/user.ts";
 
 const UploadPost = (props) => {
   const [inputs, setInputs] = useState({ title: "", content: "" });
@@ -37,12 +37,13 @@ const UploadPost = (props) => {
     const config = getConfig(props.user.token);
 
     try {
+      let user = await getUserProfile(sessionStorage.getItem("token"));
       let uploadPostRequest = await axios.post(
         "http://localhost:8080/feed/new",
         {
           content: inputs.content,
           title: inputs.title,
-          faculty: props.user.faculty,
+          faculty: user.faculty,
         },
         config
       );
@@ -72,7 +73,7 @@ const UploadPost = (props) => {
           alt="תמונה של המשתמש"
           onClick={props.moveToProfile}
         />
-        <h4>{props.user.private_name + " " + props.user.last_name}</h4>
+        <h4>{props.user.user_name}</h4>
       </div>
       <Separator className="separator" />
       <input
@@ -80,7 +81,7 @@ const UploadPost = (props) => {
         type="text"
         value={inputs.content}
         onChange={contentChange}
-        placeholder={`מה בא לך לשתף ${props.user.private_name}?`}
+        placeholder={`מה בא לך לשתף ${props.user.user_name.split(" ")[0]}?`}
         onClick={toggleIsOpen}
       />
       <form onSubmit={submitHandler}>
@@ -97,7 +98,7 @@ const UploadPost = (props) => {
           type="text"
           value={inputs.content}
           onChange={contentChange}
-          placeholder={`מה בא לך לשתף ${props.user.private_name}?`}
+          placeholder={`מה בא לך לשתף ${props.user.user_name.split(" ")[0]}?`}
           onClick={!isOpen ? toggleIsOpen : () => {}}
           required
         />

@@ -10,7 +10,7 @@ import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { getConfig } from "../user/user.ts";
+import { getConfig, getUserProfile } from "../user/user.ts";
 import Card from "../UI/Card";
 import { getFaculty, getYear, Faculty, Year } from "../enums/enums.ts";
 import Separator from "../UI/Separator";
@@ -24,9 +24,9 @@ const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
   const [editMode, setEditMode] = useState(false);
   const [posts, setPosts] = useState({});
-  const [userData, setUserData] = useState(props.user);
-  let isWorked = userData.job_start_year !== 0;
-  const [checked, setChecked] = useState(isWorked);
+  const [userData, setUserData] = useState({});
+  const [isWorked, setIsWorked] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const onCardClicked = (card) => {
     // if (open !== card) {
@@ -35,9 +35,12 @@ const Profile = (props) => {
     // }
   };
   /***** USER CARD *****/
-  const editBtnClicked = () => {
+  const editBtnClicked = async () => {
     if (editMode) {
-      setUserData(props.user);
+      let user = await getUserProfile(sessionStorage.getItem("token"));
+      setUserData(user);
+      setIsWorked(user.job_start_year !== 0);
+      setChecked(user.job_start_year !== 0);
     }
     setEditMode((prev) => {
       return !prev;
@@ -64,8 +67,12 @@ const Profile = (props) => {
       }).then((profileRequest) => {
         if (profileRequest !== undefined && profileRequest.status === 200) {
           console.log("profileRequest- succeed ");
-          // TODO- GET NEW TOKEN
-          //  props.onUpdateUser(profileRequest.token);
+          props.onUpdateUser({
+            token: props.user.token,
+            user_name: props.user.user_name,
+            user_image: userData.user_image,
+            user_email: props.user.user_email,
+          });
           setEditMode(false);
         }
       });
@@ -143,7 +150,7 @@ const Profile = (props) => {
       let postsRequest = await axios.get("http://localhost:8080/feed", config);
       if (postsRequest !== undefined && postsRequest.status === 200) {
         let filtered = postsRequest.data.filter((post) => {
-          return post.author.user_email === userData.user_email;
+          return post.author.user_email === props.user.user_email;
         });
         console.log("user posts: ", filtered);
 
@@ -156,6 +163,13 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
+    const getUser = async () => {
+      let user = await getUserProfile(sessionStorage.getItem("token"));
+      setUserData(user);
+      setIsWorked(user.job_start_year !== 0);
+      setChecked(user.job_start_year !== 0);
+    };
+    getUser();
     getUserPosts();
   }, []);
   return (
@@ -180,16 +194,14 @@ const Profile = (props) => {
               <Edit className="edit-icon" onClick={editBtnClicked} />
             )}
             <div className="fields">
-              <h2 className="userCard-title">
-                {userData.private_name + " " + userData.last_name}
-              </h2>
+              <h2 className="userCard-title">{props.user.user_name}</h2>
               <div className="userCard-fields">
                 <FontAwesomeIcon
                   icon={faEnvelope}
                   className="profile-icon"
                   size="lg"
                 />
-                <span>{userData.user_email}</span>
+                <span>{props.user.user_email}</span>
               </div>
               <div className="userCard-fields">
                 <FontAwesomeIcon

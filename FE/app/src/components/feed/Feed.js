@@ -5,7 +5,7 @@ import axios from "axios";
 import UploadPost from "../post/UploadPost";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
-import { getConfig } from "../user/user.ts";
+import { getConfig, getUserProfile } from "../user/user.ts";
 
 const Feed = (props) => {
   const [posts, setPosts] = useState({});
@@ -25,10 +25,11 @@ const Feed = (props) => {
     }
   }, [filter]);
 
-  const filterPosts = () => {
+  const filterPosts = async () => {
     let filtered = posts;
+    let user = await getUserProfile(sessionStorage.getItem("token"));
     filtered = filtered.filter((post) => {
-      return post.faculty === props.user.faculty;
+      return post.faculty === user.faculty;
     });
 
     setPosts(filtered);

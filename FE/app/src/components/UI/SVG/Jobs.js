@@ -3,7 +3,7 @@ import React from "react";
 const Jobs = (props) => {
   return (
     <svg
-      className={`jobs-icon ${props.className}`}
+      className={`${props.className}`}
       fill="#0a416e"
       version="1.1"
       id="Capa_1"

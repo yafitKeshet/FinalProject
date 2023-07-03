@@ -4,6 +4,7 @@ import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import axios from "axios";
+import { getUserProfile } from "../user/user.ts";
 
 const LoginForm = (props) => {
   // Input Colors
@@ -65,8 +66,15 @@ const LoginForm = (props) => {
             console.log("good to go (mail and password are correct)");
             let token = checkPasswordRequest.data.jwt_token; // user token
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
-
-            props.onLogin(token);
+            let user = await getUserProfile(token);
+            props.onLogin(
+              props.onLogin({
+                token: user.token,
+                user_name: user.private_name + " " + user.last_name,
+                user_image: user.user_image,
+                user_email: user.email,
+              })
+            );
           }
         } catch (err) {
           if (err.response !== undefined && err.response.status === 401) {
