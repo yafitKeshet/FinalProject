@@ -1,0 +1,59 @@
+.recommendation {
+  border: #27997b dashed 1px;
+  padding: 1rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+.recommendation header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.recommend-delete {
+  position: absolute;
+  width: fit-content;
+  padding: 0 0.5rem;
+  border-radius: 5px;
+  background-color: #27997b;
+  border-color: #27997b;
+  bottom: 0.5rem;
+  left: 0.5rem;
+}
+.recommend-delete:hover {
+  background-color: #1ccb9c;
+  border-color: #1ccb9c;
+}
+.recommend-author {
+  align-self: flex-start;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.recommend-author h2 {
+  font-size: 1.5rem;
+}
+.recommend-author img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.recommend-rank {
+  position: absolute !important;
+  top: -0.8rem;
+  left: -0.8rem;
+}
+.recommend-contents {
+  display: flex;
+  flex-direction: column;
+}
+.recommend-contents h5 {
+  font-size: 1.2rem;
+  letter-spacing: -1px;
+}
+.recommend-contents span {
+  font-size: 1rem;
+}

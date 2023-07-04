@@ -9,16 +9,37 @@
 .courses-card {
   overflow-y: scroll;
   width: 80%;
-  padding: 7rem 1rem 1rem 1rem;
-  gap: 2rem 1rem;
+  padding: 8rem 2rem 2rem 2rem;
+  gap: 3rem 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  position: relative;
+}
+.course-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.filter-courses,
+.add-course {
+  border-radius: 5px;
+  background-color: #27997b;
+  border-color: #27997b;
+}
+.filter-courses:hover,
+.add-course:hover {
+  background-color: #1ccb9c;
+  border-color: #1ccb9c;
 }
 .courses-title {
   position: absolute;
   top: 1rem;
   right: 50%;
   transform: translate(50%, 0);
+  z-index: 5;
 }
 .courses-img {
   width: 30rem;

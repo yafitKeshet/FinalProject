@@ -12,6 +12,7 @@ const RatingStar = (props) => {
 
   return (
     <Rating
+      className={props.className}
       name="rating"
       value={props.value}
       defaultValue={-1}
