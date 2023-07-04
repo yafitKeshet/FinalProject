@@ -52,7 +52,7 @@ const tempJobs = [
     job_id: "3",
     publisher_email: "yafitmi@mta.ac.il",
     published_time: "21-06-2023",
-    applies: 0,
+    applies: 100,
     title: "גוגל מחפשת עובדים",
     time_required: "FullTime",
     description: "תיאוררררררררררר",

@@ -91,7 +91,7 @@ const tempCourses = [
     name: "אסטרופיזיקה",
     teachers: "רוני מועלם",
     description: "תיאור",
-    rating_avg: 2.5,
+    rating_avg: 3.5,
     relevant_faculty: "בחירה",
     recommendations: [
       {
@@ -135,7 +135,7 @@ const tempCourses = [
     name: "פסיכודיאגנוסטיקה ",
     teachers: "זפט שירה",
     description: "תיאור",
-    rating_avg: 2.5,
+    rating_avg: 4,
     relevant_faculty: "פסיכולוגיה",
     recommendations: [
       {
