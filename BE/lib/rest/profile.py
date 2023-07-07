@@ -40,7 +40,6 @@ def get_profile(
     response_model=UserProfileOut
 )
 def get_profile(
-    user: Annotated[User, Depends(get_current_active_user)],
     user_email: str,
     db: UserDBSession = Depends(get_db_session)
 ):
