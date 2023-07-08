@@ -35,14 +35,32 @@ const Feed = (props) => {
     setPosts(filtered);
   };
 
+  // Calculate Date
+  let date = new Date();
+  date.setHours(date.getHours() - 3);
+  date = date.getTime();
+
   const getPosts = async () => {
     try {
       const config = getConfig(props.user.token);
 
       let postsRequest = await axios.get("http://localhost:8080/feed", config);
       if (postsRequest !== undefined && postsRequest.status === 200) {
-        console.log("posts: ", postsRequest.data);
-        setPosts(postsRequest.data);
+        // Filtering posts for 24h ago.
+        let filtered = postsRequest.data;
+        filtered = filtered.filter((post) => {
+          return (
+            Math.floor(
+              new Date(
+                date - new Date(Date.parse(post.published_time)).getTime()
+              ) /
+                (1000 * 60 * 60 * 24)
+            ) < 1
+          );
+        });
+
+        setPosts(filtered);
+        // setPosts(postsRequest.data);
       }
     } catch (err) {
       alert("משהו השתבש אנא נסה/נסי שנית");
@@ -65,7 +83,7 @@ const Feed = (props) => {
           <Post
             user={props.user}
             authorMail={post.author.user_email}
-            date={post.published_time}
+            date={post.published_time.substr(0, 10).split("-")}
             img={post.author.user_image}
             likes={post.likes}
             id={post.post_id}
@@ -74,6 +92,13 @@ const Feed = (props) => {
             content={post.content}
             key={Math.random()}
             onDeletePost={getPosts}
+            hoursRemaining={Math.floor(
+              (new Date(
+                date - new Date(Date.parse(post.published_time)).getTime()
+              ) %
+                (1000 * 60 * 60 * 24)) /
+                (1000 * 60 * 60)
+            )}
           />
         ))}
       </Card>

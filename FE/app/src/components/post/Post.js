@@ -62,28 +62,6 @@ const Post = (props) => {
     }
   };
 
-  // Calculate Date
-  let postTime = Date.parse(props.date);
-  postTime = new Date(postTime);
-  postTime.setHours(postTime.getHours() + 3);
-  const timeRemaining = new Date(new Date().getTime() - postTime.getTime());
-  let date = props.date.substr(0, 10).split("-");
-  let new_date = date[2] + "/" + date[1] + "/" + date[0];
-  console.log("post: ", props.id, "ppsted: ", postTime);
-  console.log("now: ", new Date());
-  console.log("days: ", Math.floor(timeRemaining / (1000 * 60 * 60 * 24)));
-  console.log(
-    "hours: ",
-    (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const hoursRemaining = Math.floor(
-    (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-
-  /*
-   "\n minutes: ",
-    Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))
-    */
   return (
     <Card className="post-card">
       {authorProfile.isOpen && (
@@ -102,9 +80,10 @@ const Post = (props) => {
           <img src={props.img} alt="תמונה של המשתמש" onClick={userImgClicked} />
           <div className="author-data">
             <h4>{props.author}</h4>
-            {/* <div>פורסם ב-{new_date}</div> */}
             <div>
-              פורסם ב-{new_date}, לפני {hoursRemaining} שעות
+              פורסם ב-
+              {props.date[2] + "/" + props.date[1] + "/" + props.date[0]}, לפני{" "}
+              {props.hoursRemaining} שעות
             </div>
           </div>
         </div>
