@@ -70,7 +70,7 @@ const tempJobs = [
 const Jobs = (props) => {
   const [jobs, setJobs] = useState({});
   const [filter, setFilter] = useState(false);
-  const [openJobId, setOpenJobId] = useState("1");
+  const [openJobId, setOpenJobId] = useState();
   const toggleFilter = () => {
     setFilter((prev) => {
       return !prev;
@@ -93,12 +93,15 @@ const Jobs = (props) => {
     //   if (jobsRequest !== undefined && jobsRequest.status === 200) {
     //     console.log("jobs: ", jobsRequest.data);
     //     setJobs(jobsRequest.data);
+    //     setOpenJobId(jobsRequest.data[0].id);
     //   }
     // } catch (err) {
     //   alert("משהו השתבש אנא נסה/נסי שנית");
     //   console.log("job request failed");
     // }
+    setOpenJobId(tempJobs[0].job_id);
   };
+
   const filterjobs = async () => {
     let filtered = jobs;
     let user = await getUserProfile(sessionStorage.getItem("token"));
@@ -107,6 +110,7 @@ const Jobs = (props) => {
     });
 
     setJobs(filtered);
+    setOpenJobId(filtered[0].id);
     console.log("after: ", filtered);
 
     //TODO update job-open
@@ -115,12 +119,6 @@ const Jobs = (props) => {
   return (
     <div className="jobs">
       <Card className="jobs-card">
-        {/* <UploadJob
-          className="upload-job"
-          user={props.user}
-          moveToProfile={props.moveToProfile}
-          onSubmit={getJobs}
-        /> */}
         <div className="all-jobs">
           <JobsICN className="jobs-icon" />
           <div className="job-open">
