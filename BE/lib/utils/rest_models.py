@@ -117,21 +117,10 @@ class NewPost(ProjectBaseModel):
     faculty: Faculty
 
 
-class CompanyIn(ProjectBaseModel):
+class Company(ProjectBaseModel):
     name: str
     logo: str  # URL to the logo
-    about: str
-    website: str
-    number_of_employees: int
-
-
-class CompanyOut(ProjectBaseModel):
-    name: str
-    logo: str  # URL to the logo
-    about: str
-    website: str
-    number_of_employees: int
-
+    number_of_employees: str
 
 class Job(ProjectBaseModel):
     id: str
@@ -141,7 +130,7 @@ class Job(ProjectBaseModel):
     title: str
     time_required: JobTime
     description: str
-    company: str
+    company: Company
     faculty_relevance: Faculty
     experience: Optional[Experience]
 
@@ -151,7 +140,7 @@ class NewJobIn(ProjectBaseModel):
     title: str
     time_required: JobTime
     description: str
-    company: str
+    company: Company
     faculty_relevance: Faculty
     experience: Optional[Experience]
 

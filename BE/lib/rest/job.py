@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import datetime
 from typing import List
@@ -7,9 +8,8 @@ from typing_extensions import Annotated
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
 from ..utils.db.user_db import UserDBSession, get_db_session
-from ..utils.rest_models import Job, NewJobIn, CompanyOut, CompanyIn
+from ..utils.rest_models import Job, NewJobIn, Company
 from ..utils.db.models.job import Job as JobTable
-from ..utils.db.models.companies import Company as CompanyTable
 from ..utils.mail_handler.job_mail_sender import JobEmailSender
 
 router = APIRouter()
@@ -27,6 +27,8 @@ def get_jobs(
         db: UserDBSession = Depends(get_db_session)
 ):
     job_by_id = db.query(JobTable).filter(JobTable.id == job_id).first()
+    company = Company(**json.loads(job_by_id.company))
+    job_by_id.company = company
     return Job(**job_by_id.__dict__)
 
 
@@ -43,6 +45,8 @@ def get_jobs(
     job_to_return = []
     db_jobs = db.query(JobTable).all()
     for job in db_jobs:
+        company = Company(**json.loads(job.company))
+        job.company = company
         job_to_return.append(job.__dict__)
     return job_to_return
 
@@ -57,6 +61,7 @@ def post_job(
         job_data: NewJobIn,
         db: UserDBSession = Depends(get_db_session)
 ):
+    company_data = job_data.company.dict()
     job_to_add = {
         'id': str(uuid.uuid4()),
         'publisher_email': job_data.publisher_email,
@@ -65,12 +70,13 @@ def post_job(
         'title': job_data.title,
         'time_required': job_data.time_required,
         'description': job_data.description,
-        'company': job_data.company,
+        'company': json.dumps(company_data),
         'faculty_relevance': job_data.faculty_relevance,
         'experience': job_data.experience,
     }
     db.add(JobTable(**job_to_add))
     db.commit()
+    job_to_add['company'] = job_data.company
     return job_to_add
 
 
@@ -89,42 +95,6 @@ async def apply_job(
 ):
     await JobEmailSender().apply_job_by_mail(publisher_email, auth.private_name, cv_file)
     return True
-
-
-@router.get(
-    "/jobs/companies/{company_name}",
-    name="Get company interesting links",
-    status_code=status.HTTP_200_OK,
-    response_model=CompanyOut
-)
-def get_company_info(
-        company_name: str,
-        db: UserDBSession = Depends(get_db_session)
-):
-    company = db.query(CompanyTable).filter(CompanyTable.name == company_name).first()
-    return CompanyOut(**company.__dict__)
-
-
-@router.post(
-    "/jobs/companies",
-    name="Post a new job",
-    status_code=status.HTTP_200_OK,
-    response_model=CompanyOut
-)
-def post_company(
-        company_data: CompanyIn,
-        db: UserDBSession = Depends(get_db_session)
-):
-    company_to_add = {
-        'name': company_data.name,
-        'logo': company_data.logo,
-        'about': company_data.about,
-        'website': company_data.website,
-        'number_of_employees': company_data.number_of_employees
-    }
-    db.add(CompanyTable(**company_to_add))
-    db.commit()
-    return company_to_add
 
 
 @router.post(
