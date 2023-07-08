@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Post.css";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
@@ -62,6 +62,7 @@ const Post = (props) => {
     }
   };
 
+  const childRef = useRef(null);
   return (
     <Card className="post-card">
       {authorProfile.isOpen && (
@@ -77,7 +78,14 @@ const Post = (props) => {
           </Button>
         )}
         <div className="post-author">
-          <img src={props.img} alt="תמונה של המשתמש" onClick={userImgClicked} />
+          <img
+            src={props.img}
+            alt="תמונה של המשתמש"
+            onClick={() => {
+              childRef.current.userImgClicked();
+              userImgClicked();
+            }}
+          />
           <div className="author-data">
             <h4>{props.author}</h4>
             <div>
@@ -99,6 +107,7 @@ const Post = (props) => {
         id={props.id}
         userMail={props.user.user_email}
         onClick={userMailClicked}
+        ref={childRef}
       />
     </Card>
   );

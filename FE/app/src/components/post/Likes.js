@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
 import "./Likes.css";
 import Like from "../UI/SVG/Like";
 
-const Likes = (props) => {
+const Likes = forwardRef((props, ref) => {
   const [likes, setData] = useState(props.likes);
   const [displayAll, setDisplayAll] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    userImgClicked() {
+      setDisplayAll(false);
+    },
+  }));
 
   const onLike = async () => {
     try {
@@ -78,5 +84,5 @@ const Likes = (props) => {
     </div>
     // </div>
   );
-};
+});
 export default Likes;
