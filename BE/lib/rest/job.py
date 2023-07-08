@@ -1,6 +1,7 @@
 import json
 import uuid
 from datetime import datetime
+from http.client import HTTPException
 from typing import List
 from fastapi import APIRouter, status, Depends, UploadFile, File
 from typing_extensions import Annotated
@@ -23,10 +24,13 @@ router = APIRouter()
     response_model=Job
 )
 def get_jobs(
+        user: Annotated[User, Depends(get_current_active_user)],
         job_id: str,
         db: UserDBSession = Depends(get_db_session)
 ):
     job_by_id = db.query(JobTable).filter(JobTable.id == job_id).first()
+    if not job_by_id:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"The job with {job_id} is not found.")
     company = Company(**json.loads(job_by_id.company))
     job_by_id.company = company
     return Job(**job_by_id.__dict__)
@@ -40,6 +44,7 @@ def get_jobs(
     response_model=List[Job]
 )
 def get_jobs(
+        user: Annotated[User, Depends(get_current_active_user)],
         db: UserDBSession = Depends(get_db_session)
 ):
     job_to_return = []
@@ -58,6 +63,7 @@ def get_jobs(
     response_model=Job
 )
 def post_job(
+        user: Annotated[User, Depends(get_current_active_user)],
         job_data: NewJobIn,
         db: UserDBSession = Depends(get_db_session)
 ):
@@ -114,6 +120,7 @@ def add_to_saved_jobs(
     db.add(user_db)
     db.commit()
     return True
+
 
 @router.post(
     "/jobs/{job_id}/deleteFromSavedJobs",
