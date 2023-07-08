@@ -585,6 +585,7 @@ const Register = (props) => {
                 )}
                 <div>
                   <ImageUpload
+                    file="users"
                     content="אנא בחר/י תמונה"
                     onUserImageChange={onUserImageChange}
                   />

@@ -110,7 +110,7 @@ const Jobs = (props) => {
     });
 
     setJobs(filtered);
-    setOpenJobId(filtered[0].id);
+    setOpenJobId(filtered[0].job_id);
     console.log("after: ", filtered);
 
     //TODO update job-open
@@ -143,6 +143,7 @@ const Jobs = (props) => {
             ))}
           </div>
           <JobsList
+            addJob={getJobs}
             items={jobs}
             user={props.user}
             chosenJobId={openJobId}

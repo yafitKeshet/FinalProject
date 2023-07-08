@@ -10,13 +10,16 @@ function ImageUpload(props) {
   };
 
   const covertToBase64 = (e) => {
-    let newPath = e.target.value.replace("C:\\fakepath\\", "./users/");
+    let newPath = e.target.value.replace(
+      "C:\\fakepath\\",
+      "./" + props.file + "/"
+    );
     console.log(newPath);
     props.onUserImageChange(newPath);
     setImage(newPath);
   };
   return (
-    <div>
+    <div className={props.className}>
       {image === "" || image === null ? (
         <div className="auth-inner" style={{ width: "auto" }}>
           <label>{props.content}</label>

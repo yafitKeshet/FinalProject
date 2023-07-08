@@ -135,14 +135,14 @@ const UploadJob = (props) => {
           required
         />
         <textarea
-          className="uploadPost-content-text"
+           className="uploadPost-content-text"
           type="text"
           value={inputs.description}
           onChange={descriptionChange}
           placeholder={`מה בא לך לשתף ${props.user.private_name}?`}
           onClick={!isOpen ? toggleIsOpen : () => {}}
           required
-        /> */}
+        />*/}
       {/* <footer className="uploadPost-footer">
           <Separator className="separator" />
           <Button className="uploadPost-submit" type="submit">

@@ -65,3 +65,39 @@ export const getYear = (year) => {
       return "";
   }
 };
+
+export enum Experience {
+  Junior = "Junior",
+  Senior = "Senior",
+  NotRelevant = "NotRelevant",
+}
+export const getExperience = (experience) => {
+  switch (experience) {
+    case Experience.Junior:
+      return "מתחיל";
+    case Experience.Senior:
+      return "מנוסה";
+    case Experience.NotRelevant:
+      return "ללא ניסיון";
+    default:
+      return "";
+  }
+};
+
+export enum JobTime {
+  FullTime = "FullTime",
+  PartTime = "PartTime",
+  Student = "Student",
+}
+export const getJobTime = (jobTime) => {
+  switch (jobTime) {
+    case JobTime.FullTime:
+      return "משרה מלאה";
+    case JobTime.PartTime:
+      return "משרה חלקית";
+    case JobTime.Student:
+      return "משרת סטודנט";
+    default:
+      return "";
+  }
+};

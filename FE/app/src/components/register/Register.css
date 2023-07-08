@@ -106,7 +106,7 @@ input[type="date"] {
   right: 30%;
 }
 
-select {
+.input-div select {
   appearance: none;
 }
 .checkBox-div {
