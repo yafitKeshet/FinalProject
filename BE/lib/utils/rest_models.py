@@ -133,7 +133,7 @@ class CompanyOut(ProjectBaseModel):
     number_of_employees: int
 
 
-class Job(ProjectBaseModel):
+class JobOut(ProjectBaseModel):
     id: str
     publisher_email: str
     published_time: datetime
