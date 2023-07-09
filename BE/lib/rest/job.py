@@ -7,7 +7,7 @@ from typing_extensions import Annotated
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
 from ..utils.db.user_db import UserDBSession, get_db_session
-from ..utils.rest_models import JobOut, NewJobIn, CompanyOut, CompanyIn
+from ..utils.rest_models import Job, NewJobIn, CompanyOut, CompanyIn
 from ..utils.db.models.job import Job as JobTable
 from ..utils.db.models.companies import Company as CompanyTable
 from ..utils.mail_handler.job_mail_sender import JobEmailSender
@@ -20,15 +20,14 @@ router = APIRouter()
     name="Get existing jobs",
     description="Frontend Notice: You get all jobs and need to filter the relevance according to the User faculty ",
     status_code=status.HTTP_200_OK,
-    response_model=JobOut
+    response_model=Job
 )
 def get_jobs(
         job_id: str,
-        auth: Annotated[User, Depends(get_current_active_user)],
         db: UserDBSession = Depends(get_db_session)
 ):
     job_by_id = db.query(JobTable).filter(JobTable.id == job_id).first()
-    return JobOut(**job_by_id.__dict__)
+    return Job(**job_by_id.__dict__)
 
 
 @router.get(
@@ -36,7 +35,7 @@ def get_jobs(
     name="Get existing jobs",
     description="Frontend Notice: You get all jobs and need to filter the relevance according to the User faculty ",
     status_code=status.HTTP_200_OK,
-    response_model=List[JobOut]
+    response_model=List[Job]
 )
 def get_jobs(
         db: UserDBSession = Depends(get_db_session)
@@ -52,7 +51,7 @@ def get_jobs(
     "/jobs",
     name="Post a new job",
     status_code=status.HTTP_200_OK,
-    response_model=JobOut
+    response_model=Job
 )
 def post_job(
         job_data: NewJobIn,

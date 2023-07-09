@@ -5,6 +5,7 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.openapi.models import Response
 from typing_extensions import Annotated
 
+
 from ..utils.db.user_db import UserDBSession, get_db_session
 from ..utils.auth.decode_token import get_current_active_user
 from ..utils.db.models.user import User
@@ -31,6 +32,7 @@ def get_profile(
     return UserProfileOut(**user.__dict__)
 
 
+
 @router.get(
     "/profile/{user_email}",
     name="Get user profile",
@@ -38,9 +40,8 @@ def get_profile(
     response_model=UserProfileOut
 )
 def get_profile(
-        user_email: str,
-        user: Annotated[User, Depends(get_current_active_user)],
-        db: UserDBSession = Depends(get_db_session)
+    user_email: str,
+    db: UserDBSession = Depends(get_db_session)
 ):
     user_desired = db.get_user_query(user_email).first()
     return UserProfileOut(**user_desired.__dict__)
@@ -65,7 +66,6 @@ def update_profile(
     db.get_user_query(user.user_email).update({k: v for k, v in user_data.dict().items() if v is not None})
     db.commit()
     return True
-
 
 @router.post(
     "/profile/resume/0",
@@ -114,16 +114,12 @@ def get_resume(
     if not all([user_from_token.job_description, user_from_token.job_company_name, user_from_token.job_start_year]):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User should update current job info first")
     if user_from_token.job_company_name:
-        story.append(
-            Paragraph(f"<b>{user_from_token.job_company_name} ({user_from_token.job_start_year} - Present)</b>",
-                      styles["Heading3"]))
+        story.append(Paragraph(f"<b>{user_from_token.job_company_name} ({user_from_token.job_start_year} - Present)</b>", styles["Heading3"]))
         story.append(Paragraph(user_from_token.job_description, styles["BodyText"]))
         story.append(Spacer(1, 12))
 
     for job in user.jobs:
-        story.append(
-            Paragraph(f"<b>{job.job_title} at {job.company} ({job.start_date} - {job.end_date or 'Present'})</b>",
-                      styles["Heading3"]))
+        story.append(Paragraph(f"<b>{job.job_title} at {job.company} ({job.start_date} - {job.end_date or 'Present'})</b>", styles["Heading3"]))
         story.append(Paragraph(job.description, styles["BodyText"]))
         story.append(Spacer(1, 12))
 
@@ -131,9 +127,7 @@ def get_resume(
     story.append(Paragraph("<b>Education</b>", styles["Heading2"]))
 
     for edu in user.education:
-        story.append(
-            Paragraph(f"<b>{edu.degree} from {edu.institution} ({edu.start_date} - {edu.end_date or 'Present'})</b>",
-                      styles["Heading3"]))
+        story.append(Paragraph(f"<b>{edu.degree} from {edu.institution} ({edu.start_date} - {edu.end_date or 'Present'})</b>", styles["Heading3"]))
         story.append(Spacer(1, 12))
 
     # Create a BytesIO buffer and build the document in memory
@@ -144,6 +138,8 @@ def get_resume(
     # Return the PDF file
     buffer.seek(0)
     return StreamingResponse(buffer, media_type="application/pdf")
+
+
 
 
 MULTI_TECH_STACK_FORMAT = '<ul class="talent"> {} </ul>'
@@ -179,9 +175,9 @@ def get_resume(
     html_content = html_content.replace("USER_FULL_NAME", full_name)
     html_content = html_content.replace("USER_TITLE", user.job_title)
     html_content = html_content.replace("USER_PHONE_NUMBER", user.phone)
-    html_content = html_content.replace("USER_PRIVATE_MAIL",
-                                        user.private_email if user.private_email else token_user.user_email)
+    html_content = html_content.replace("USER_PRIVATE_MAIL", user.private_email if user.private_email else token_user.user_email)
     html_content = html_content.replace("USER_SUMMARY", user.summary)
+
 
     stacks_formatted = []
     stack_txt = ""
@@ -213,7 +209,10 @@ def get_resume(
 
     education_txt = "".join(education_list)
 
+
+
     html_content = html_content.replace("USER_EDUCATION", education_txt)
+
 
     # Configure PDF options
     pdf_options = {
@@ -234,3 +233,5 @@ def get_resume(
     # Return the PDF file
     buffer.seek(0)
     return StreamingResponse(buffer, media_type="application/pdf")
+
+
