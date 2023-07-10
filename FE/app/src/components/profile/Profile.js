@@ -143,17 +143,30 @@ const Profile = (props) => {
   const currentDate = new Date();
 
   /***** USER POSTS *****/
+  // Calculate Date
+  let date = new Date();
+  date.setHours(date.getHours() - 3);
+  date = date.getTime();
+
   const getUserPosts = async () => {
     try {
       const config = getConfig(props.user.token);
 
       let postsRequest = await axios.get("http://localhost:8080/feed", config);
+
       if (postsRequest !== undefined && postsRequest.status === 200) {
         let filtered = postsRequest.data.filter((post) => {
-          return post.author.user_email === props.user.user_email;
+          return (
+            post.author.user_email === props.user.user_email &&
+            Math.floor(
+              new Date(
+                date - new Date(Date.parse(post.published_time)).getTime()
+              ) /
+                (1000 * 60 * 60 * 24)
+            ) < 1
+          );
         });
         console.log("user posts: ", filtered);
-
         setPosts(filtered);
       }
     } catch (err) {
