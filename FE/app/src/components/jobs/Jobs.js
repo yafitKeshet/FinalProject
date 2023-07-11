@@ -4,7 +4,6 @@ import Job from "./Job";
 import Card from "../UI/Card";
 import JobsList from "./JobsList";
 import JobsICN from "../UI/SVG/JobsICN";
-import UploadJob from "./UploadJob";
 import { getConfig, getUserProfile } from "../user/user.ts";
 import axios from "axios";
 
@@ -79,7 +78,7 @@ const Jobs = (props) => {
 
   useEffect(() => {
     if (filter) {
-      filterjobs();
+      filterJobs();
     } else {
       getJobs();
     }
@@ -102,7 +101,7 @@ const Jobs = (props) => {
     setOpenJobId(tempJobs[0].job_id);
   };
 
-  const filterjobs = async () => {
+  const filterJobs = async () => {
     let filtered = jobs;
     let user = await getUserProfile(sessionStorage.getItem("token"));
     filtered = filtered.filter((job) => {

@@ -6,6 +6,7 @@ import Button from "../UI/Button.js";
 import Course from "./Course";
 import Separator from "../UI/Separator";
 import CoursesIcn from "../UI/SVG/CoursesIcn";
+import AddCourse from "./AddCourse";
 
 const tempCourses = [
   {
@@ -159,36 +160,33 @@ const Courses = (props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [rating, setRating] = useState(0);
-  const [isOpen, setIsOpen] = useState(true);
+  const [addCourseOpen, setAddJobOPen] = useState(false);
 
-  const toggleIsOpen = () => {
-    setIsOpen((prev) => {
+  const toggleAddCourse = () => {
+    setAddJobOPen((prev) => {
       return !prev;
     });
   };
 
   useEffect(() => {
     // Fetch courses data from the API
-    // getCoursesData();
-    setCourses(tempCourses);
+    getCoursesData();
+    // setCourses(tempCourses);
   }, []);
 
   const getCoursesData = async () => {
-    try {
-      let coursesRequest = await axios.get("http://localhost:8080/courses");
-      if (coursesRequest !== undefined && coursesRequest.status === 200) {
-        let courses = coursesRequest.data; // array of courses
-        console.log("courses: ", courses);
-        setCourses(courses);
-      }
-    } catch (err) {
-      alert("משהו השתבש אנא נסה/נסי שנית");
-      console.log("courses request failed");
-    }
-  };
-
-  const addCourse = () => {
-    //TODO
+    // try {
+    //   let coursesRequest = await axios.get("http://localhost:8080/courses");
+    //   if (coursesRequest !== undefined && coursesRequest.status === 200) {
+    //     let courses = coursesRequest.data; // array of courses
+    //     console.log("courses: ", courses);
+    //     setCourses(courses);
+    //   }
+    // } catch (err) {
+    //   alert("משהו השתבש אנא נסה/נסי שנית");
+    //   console.log("courses request failed");
+    // }
+    setCourses(tempCourses);
   };
 
   const filter = () => {
@@ -196,6 +194,9 @@ const Courses = (props) => {
   };
   return (
     <div className="courses">
+      {addCourseOpen && (
+        <AddCourse onCancel={toggleAddCourse} onAddCourse={getCoursesData} />
+      )}
       <div className="courses-title">
         <img
           src="./coursesImg.webp"
@@ -206,7 +207,7 @@ const Courses = (props) => {
       </div>
       <Card className="courses-card">
         <div className="course-actions">
-          <Button className="add-course" onClick={addCourse}>
+          <Button className="add-course" onClick={toggleAddCourse}>
             הוסף קורס
           </Button>
           <Button className="filter-courses" onClick={filter}>

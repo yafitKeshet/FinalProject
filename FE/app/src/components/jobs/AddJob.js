@@ -3,7 +3,6 @@ import Card from "../UI/Card";
 import "./AddJob.css";
 import Cancel from "../UI/SVG/Cancel";
 import Separator from "../UI/Separator";
-import { getUserFromEmail } from "../user/user.ts";
 import ImageUpload from "../images/ImageUpload";
 import Company from "../UI/SVG/Company";
 import Button from "../UI/Button";

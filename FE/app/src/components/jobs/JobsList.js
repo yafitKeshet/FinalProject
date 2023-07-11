@@ -13,6 +13,7 @@ const JobsList = (props) => {
       return !prev;
     });
   };
+
   console.log(props.items);
   return (
     <div className="scrolled-job" dir="ltr">
