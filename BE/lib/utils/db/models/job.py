@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, Integer, Enum
+from sqlalchemy import Column, String, DateTime, Integer, Enum, JSON, ForeignKey
 from ..user_db import Base
 from ...enums import JobTime, Faculty, Experience
 
@@ -13,7 +13,6 @@ class Job(Base):
     title = Column(String, nullable=False)
     time_required = Column(Enum(JobTime), nullable=False)
     description = Column(String, nullable=False)
-    company = Column(String, nullable=False)
     faculty_relevance = Column(Enum(Faculty), nullable=False)
     experience = Column(Enum(Experience), nullable=True)
-
+    company = Column(JSON, nullable=True)
