@@ -19,6 +19,7 @@ import Button from "../UI/Button";
 import Post from "../UI/SVG/Post";
 import Jobs from "../UI/SVG/Jobs";
 import ProfilePost from "./ProfilePost";
+import GenerateCv from "../generateCV/GenerateCV";
 
 const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
@@ -27,7 +28,13 @@ const Profile = (props) => {
   const [userData, setUserData] = useState({});
   const [isWorked, setIsWorked] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [createCVOpen, setCreateCVOPen] = useState(false);
 
+  const toggleCreateCV = () => {
+    setCreateCVOPen((prev) => {
+      return !prev;
+    });
+  };
   const onCardClicked = (card) => {
     // if (open !== card) {
     setEditMode(false);
@@ -187,6 +194,9 @@ const Profile = (props) => {
   }, []);
   return (
     <div className="profile">
+      {createCVOpen && (
+        <GenerateCv onCancel={toggleCreateCV} onCreate={toggleCreateCV} />
+      )}
       <div className="profile-section">
         <Card
           className="profile-card card"
@@ -203,9 +213,14 @@ const Profile = (props) => {
           className={`userCard ${open === "userCard" ? "open" : "close"}  card`}
         >
           <header className="open">
-            {!editMode && (
-              <Edit className="edit-icon" onClick={editBtnClicked} />
-            )}
+            <div className="userCard-buttons">
+              {!editMode && (
+                <Edit className="edit-icon" onClick={editBtnClicked} />
+              )}
+              <Button className="create-CV-btn" onClick={toggleCreateCV}>
+                יצירת קורות חיים
+              </Button>
+            </div>
             <div className="fields">
               <h2 className="userCard-title">{props.user.user_name}</h2>
               <div className="userCard-fields">

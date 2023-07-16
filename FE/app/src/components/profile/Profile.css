@@ -4,6 +4,7 @@
   padding: 1rem 0;
   overflow: hidden;
 }
+
 .profile-section {
   justify-self: center;
   width: 50%;
@@ -45,12 +46,22 @@
 .userCard-section {
   width: 100%;
 }
-.userCard .edit-icon {
-  width: 25px;
-  height: 25px;
+.userCard-buttons {
   position: absolute;
   right: 0;
   top: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.userCard .edit-icon {
+  width: 25px;
+  height: 25px;
+}
+.create-CV-btn {
+  border-radius: 5px;
+  width: fit-content;
+  padding: 0 0.5rem;
 }
 .userCard .edit-icon path {
   fill: #0a416e !important;
