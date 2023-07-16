@@ -19,7 +19,7 @@ const JobsList = (props) => {
     <div className="scrolled-job" dir="ltr">
       <div className="open-job" dir="rtl">
         {addJobOpen && (
-          <AddJob onCancel={toggleAddJob} onAddJob={props.addJob} />
+          <AddJob onCancel={toggleAddJob} onAddJob={props.onSubmit} />
         )}
         <div className="job-filters">
           <Button className="job-filters-btn" onClick={toggleAddJob}>
@@ -32,12 +32,11 @@ const JobsList = (props) => {
         {Object.values(props.items).map((job) => (
           <div key={Math.random()}>
             <Job
-              isChosen={job.job_id === props.chosenJobId}
+              isChosen={job.id === props.chosenJobId}
               isList={true}
               user={props.user}
-              job_id={job.job_id}
+              job_id={job.id}
               publisher_email={job.publisher_email}
-              publish_image={job.publish_image}
               published_time={job.published_time}
               applies={job.applies}
               title={job.title}
@@ -48,6 +47,7 @@ const JobsList = (props) => {
               experience={job.experience}
               key={Math.random()}
               onClickJob={props.onClick}
+              onSubmit={props.onSubmit}
             />
             <Separator />
           </div>

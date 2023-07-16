@@ -2,6 +2,7 @@
   height: 73vh;
   overflow: hidden;
   overflow-y: scroll;
+  width: 540px;
 }
 .open-job {
   justify-content: center;

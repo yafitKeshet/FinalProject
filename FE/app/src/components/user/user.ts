@@ -69,7 +69,7 @@ export const getUserFromEmail = async (props) => {
       config
     );
     if (profileRequest !== undefined && profileRequest.status === 200) {
-      console.log("we got author profile");
+      //console.log("we got author profile");
       return profileRequest.data;
     }
   } catch (err) {

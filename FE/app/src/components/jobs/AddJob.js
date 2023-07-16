@@ -6,6 +6,7 @@ import Separator from "../UI/Separator";
 import ImageUpload from "../images/ImageUpload";
 import Company from "../UI/SVG/Company";
 import Button from "../UI/Button";
+import { getConfig, getUserProfile } from "../user/user.ts";
 
 import {
   Experience,
@@ -13,6 +14,7 @@ import {
   JobTime,
   getJobTime,
 } from "../enums/enums.ts";
+import axios from "axios";
 
 const AddJob = (props) => {
   // INPUTS
@@ -88,10 +90,39 @@ const AddJob = (props) => {
     });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(inputs);
+    try {
+      const config = getConfig(sessionStorage.getItem("token"));
+      let user = await getUserProfile(sessionStorage.getItem("token"));
+      let addJobRequest = await axios.post(
+        "http://localhost:8080/jobs",
+        {
+          publisher_email: user.email,
+          title: inputs.title,
+          time_required: inputs.time_required,
+          description: inputs.description,
+          company: {
+            name: inputs.name,
+            logo: inputs.logo,
+            number_of_employees:
+              inputs.number_of_employees_min +
+              "-" +
+              inputs.number_of_employees_max,
+          },
+          faculty_relevance: user.faculty,
+          experience: inputs.experience,
+        },
+        config
+      );
 
+      if (addJobRequest !== undefined && addJobRequest.status === 200) {
+        console.log(`job upload`);
+        props.onCancel();
+        props.onAddJob();
+      }
+    } catch (err) {}
     props.onAddJob();
   };
   return (
@@ -174,16 +205,16 @@ const AddJob = (props) => {
                 <input
                   className="add-job-content"
                   type="number"
-                  value={inputs.number_of_employees_min}
-                  onChange={onCompanyNumberMinChange}
+                  value={inputs.number_of_employees_max}
+                  onChange={onCompanyNumberMaxChange}
                   required
                 />
                 <label>-</label>
                 <input
                   className="add-job-content"
                   type="number"
-                  value={inputs.number_of_employees_max}
-                  onChange={onCompanyNumberMaxChange}
+                  value={inputs.number_of_employees_min}
+                  onChange={onCompanyNumberMinChange}
                   required
                 />
               </div>

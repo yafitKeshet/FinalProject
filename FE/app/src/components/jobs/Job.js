@@ -1,54 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Job.css";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
 import Button from "../UI/Button";
-// import axios from "axios";
-// import { getConfig } from "../user/user.ts";
 import Suitcase from "../UI/SVG/Suitcase";
 import Building from "../UI/SVG/Building";
 import CheckList from "../UI/SVG/CheckList";
 import Circle from "../UI/SVG/Circle";
 import Pin from "../UI/SVG/Pin";
 import Send from "../UI/SVG/Send";
-/*
- user={props.user}
-      job_id="string"
-      publisher_email="string"
-      published_time="2023-06-21T07:10:05.037Z"
-      applies={0}
-      title="string"
-      time_required="FullTime"
-      description="string"
-      company={company}
-      faculty_relevance="ComputerScience"
-      experience="Junior"
-      key={Math.random()}
-      onDeleteJob={getJobs}
+import { getConfig, getUserFromEmail } from "../user/user.ts";
+import MiniProfile from "../user/miniProfile";
+import axios from "axios";
 
-      const company = {
-      name: "string",
-      logo: "string",
-      number_of_employees: ["string", "string"],
-  };
-*/
 const Job = (props) => {
-  const isAuthor = props.publisher_email === props.user.user_email;
+  // const isAuthor = props.publisher_email === props.user.user_email;
+  const [user, setUser] = useState("");
+  const [openAuthor, setOpenAuthor] = useState(false);
 
   const jobClicked = () => {
-    console.log("clickkkkkk");
     props.onClickJob(props.job_id);
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      let user = await getUserFromEmail({
+        token: sessionStorage.getItem("token"),
+        email: props.publisher_email,
+      });
+      setUser(user);
+    };
+    getUser();
+  }, []);
   //TODO
 
-  const onDelete = () => {};
-  const onImg = () => {};
-  const onSave = () => {};
+  const onImg = () => {
+    setOpenAuthor((prev) => {
+      return !prev;
+    });
+  };
+  const onSave = async () => {
+    // let config=getConfig(sessionStorage.getItem("token"));
+    // let saveJobRequest= await axios.post()
+  };
   const onSubmit = () => {};
 
   const list = props.isList;
   const open = props.isOpen;
   const chosen = props.isChosen;
+  const num_of_employees = props.company.number_of_employees.split("-");
+  let published_time = props.published_time + "";
+  published_time = published_time.substr(0, 10).split("-");
+  published_time =
+    published_time[2] + "/" + published_time[1] + "/" + published_time[0];
   return (
     <Card
       className={`job-card columns ${!list && !open && "close"} ${
@@ -56,13 +60,14 @@ const Job = (props) => {
       } ${chosen && "chosen"}`}
       onClick={props.onClickJob && jobClicked}
     >
+      {openAuthor && <MiniProfile onCancel={onImg} user={user} />}
       <header className="job-header columns">
         {!list && <Pin className="job-pin" />}{" "}
-        {isAuthor && (
+        {/* {isAuthor && (
           <Button className="job-delete" onClick={onDelete}>
             מחק משרה
           </Button>
-        )}
+        )} */}
         <div className="job-title rows">
           <img src={props.company.logo} alt="לוגו של החברה" />
           <div className="job-title columns">
@@ -72,7 +77,7 @@ const Job = (props) => {
               <li>
                 <Circle />
               </li>
-              <li>{props.published_time}</li>
+              <li>{published_time}</li>
               <li>
                 <Circle />
               </li>
@@ -87,10 +92,7 @@ const Job = (props) => {
           </li>
           <li className="job-detail rows">
             <div>
-              {props.company.number_of_employees[0] +
-                "-" +
-                props.company.number_of_employees[1] +
-                " עובדים"}
+              {num_of_employees[0] + "-" + num_of_employees[1] + " עובדים"}
             </div>
             <Building className="detail-icon" />
           </li>
@@ -99,7 +101,7 @@ const Job = (props) => {
             <img
               onClick={onImg}
               className="detail-icon"
-              src={props.publish_image}
+              src={user.user_image}
               alt="תמונה של מפרסם המשרה"
             />
           </li>
