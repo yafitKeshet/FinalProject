@@ -1,7 +1,8 @@
-from sqlalchemy import Column, String, Float
+from sqlalchemy import Column, String, Float, Enum
 from sqlalchemy.orm import relationship
 
 from ..user_db import Base
+from ...enums import Faculty
 
 
 class Course(Base):
@@ -12,7 +13,5 @@ class Course(Base):
     teachers = Column(String, nullable=False)
     rating_avg = Column(Float, nullable=False)
     description = Column(String, nullable=False)
-    summary_documents = Column(String, nullable=True)
-    tests = Column(String, nullable=True)
-    tests_solution = Column(String, nullable=True)
+    relevant_faculty = Column(Enum(Faculty), default=Faculty.Elective)
     recommendations = relationship("Recommendation", back_populates="course", lazy="joined")
