@@ -4,7 +4,6 @@
   text-align: right;
   padding: 1rem 2rem;
   position: relative;
-  overflow-y: scroll;
 }
 .profilePost-author {
   align-items: center;
