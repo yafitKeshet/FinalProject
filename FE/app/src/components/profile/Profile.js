@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { faCakeCandles } from "@fortawesome/free-solid-svg-icons";
 import { faSchool } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { getConfig, getUserProfile } from "../user/user.ts";
 import Card from "../UI/Card";
@@ -19,7 +17,7 @@ import Button from "../UI/Button";
 import Post from "../UI/SVG/Post";
 import Jobs from "../UI/SVG/Jobs";
 import ProfilePost from "./ProfilePost";
-import GenerateCv from "../generateCV/GenerateCV";
+import GenerateCV from "../generateCV/GenerateCV";
 
 const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
@@ -195,7 +193,7 @@ const Profile = (props) => {
   return (
     <div className="profile">
       {createCVOpen && (
-        <GenerateCv onCancel={toggleCreateCV} onCreate={toggleCreateCV} />
+        <GenerateCV onCancel={toggleCreateCV} onCreate={toggleCreateCV} />
       )}
       <div className="profile-section">
         <Card

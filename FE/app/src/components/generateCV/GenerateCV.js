@@ -7,7 +7,7 @@ import Button from "../UI/Button";
 import { getConfig } from "../user/user.ts";
 import axios from "axios";
 
-const GenerateCv = (props) => {
+const GenerateCV = (props) => {
   // INPUTS
   const [formData, setFormData] = useState({
     first_name: "",
@@ -95,7 +95,7 @@ const GenerateCv = (props) => {
     try {
       const config = getConfig(sessionStorage.getItem("token"));
       const response = await axios.post(
-        "http://localhost:8080/profile/resume/1",
+        "http://localhost:8080/profile/resume/0",
         formData,
         config
       );
@@ -391,4 +391,4 @@ const GenerateCv = (props) => {
   );
 };
 
-export default GenerateCv;
+export default GenerateCV;

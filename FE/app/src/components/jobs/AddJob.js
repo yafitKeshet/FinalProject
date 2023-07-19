@@ -92,7 +92,6 @@ const AddJob = (props) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(inputs);
     try {
       const config = getConfig(sessionStorage.getItem("token"));
       let user = await getUserProfile(sessionStorage.getItem("token"));

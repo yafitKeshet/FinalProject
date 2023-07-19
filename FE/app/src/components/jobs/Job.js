@@ -9,11 +9,18 @@ import CheckList from "../UI/SVG/CheckList";
 import Circle from "../UI/SVG/Circle";
 import Pin from "../UI/SVG/Pin";
 import Send from "../UI/SVG/Send";
-import { getConfig, getUserFromEmail } from "../user/user.ts";
+import { getUserFromEmail } from "../user/user.ts";
 import MiniProfile from "../user/miniProfile";
-import axios from "axios";
-
+import SendCv from "./SendCv";
 const Job = (props) => {
+  const [sendOpen, setSendOpen] = useState(false);
+
+  const toggleSendOpen = () => {
+    setSendOpen((prev) => {
+      return !prev;
+    });
+  };
+
   // const isAuthor = props.publisher_email === props.user.user_email;
   const [user, setUser] = useState("");
   const [openAuthor, setOpenAuthor] = useState(false);
@@ -43,7 +50,6 @@ const Job = (props) => {
     // let config=getConfig(sessionStorage.getItem("token"));
     // let saveJobRequest= await axios.post()
   };
-  const onSubmit = () => {};
 
   const list = props.isList;
   const open = props.isOpen;
@@ -60,6 +66,9 @@ const Job = (props) => {
       } ${chosen && "chosen"}`}
       onClick={props.onClickJob && jobClicked}
     >
+      {sendOpen && (
+        <SendCv onCancel={toggleSendOpen} onSubmit={props.onSubmit} />
+      )}
       {openAuthor && <MiniProfile onCancel={onImg} user={user} />}
       <header className="job-header columns">
         {!list && <Pin className="job-pin" />}{" "}
@@ -123,7 +132,7 @@ const Job = (props) => {
           <Button className="job-save" onClick={onSave}>
             שמירת משרה
           </Button>
-          <Button className="job-send" onClick={onSubmit}>
+          <Button className="job-send" onClick={toggleSendOpen}>
             הגש מועמדות
             <Send />
           </Button>
