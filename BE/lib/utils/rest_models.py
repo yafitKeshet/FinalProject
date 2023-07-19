@@ -157,33 +157,28 @@ class RecommendationOut(ProjectBaseModel):
     id: str
     rating: int
     title: str
+    author_email: str
 
 
 class CourseOut(ProjectBaseModel):
     course_id: str
     name: str
     teachers: str
-    rating_avg: float
+    rating_avg: int
     description: str
-    summary_documents: Optional[str]  # List of URLs
-    tests: Optional[str]
-    tests_solution: Optional[str]
-    recommendations: Optional[List[RecommendationIn]]
+    relevant_faculty: Faculty
+    recommendations: Optional[List[RecommendationOut]]
 
 
 class CourseIn(ProjectBaseModel):
     name: str
     teachers: str
     description: str
-    summary_documents: Optional[List[str]]  # List of URLs
-    tests: Optional[List[str]]
-    tests_solution: Optional[List[str]]
+    relevant_faculty: Optional[Faculty]
 
 
 class CourseUpdate(ProjectBaseModel):
-    tests: Optional[List[UploadFile]]
-    tests_solution: Optional[List[UploadFile]]
-    summary_documents: Optional[List[UploadFile]]
+    rating: int
 
 
 # Comment

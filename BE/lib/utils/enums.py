@@ -21,6 +21,7 @@ class Faculty(Enum):
     Economy = 'Economy'
     Psychology = 'Psychology'
     Social = 'Social'
+    Elective = 'Elective'
 
 
 class Year(Enum):
