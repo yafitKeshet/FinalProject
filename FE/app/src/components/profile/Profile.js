@@ -209,7 +209,6 @@ const Profile = (props) => {
     try {
       let jobRequest = await axios.get(
         `http://localhost:8080/jobs/${id}`,
-        // { job_id: id },
         config
       );
       if (jobRequest !== undefined && jobRequest.status === 200) {
@@ -219,10 +218,9 @@ const Profile = (props) => {
       console.log(err);
       console.log("get save job request failed");
     }
-    return "";
+    return {};
   };
   const getSavedJobs = async (saved_jobs_id) => {
-    // console.log(saved_jobs_id);
     let saved_jobs = [];
     for (const id of saved_jobs_id) {
       let job = await getSavedJob(id);
@@ -232,7 +230,26 @@ const Profile = (props) => {
     setSavedJobs(saved_jobs);
   };
 
-  const deleteSaveJob = (id) => {};
+  const deleteSaveJob = async (id) => {
+    const config = getConfig(props.user.token);
+
+    try {
+      let deleteRequest = await axios.post(
+        `http://localhost:8080/jobs/${id}/deleteFromSavedJobs`,
+        { job_id: id },
+        config
+      );
+      if (deleteRequest !== undefined && deleteRequest.status === 200) {
+        console.log("job deleted from saved jobs");
+        alert("המשרה נמחקה מהרשימה שלך בהצלחה!");
+        getUserPosts();
+      }
+    } catch (err) {
+      console.log(err);
+      console.log("delete save job request failed");
+    }
+    return "";
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -248,7 +265,7 @@ const Profile = (props) => {
     getUser();
     getUserPosts();
     getJobs();
-  }, []);
+  }, [deleteSaveJob]);
 
   return (
     <div className="profile-page">
