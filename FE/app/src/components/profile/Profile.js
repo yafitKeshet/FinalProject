@@ -242,7 +242,12 @@ const Profile = (props) => {
       if (deleteRequest !== undefined && deleteRequest.status === 200) {
         console.log("job deleted from saved jobs");
         alert("המשרה נמחקה מהרשימה שלך בהצלחה!");
-        getUserPosts();
+        let user = await getUserFromEmail({
+          token: sessionStorage.getItem("token"),
+          email: sessionStorage.getItem("user_email"),
+        });
+        setUserData(user);
+        getSavedJobs(user.saved_jobs);
       }
     } catch (err) {
       console.log(err);
@@ -265,7 +270,7 @@ const Profile = (props) => {
     getUser();
     getUserPosts();
     getJobs();
-  }, [deleteSaveJob]);
+  }, []);
 
   return (
     <div className="profile-page">
