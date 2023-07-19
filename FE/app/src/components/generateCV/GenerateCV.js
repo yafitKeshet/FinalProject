@@ -95,7 +95,7 @@ const GenerateCv = (props) => {
     try {
       const config = getConfig(sessionStorage.getItem("token"));
       const response = await axios.post(
-        "http://localhost:8080/profile/resume/1",
+        "http://localhost:8080/profile/resume/0",
         formData,
         config
       );
