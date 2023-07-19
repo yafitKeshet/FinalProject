@@ -12,6 +12,9 @@ import Send from "../UI/SVG/Send";
 import { getUserFromEmail } from "../user/user.ts";
 import MiniProfile from "../user/miniProfile";
 import SendCv from "./SendCv";
+import axios from "axios";
+import { getConfig } from "../user/user.ts";
+
 const Job = (props) => {
   const [sendOpen, setSendOpen] = useState(false);
 
@@ -39,7 +42,6 @@ const Job = (props) => {
     };
     getUser();
   }, []);
-  //TODO
 
   const onImg = () => {
     setOpenAuthor((prev) => {
@@ -47,7 +49,22 @@ const Job = (props) => {
     });
   };
   const onSave = async () => {
-    // let config=getConfig(sessionStorage.getItem("token"));
+    try {
+      const config = getConfig(sessionStorage.getItem("token"));
+      let saveJobRequest = await axios.post(
+        `http://localhost:8080/jobs/${props.job_id}/addToSavedJobs`,
+        { job_id: props.job_id },
+        config
+      );
+
+      if (saveJobRequest !== undefined && saveJobRequest.status === 200) {
+        alert("המשרה נשמרה בהצלחה!");
+        console.log("job save successfully");
+        props.onSubmit();
+      }
+    } catch (err) {
+      console.log(err);
+    } // let config=getConfig(sessionStorage.getItem("token"));
     // let saveJobRequest= await axios.post()
   };
 

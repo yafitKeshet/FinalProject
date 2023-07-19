@@ -14,7 +14,6 @@ const SendCv = (props) => {
   const onSubmit = async () => {
     const formData = new FormData();
     formData.append("cv_file", file, "cv_file");
-    console.log(formData);
     try {
       const config = getConfig(sessionStorage.getItem("token"));
       let applyJobRequest = await axios.post(

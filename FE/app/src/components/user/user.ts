@@ -64,6 +64,7 @@ export const getUserProfile = async (token) => {
 export const getUserFromEmail = async (props) => {
   try {
     let config = getConfig(props.token);
+
     let profileRequest = await axios.get(
       "http://localhost:8080/profile/" + props.email,
       config

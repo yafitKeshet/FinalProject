@@ -155,3 +155,10 @@
 }
 
 /***** JOBS *****/
+.userJob-jobs {
+  padding: 1rem;
+  width: 100%;
+  overflow-x: scroll;
+  display: flex;
+  gap: 0.5rem;
+}

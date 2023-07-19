@@ -8,7 +8,7 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { getConfig, getUserProfile } from "../user/user.ts";
+import { getConfig, getUserProfile, getUserFromEmail } from "../user/user.ts";
 import Card from "../UI/Card";
 import { getFaculty, getYear, Faculty, Year } from "../enums/enums.ts";
 import Separator from "../UI/Separator";
@@ -18,6 +18,7 @@ import Post from "../UI/SVG/Post";
 import Jobs from "../UI/SVG/Jobs";
 import ProfilePost from "./ProfilePost";
 import GenerateCV from "../generateCV/GenerateCV";
+import Job from "../jobs/Job";
 
 const Profile = (props) => {
   const [open, setOpen] = useState("userCard");
@@ -26,10 +27,12 @@ const Profile = (props) => {
   const [userData, setUserData] = useState({});
   const [isWorked, setIsWorked] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [createCVOpen, setCreateCVOPen] = useState(false);
+  const [createCVOpen, setCreateCVOpen] = useState(false);
+  const [jobs, setJobs] = useState({});
+  const [savedJobs, setSavedJobs] = useState({});
 
   const toggleCreateCV = () => {
-    setCreateCVOPen((prev) => {
+    setCreateCVOpen((prev) => {
       return !prev;
     });
   };
@@ -39,6 +42,7 @@ const Profile = (props) => {
     setOpen(open === card ? "" : card);
     // }
   };
+
   /***** USER CARD *****/
   const editBtnClicked = async () => {
     if (editMode) {
@@ -171,7 +175,6 @@ const Profile = (props) => {
             ) < 1
           );
         });
-        console.log("user posts: ", filtered);
         setPosts(filtered);
       }
     } catch (err) {
@@ -180,18 +183,101 @@ const Profile = (props) => {
     }
   };
 
+  /***** USER JOBS *****/
+
+  const getJobs = async () => {
+    try {
+      const config = getConfig(props.user.token);
+      let jobsRequest = await axios.get("http://localhost:8080/jobs", config);
+      if (jobsRequest !== undefined && jobsRequest.status === 200) {
+        let filtered = jobsRequest.data.filter((job) => {
+          return job.publisher_email === props.user.user_email;
+        });
+        setJobs(filtered);
+      }
+    } catch (err) {
+      console.log(err);
+      console.log("job request failed");
+    }
+  };
+
+  /***** USER SAVED JOBS *****/
+  const getSavedJob = async (id) => {
+    const config = getConfig(props.user.token);
+
+    try {
+      let jobRequest = await axios.get(
+        `http://localhost:8080/jobs/${id}`,
+        // { job_id: id },
+        config
+      );
+      if (jobRequest !== undefined && jobRequest.status === 200) {
+        return jobRequest.data;
+      }
+    } catch (err) {
+      console.log(err);
+      console.log("get save job request failed");
+    }
+    return "";
+  };
+  const getSavedJobs = async (saved_jobs_id) => {
+    // console.log(saved_jobs_id);
+    let saved_jobs = [];
+    for (const id of saved_jobs_id) {
+      let job = await getSavedJob(id);
+      saved_jobs.push(job);
+    }
+    console.log(saved_jobs);
+    setSavedJobs(saved_jobs);
+  };
+
   useEffect(() => {
     const getUser = async () => {
-      let user = await getUserProfile(sessionStorage.getItem("token"));
+      let user = await getUserFromEmail({
+        token: sessionStorage.getItem("token"),
+        email: sessionStorage.getItem("user_email"),
+      });
       setUserData(user);
       setIsWorked(user.job_start_year !== 0);
       setChecked(user.job_start_year !== 0);
+      getSavedJobs(user.saved_jobs);
     };
     getUser();
     getUserPosts();
+    getJobs();
   }, []);
+
   return (
     <div className="profile">
+      {/* <Card className="saved-jobs card">
+        <header>
+          <h2>משרות ששמרתי:</h2>
+        </header>
+        <Separator />
+        <div className="user-savedJobs">
+          {Object.values(savedJobs).map((job) => (
+            <Card className="profileJob-card" key={job.id}>
+              <Job
+                isList={true}
+                user={props.user}
+                job_id={job.id}
+                publisher_email={job.publisher_email}
+                published_time={job.published_time}
+                applies={job.applies}
+                title={job.title}
+                time_required={job.time_required}
+                description={job.description}
+                company={job.company}
+                faculty_relevance={job.faculty_relevance}
+                experience={job.experience}
+                key={job.id}
+                onClickJob={props.onClick}
+                onSubmit={props.onSubmit}
+              />
+            </Card>
+          ))}
+        </div>
+      </Card> */}
       {createCVOpen && (
         <GenerateCV onCancel={toggleCreateCV} onCreate={toggleCreateCV} />
       )}
@@ -519,7 +605,29 @@ const Profile = (props) => {
         <Card
           className={`userJobs ${open === "userJobs" ? "open" : "close"} card`}
         >
-          <div className="open"> בלה בלה בלה יהיו פה משרות של המשתמש</div>
+          <div className="userJob-jobs open">
+            {Object.values(jobs).map((job) => (
+              <Card className="profileJob-card" key={job.id}>
+                <Job
+                  isList={true}
+                  user={props.user}
+                  job_id={job.id}
+                  publisher_email={job.publisher_email}
+                  published_time={job.published_time}
+                  applies={job.applies}
+                  title={job.title}
+                  time_required={job.time_required}
+                  description={job.description}
+                  company={job.company}
+                  faculty_relevance={job.faculty_relevance}
+                  experience={job.experience}
+                  key={job.id}
+                  onClickJob={props.onClick}
+                  onSubmit={props.onSubmit}
+                />
+              </Card>
+            ))}
+          </div>
         </Card>
       </div>
     </div>

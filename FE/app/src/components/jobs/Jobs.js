@@ -23,8 +23,8 @@ const Jobs = (props) => {
     } else {
       getJobs();
     }
-    //TODO update job-open
   }, [filter]);
+
   const getJobs = async () => {
     try {
       const config = getConfig(props.user.token);
@@ -33,7 +33,6 @@ const Jobs = (props) => {
         console.log("jobs: ", jobsRequest.data);
         setJobs(jobsRequest.data);
         if (jobsRequest.data.length) setOpenJobId(jobsRequest.data[0].id);
-        console.log(jobsRequest.data[0].id);
       }
     } catch (err) {
       console.log(err);
@@ -63,7 +62,7 @@ const Jobs = (props) => {
               <Job
                 isOpen={openJobId === job.id}
                 user={props.user}
-                job_id={job.job_id}
+                job_id={job.id}
                 publisher_email={job.publisher_email}
                 published_time={job.published_time}
                 applies={job.applies}
