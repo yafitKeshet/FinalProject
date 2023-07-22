@@ -111,8 +111,8 @@ def get_resume(
     user.jobs = user.jobs if user.jobs else []
 
     # If we have existing job, first add it:
-    if not all([user_from_token.job_description, user_from_token.job_company_name, user_from_token.job_start_year]):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User should update current job info first")
+    # if not all([user_from_token.job_description, user_from_token.job_company_name, user_from_token.job_start_year]):
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User should update current job info first")
     if user_from_token.job_company_name:
         story.append(Paragraph(f"<b>{user_from_token.job_company_name} ({user_from_token.job_start_year} - Present)</b>", styles["Heading3"]))
         story.append(Paragraph(user_from_token.job_description, styles["BodyText"]))
