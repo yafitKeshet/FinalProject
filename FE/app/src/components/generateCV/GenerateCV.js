@@ -368,7 +368,6 @@ const GenerateCV = (props) => {
               ))}
               <Button
                 className="generateCV-btn"
-                type="submit"
                 onClick={() => {
                   const updatedSkills = [...formData.skills, ""];
                   setFormData((prevData) => ({
