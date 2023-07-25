@@ -12,6 +12,7 @@ import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
 import Courses from "./components/courses/Courses";
+import Events from "./components/events/Events";
 
 const App = (props) => {
   const [user, setUser] = useState({});
@@ -78,6 +79,8 @@ const App = (props) => {
       isFeedPage: false,
       isProfilePage: false,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -97,6 +100,8 @@ const App = (props) => {
     isFeedPage: false,
     isProfilePage: false,
     isCoursesPage: false,
+    isForumPage: false,
+    isEventsPage: false,
   });
 
   // General Info
@@ -111,6 +116,8 @@ const App = (props) => {
       isFeedPage: false,
       isProfilePage: false,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -135,6 +142,8 @@ const App = (props) => {
       isMainPage: false,
       isProfilePage: true,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -157,6 +166,8 @@ const App = (props) => {
       isFeedPage: true,
       isProfilePage: false,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -179,6 +190,8 @@ const App = (props) => {
       isFeedPage: false,
       isProfilePage: false,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -201,13 +214,62 @@ const App = (props) => {
       isFeedPage: false,
       isProfilePage: false,
       isCoursesPage: true,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
     sessionStorage.setItem("currentPage", "isCoursesPage");
 
     console.log(
-      `page after jobs btn clicked: ${sessionStorage.getItem("currentPage")}`
+      `page after courses btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Forum
+  const toggleForum = () => {
+    console.log("Courses button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: true,
+      isEventsPage: false,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isForumPage");
+
+    console.log(
+      `page after Forum btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+  // Events
+  const toggleEvents = () => {
+    console.log("events button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: true,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isEventsPage");
+
+    console.log(
+      `page after events btn clicked: ${sessionStorage.getItem("currentPage")}`
     );
   };
 
@@ -267,6 +329,14 @@ const App = (props) => {
       {
         onclick: toggleCourses,
         data: "קורסים",
+      },
+      {
+        onclick: toggleForum,
+        data: "פורום",
+      },
+      {
+        onclick: toggleEvents,
+        data: "אירועים",
       },
       { onclick: onLogOut, data: "התנתק" },
     ]);
@@ -357,6 +427,8 @@ const App = (props) => {
       isMainPage: false,
       isProfilePage: false,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -392,6 +464,8 @@ const App = (props) => {
       isMainPage: true,
       isProfilePage: false,
       isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -464,6 +538,9 @@ const App = (props) => {
 
         {/* COURSES */}
         {pages.isCoursesPage && <Courses />}
+
+        {/* EVENTS */}
+        {pages.isEventsPage && <Events />}
       </div>
     </div>
   );
