@@ -1,0 +1,36 @@
+.comment-card {
+  display: grid;
+  grid-template-columns: 2fr 0.1fr 5fr 0.1fr 1fr;
+  align-items: center;
+
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+.comment-card .rotate-sep {
+  transform: rotate(90deg);
+  width: 3rem;
+}
+.comment-author {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.comment-author img {
+  width: 45px;
+  height: 45px;
+}
+.comment-contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.comment-contents div {
+  display: flex;
+  justify-content: space-between;
+}
+.comment-contents .date {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.5rem;
+}

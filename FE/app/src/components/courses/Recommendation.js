@@ -17,7 +17,6 @@ const Recommendation = (props) => {
         token: sessionStorage.getItem("token"),
         email: props.recommend.author_email,
       });
-      console.log(author);
       setAuthor(author);
     };
     getUser();

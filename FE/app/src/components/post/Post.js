@@ -103,6 +103,7 @@ const Post = (props) => {
       <Separator />
       <Likes
         page="feed"
+        field="id"
         className="post-likes"
         likes={props.likes}
         id={props.id}

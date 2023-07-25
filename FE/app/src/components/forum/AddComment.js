@@ -60,6 +60,7 @@ const AddComment = (props) => {
         value={inputs.content}
         onChange={handleInputChange}
         placeholder="הוסף תגובה..."
+        required
       />
       <Button className="addComment-btn" type="submit">
         הגב

@@ -15,10 +15,9 @@ const Likes = forwardRef((props, ref) => {
   const onLike = async () => {
     try {
       fetch(
-        `http://localhost:8080/${props.page}/like?like=` +
-          !likes.includes(props.userMail) +
-          "&id=" +
-          props.id,
+        `http://localhost:8080/${props.page}/like?like=${!likes.includes(
+          props.userMail
+        )}&${props.field}=${props.id}`,
         {
           headers: {
             Authorization: "Bearer " + sessionStorage.getItem("token"),

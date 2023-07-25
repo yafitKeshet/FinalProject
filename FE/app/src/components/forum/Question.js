@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Card from "../UI/Card";
 import "./Question.css";
 import QuestionComment from "./QuestionComment";
@@ -21,13 +21,12 @@ const Question = (props) => {
   const isAuthor =
     props.author.user_email === sessionStorage.getItem("user_email");
 
-  console.log(props);
-  const userImgClicked = async () => {
+  const userImgClicked = async (email) => {
     let authorProfile = {};
 
     let authorProfileRequest = await getUserFromEmail({
       token: sessionStorage.getItem("token"),
-      email: props.author.user_email,
+      email: email,
     });
     authorProfile = authorProfileRequest;
 
@@ -36,7 +35,7 @@ const Question = (props) => {
   const userMailClicked = async (email) => {
     let authorProfile = {};
     let authorProfileRequest = await getUserFromEmail({
-      token: props.user.token,
+      token: sessionStorage.getItem("token"),
       email: email,
     });
     authorProfile = authorProfileRequest;
@@ -66,8 +65,7 @@ const Question = (props) => {
     }
   };
 
-  const childRef = useRef(null);
-
+  // console.log(props.comments);
   return (
     <Card className="question">
       {authorProfile.isOpen && (
@@ -87,8 +85,7 @@ const Question = (props) => {
             src={props.author.user_image}
             alt="תמונה של המשתמש"
             onClick={() => {
-              // childRef.current.userImgClicked();
-              userImgClicked();
+              userImgClicked(props.author.user_email);
             }}
           />
           <div className="author-data">
@@ -107,26 +104,22 @@ const Question = (props) => {
       </header>
       <Separator />
       <div className="question-content">{props.content}</div>
-      {/* <Likes
-        page="comment"
-        className="comment-likes"
-        likes={props.likes}
-        id={props.id}
-        userMail={props.user.user_email}
-        onClick={userMailClicked}
-        ref={childRef}
-      /> */}
       <Separator />
+
       <div className="question-comments">
+        <h4>תגובות:</h4>
         <AddComment question_id={props.id} onSubmit={props.onSubmit} />
         {props.comments.map((comment) => (
           <QuestionComment
             content={comment.content}
             key={comment.comment_id}
             id={comment.comment_id}
-            author_email={comment.author_email}
+            author_email={comment.author.user_email}
             published_time={comment.published_time.substr(0, 10).split("-")}
             likes={comment.likes}
+            onImg={userImgClicked}
+            onEmail={userMailClicked}
+            onSubmit={props.onSubmit}
           />
         ))}
       </div>
