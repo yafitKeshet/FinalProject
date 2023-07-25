@@ -7,7 +7,7 @@ import { getConfig } from "../user/user.ts";
 import AddQuestion from "./AddQuestion";
 
 const Forum = (props) => {
-  const [questions, setQuestions] = useState({});
+  const [questions, setQuestions] = useState([]);
   const [addQuestion, setAddQuestion] = useState(false);
 
   useEffect(() => {
@@ -48,9 +48,21 @@ const Forum = (props) => {
       {addQuestion && (
         <AddQuestion onCancel={toggleAddQuestion} onSubmit={getQuestions} />
       )}
-      Forum
+
+      {questions.map((question) => (
+        <Question
+          author={question.author}
+          content={question.content}
+          faculty={question.faculty}
+          published_time={question.published_time.substr(0, 10).split("-")}
+          comments={question.question_comments}
+          key={question.question_id}
+          id={question.question_id}
+          title={question.title}
+          onSubmit={getQuestions}
+        />
+      ))}
       <Button onClick={toggleAddQuestion}>הוסף שאלה</Button>
-      <Question />
     </div>
   );
 };

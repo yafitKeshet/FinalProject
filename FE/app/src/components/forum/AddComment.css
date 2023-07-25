@@ -1,0 +1,14 @@
+.addComment {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.addComment input {
+  width: 90%;
+}
+
+.addComment-btn {
+  padding: 0 0.5rem;
+  border-radius: 10%;
+}

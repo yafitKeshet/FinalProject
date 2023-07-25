@@ -43,13 +43,8 @@ const AddQuestion = (props) => {
         alert("משהו השתבש בפרסום השאלה אנא נסה/נסי שנית");
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Form submission failed:", error.response.status);
-        alert("משהו השתבש בפרסום השאלה אנא נסה/נסי שנית");
-      } else {
-        console.error("Error submitting form:", error);
-        alert("משהו השתבש בפרסום השאלה אנא נסה/נסי שנית");
-      }
+      console.error("Error submitting form:", error);
+      alert("משהו השתבש בפרסום השאלה אנא נסה/נסי שנית");
     }
     props.onCancel();
     props.onSubmit();
@@ -82,7 +77,7 @@ const AddQuestion = (props) => {
               value={inputs.content}
               onChange={handleInputChange}
               required
-            ></textarea>
+            />
           </div>
           <Separator />
           <Button className="addQuestions-submit-btn" type="submit">

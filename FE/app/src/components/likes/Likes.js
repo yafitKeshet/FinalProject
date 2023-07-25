@@ -15,7 +15,7 @@ const Likes = forwardRef((props, ref) => {
   const onLike = async () => {
     try {
       fetch(
-        "http://localhost:8080/feed/like?like=" +
+        `http://localhost:8080/${props.page}/like?like=` +
           !likes.includes(props.userMail) +
           "&id=" +
           props.id,

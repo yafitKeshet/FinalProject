@@ -3,7 +3,7 @@ import { getConfig } from "../user/user.ts";
 import axios from "axios";
 import Card from "../UI/Card";
 import Button from "../UI/Button.js";
-import Likes from "../post/Likes.js";
+import Likes from "../likes/Likes.js";
 import "./ProfilePost.css";
 
 const ProfilePost = (props) => {
@@ -46,6 +46,7 @@ const ProfilePost = (props) => {
         <div className="profilePost-content">{props.content} </div>
       </div>
       <Likes
+        page="feed"
         className="profilePost-likes"
         likes={props.likes}
         id={props.id}

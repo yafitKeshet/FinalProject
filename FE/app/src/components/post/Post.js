@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./Post.css";
 import Card from "../UI/Card";
 import Separator from "../UI/Separator";
-import Likes from "./Likes";
+import Likes from "../likes/Likes";
 import Button from "../UI/Button";
 import axios from "axios";
 import { getConfig, getUserFromEmail } from "../user/user.ts";
@@ -102,6 +102,7 @@ const Post = (props) => {
       </div>
       <Separator />
       <Likes
+        page="feed"
         className="post-likes"
         likes={props.likes}
         id={props.id}
