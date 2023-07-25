@@ -12,6 +12,7 @@ import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
 import Courses from "./components/courses/Courses";
+import Forum from "./components/forum/Forum";
 import Events from "./components/events/Events";
 
 const App = (props) => {
@@ -538,6 +539,9 @@ const App = (props) => {
 
         {/* COURSES */}
         {pages.isCoursesPage && <Courses />}
+
+        {/* Forum */}
+        {pages.isForumPage && <Forum />}
 
         {/* EVENTS */}
         {pages.isEventsPage && <Events />}

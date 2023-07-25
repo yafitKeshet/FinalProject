@@ -7,6 +7,7 @@ import ImageUpload from "../images/ImageUpload";
 import Company from "../UI/SVG/Company";
 import Button from "../UI/Button";
 import { getConfig, getUserProfile } from "../user/user.ts";
+import axios from "axios";
 
 import {
   Experience,
@@ -14,7 +15,6 @@ import {
   JobTime,
   getJobTime,
 } from "../enums/enums.ts";
-import axios from "axios";
 
 const AddJob = (props) => {
   // INPUTS

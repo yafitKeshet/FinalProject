@@ -82,7 +82,6 @@ const Likes = forwardRef((props, ref) => {
         )}
       </div>
     </div>
-    // </div>
   );
 });
 export default Likes;
