@@ -21,7 +21,7 @@ const QuestionComment = (props) => {
     };
     getUser();
   }, []);
-  console.log(props);
+  // console.log(props);
 
   const onDelete = async () => {
     try {

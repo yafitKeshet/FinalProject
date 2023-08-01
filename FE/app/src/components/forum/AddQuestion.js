@@ -4,7 +4,7 @@ import Card from "../UI/Card";
 import Cancel from "../UI/SVG/Cancel";
 import Separator from "../UI/Separator";
 import Button from "../UI/Button";
-import { getConfig, getUserProfile } from "../user/user.ts";
+import { getConfig } from "../user/user.ts";
 import "./AddQuestion.css";
 
 const AddQuestion = (props) => {

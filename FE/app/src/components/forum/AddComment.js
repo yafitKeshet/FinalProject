@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Card from "../UI/Card";
-import Cancel from "../UI/SVG/Cancel";
-import Separator from "../UI/Separator";
+// import Card from "../UI/Card";
+// import Cancel from "../UI/SVG/Cancel";
+// import Separator from "../UI/Separator";
 import Button from "../UI/Button";
-import { getConfig, getUserProfile } from "../user/user.ts";
+import { getConfig } from "../user/user.ts";
 import "./AddComment.css";
 
 const AddComment = (props) => {
@@ -16,7 +16,7 @@ const AddComment = (props) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    console.log(e.target);
+    // console.log(e.target);
     setInputs((prev) => {
       return {
         ...prev,
