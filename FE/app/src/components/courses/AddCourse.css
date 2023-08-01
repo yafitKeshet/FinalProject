@@ -1,0 +1,72 @@
+.add-course {
+  justify-self: center;
+}
+.add-course .backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.add-course-card {
+  position: fixed;
+  top: 20vh;
+  left: 30%;
+  width: 40%;
+  z-index: 100;
+  overflow: hidden;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-course header {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 1rem;
+}
+.add-course-cancel-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.add-course-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-course-form .course-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  padding: 0 2rem;
+}
+.add-course-content {
+  text-align: right;
+  font-size: large;
+  outline: none;
+  height: fit-content;
+  padding-right: 1rem;
+  border-color: #ccc;
+  border-radius: 6px;
+  border-style: inset;
+  border-width: 2px;
+  width: 100%;
+}
+.add-course-content.text {
+  height: 5rem;
+  resize: none;
+}
+
+.add-course-btn {
+  width: fit-content;
+  align-self: center;
+  border-radius: 5px;
+}

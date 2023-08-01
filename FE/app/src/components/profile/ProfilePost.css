@@ -1,0 +1,49 @@
+.profilePost-card {
+  width: 100%;
+  height: 200px;
+  text-align: right;
+  padding: 1rem 2rem;
+  position: relative;
+}
+.profilePost-author {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+.profilePost-author img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.profilePost-author-data {
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+}
+.profilePost-author-data h4 {
+  margin-bottom: 0;
+}
+.profilePost-author-data div {
+  color: #5f6379;
+}
+.profilePost-header {
+  width: 200px;
+}
+.profilePost-header h2 {
+  text-align: right;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0a416e;
+}
+.profilePost-delete {
+  padding: 0.05rem 0.1rem;
+  border-radius: 5px;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+}
+.profilePost-contents {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+}

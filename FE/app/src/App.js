@@ -6,15 +6,35 @@ import ErrorModal from "./components/UI/ErrorModal";
 import GeneralInformation from "./components/general_information/GeneralInformation";
 import ForgetPassword from "./components/forgetPassword/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import Icons from "./components/icons/Icons";
-// import Button from "./components/UI/Button";
 import LoginFormModal from "./components/loginFormModal/LoginFormModal";
 import Register from "./components/register/Register";
 import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Jobs from "./components/jobs/Jobs";
+import Courses from "./components/courses/Courses";
+import Forum from "./components/forum/Forum";
+import Events from "./components/events/Events";
 
 const App = (props) => {
+  const [user, setUser] = useState({});
+
+  const onUpdateUser = (props) => {
+    sessionStorage.setItem("token", props.token);
+    sessionStorage.setItem("user_name", props.user_name);
+    sessionStorage.setItem("user_image", props.user_image);
+    sessionStorage.setItem("user_email", props.user_email);
+
+    setUser({
+      token: props.token,
+      user_name: props.user_name,
+      user_image: props.user_image,
+      user_email: props.user_email,
+    });
+    loggedInMenu({
+      user_image: props.user_image,
+      private_name: props.user_name.split(" ")[0],
+    });
+  };
   // HEADER
 
   // POPUP
@@ -59,6 +79,9 @@ const App = (props) => {
       isJobsPage: false,
       isFeedPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -77,6 +100,9 @@ const App = (props) => {
     isJobsPage: false,
     isFeedPage: false,
     isProfilePage: false,
+    isCoursesPage: false,
+    isForumPage: false,
+    isEventsPage: false,
   });
 
   // General Info
@@ -90,6 +116,9 @@ const App = (props) => {
       isJobsPage: false,
       isFeedPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -113,6 +142,9 @@ const App = (props) => {
       isFeedPage: false,
       isMainPage: false,
       isProfilePage: true,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -134,6 +166,9 @@ const App = (props) => {
       isJobsPage: false,
       isFeedPage: true,
       isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -145,7 +180,6 @@ const App = (props) => {
   };
 
   // Jobs
-  // General Info
   const toggleJobs = () => {
     console.log("Jobs button was clicked");
 
@@ -156,6 +190,9 @@ const App = (props) => {
       isJobsPage: true,
       isFeedPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -163,6 +200,77 @@ const App = (props) => {
 
     console.log(
       `page after jobs btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Courses
+  const toggleCourses = () => {
+    console.log("Courses button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+      isCoursesPage: true,
+      isForumPage: false,
+      isEventsPage: false,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isCoursesPage");
+
+    console.log(
+      `page after courses btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+
+  // Forum
+  const toggleForum = () => {
+    console.log("Courses button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: true,
+      isEventsPage: false,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isForumPage");
+
+    console.log(
+      `page after Forum btn clicked: ${sessionStorage.getItem("currentPage")}`
+    );
+  };
+  // Events
+  const toggleEvents = () => {
+    console.log("events button was clicked");
+
+    setPages({
+      isMainPage: false,
+      isRegisterPage: false,
+      isGeneralInformationPage: false,
+      isJobsPage: false,
+      isFeedPage: false,
+      isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: true,
+    });
+
+    // Save current page
+    sessionStorage.setItem("currentPage", "isEventsPage");
+
+    console.log(
+      `page after events btn clicked: ${sessionStorage.getItem("currentPage")}`
     );
   };
 
@@ -181,7 +289,7 @@ const App = (props) => {
 
   const [menu, setMenu] = useState(INITIAL_MENU);
   //    Add button to menu header- on login
-  const loggedInMenu = (props) => {
+  const loggedInMenu = (user) => {
     setMenu([
       {
         onclick: toggleMain,
@@ -195,13 +303,13 @@ const App = (props) => {
             }}
           >
             <img
-              src={sessionStorage.getItem("userImg")}
+              src={user.user_image}
               alt="תמונה של המשתמש"
               width={40}
               height={40}
               style={{ borderRadius: "50%" }}
             />
-            שלום {sessionStorage.getItem("userName")}
+            שלום {user.private_name}
           </div>
         ),
       },
@@ -218,6 +326,18 @@ const App = (props) => {
       {
         onclick: toggleJobs,
         data: "משרות",
+      },
+      {
+        onclick: toggleCourses,
+        data: "קורסים",
+      },
+      {
+        onclick: toggleForum,
+        data: "פורום",
+      },
+      {
+        onclick: toggleEvents,
+        data: "אירועים",
       },
       { onclick: onLogOut, data: "התנתק" },
     ]);
@@ -238,7 +358,21 @@ const App = (props) => {
     const storedUserLoggedINInformation = sessionStorage.getItem("isLoggedIn");
     if (storedUserLoggedINInformation === "1") {
       setIsLoggedIn(true);
-      loggedInMenu();
+      let token = sessionStorage.getItem("token");
+      let user_name = sessionStorage.getItem("user_name");
+      let user_image = sessionStorage.getItem("user_image");
+      let user_email = sessionStorage.getItem("user_email");
+      setUser({
+        token: token,
+        user_name: user_name,
+        user_image: user_image,
+        user_email: user_email,
+      });
+
+      loggedInMenu({
+        user_image: user_image,
+        private_name: user_name.split(" ")[0],
+      });
     }
 
     let storedCurrentPage = sessionStorage.getItem("currentPage");
@@ -260,20 +394,27 @@ const App = (props) => {
   // Login-PAGE
 
   //    Login handler
-  const loginHandler = (userData) => {
+  const loginHandler = (props) => {
+    setUser({
+      token: props.token,
+      user_name: props.user_name,
+      user_image: props.user_image,
+      user_email: props.user_email,
+    });
+
     // Save data of the user
-    console.log("login: ", userData);
-
-    sessionStorage.setItem("token", userData.token);
-    sessionStorage.setItem("userName", userData.userName);
-    sessionStorage.setItem("userImg", userData.userImg);
-
+    sessionStorage.setItem("token", props.token);
+    sessionStorage.setItem("user_name", props.user_name);
+    sessionStorage.setItem("user_image", props.user_image);
+    sessionStorage.setItem("user_email", props.user_email);
     // Close the login form modal
     setLoginFormModalOpen(false);
 
     // Add buttons to the menu
-    loggedInMenu();
-
+    loggedInMenu({
+      user_image: props.user_image,
+      private_name: props.user_name.split(" ")[0],
+    });
     // Update user as LoggedIn
     sessionStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
@@ -286,6 +427,9 @@ const App = (props) => {
       isFeedPage: true,
       isMainPage: false,
       isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -298,14 +442,16 @@ const App = (props) => {
   const onLogOut = async () => {
     // Update user as LogOut
     console.log("logout button clicked");
-    sessionStorage.removeItem("isLoggedIn", "0");
+    sessionStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
-    // let img = await compress(s);
 
     // Remove data of the user
     sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userName");
-    sessionStorage.removeItem("userImg");
+    sessionStorage.removeItem("user_name");
+    sessionStorage.removeItem("user_image");
+    sessionStorage.removeItem("user_email");
+
+    setUser({});
 
     // Remove buttons from the menu
     setMenu(INITIAL_MENU);
@@ -318,6 +464,9 @@ const App = (props) => {
       isFeedPage: false,
       isMainPage: true,
       isProfilePage: false,
+      isCoursesPage: false,
+      isForumPage: false,
+      isEventsPage: false,
     });
 
     // Save current page
@@ -378,12 +527,24 @@ const App = (props) => {
 
         {/* FEED */}
         {pages.isFeedPage && (
-          <Feed onError={setError} moveToProfile={toggleProfile} />
+          <Feed onError={setError} moveToProfile={toggleProfile} user={user} />
         )}
         {/* PROFILE */}
-        {pages.isProfilePage && <Profile />}
+        {pages.isProfilePage && (
+          <Profile onUpdateUser={onUpdateUser} user={user} />
+        )}
         {/* JOBS */}
-        {pages.isJobsPage && <Jobs />}
+
+        {pages.isJobsPage && <Jobs moveToProfile={toggleProfile} user={user} />}
+
+        {/* COURSES */}
+        {pages.isCoursesPage && <Courses />}
+
+        {/* Forum */}
+        {pages.isForumPage && <Forum />}
+
+        {/* EVENTS */}
+        {pages.isEventsPage && <Events />}
       </div>
     </div>
   );

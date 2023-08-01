@@ -1,0 +1,39 @@
+.jobs-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  padding: 1rem 2rem;
+  width: 80%;
+  height: 85vh;
+}
+.upload-job {
+  background-color: brown;
+  height: 70px;
+}
+.all-jobs {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1rem;
+}
+.job-open {
+  margin-top: 1rem;
+}
+.jobs-icon {
+  position: absolute;
+  width: 180px !important;
+  height: 150px !important;
+  rotate: -20deg;
+  top: -1.5rem;
+  left: -2rem;
+}
+.jobs {
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  /* height: 90vh; */
+  overflow: hidden;
+}

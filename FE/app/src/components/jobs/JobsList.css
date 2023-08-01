@@ -1,0 +1,22 @@
+.scrolled-job {
+  height: 73vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  width: 540px;
+}
+.open-job {
+  justify-content: center;
+}
+.job-filters {
+  display: flex;
+  gap: 1rem;
+}
+.job-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+}
+.job-filters-btn {
+  border-radius: 5px;
+}

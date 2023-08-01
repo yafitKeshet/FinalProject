@@ -17,6 +17,7 @@ import ImageUpload from "../images/ImageUpload";
   */
 const Register = (props) => {
   const [currentStep, setStep] = useState(RegisterStepTypes.step1);
+  const [checked, setChecked] = useState(false);
 
   const setBackStep = () => {
     switch (currentStep) {
@@ -128,6 +129,22 @@ const Register = (props) => {
       return { ...prevState, year: event.target.value };
     });
   };
+
+  const onCheckBox = () => {
+    if (checked) {
+      setInputs((prevState) => {
+        return {
+          ...prevState,
+          jobCompanyName: "",
+          jobStartYear: "",
+          jobDescription: "",
+        };
+      });
+    }
+    setChecked((prev) => {
+      return !prev;
+    });
+  };
   const onJobCompanyNameChange = (event) => {
     setInputs((prevState) => {
       return { ...prevState, jobCompanyName: event.target.value };
@@ -152,6 +169,7 @@ const Register = (props) => {
 
   // Submit handler
   const submitHandler = async (event) => {
+    console.log("register: ", inputs);
     console.log(`submit handler: ${currentStep} -> in register password`);
     event.preventDefault();
 
@@ -241,7 +259,8 @@ const Register = (props) => {
           let new_date = date[2] + "/" + date[1] + "/" + date[0];
           let finalImg =
             inputs.userImage === "" ? "./anonymousImg.png" : inputs.userImage;
-          console.log(finalImg);
+          let jobStartYear =
+            inputs.jobStartYear !== "" ? inputs.jobStartYear : 0;
           let registerRequest = await axios.post(
             "http://localhost:8080/signUp",
             {
@@ -253,7 +272,7 @@ const Register = (props) => {
               faculty: inputs.faculty,
               year: inputs.year,
               job_company_name: inputs.jobCompanyName,
-              job_start_year: 0,
+              job_start_year: jobStartYear,
               job_description: inputs.jobDescription,
               user_image: finalImg,
             }
@@ -265,8 +284,9 @@ const Register = (props) => {
             token = token.replace(/(?:\r\n|\r|\n)/g, "");
             props.onLogin({
               token: token,
-              userName: inputs.firstName,
-              userImg: finalImg,
+              user_name: inputs.firstName + " " + inputs.lastName,
+              user_image: finalImg,
+              user_email: inputs.mail,
             });
           }
         } catch (err) {
@@ -374,7 +394,6 @@ const Register = (props) => {
                     required
                   />
                 </div>
-                {/* TODO - enum */}
 
                 <div className="input-div">
                   <Mark className="sticky" />
@@ -513,32 +532,60 @@ const Register = (props) => {
                 />
               </div>
               <Separator />
+              <div className="checkBox-div">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={onCheckBox}
+                />
+                <label>אני עובד/ת</label>
+              </div>
+              <Separator />
               <div className="register-details">
-                <input
-                  onChange={onJobCompanyNameChange}
-                  value={inputs.jobCompanyName}
-                  placeholder="שם מקום עבודה"
-                  className="register-content"
-                  type="text"
-                />
-                <input
-                  onChange={onJobStartYearChange}
-                  value={inputs.jobStartYear}
-                  placeholder="שנת התחלת עבודה"
-                  className="register-content"
-                  type="number"
-                  max={currentDate.getFullYear()}
-                  min="1900"
-                />
-                <input
-                  onChange={onJobDescriptionChange}
-                  value={inputs.jobDescription}
-                  placeholder="תיאור של מקום העבודה"
-                  className="register-content"
-                  type="text"
-                />
+                {checked && (
+                  <div className="input-div">
+                    <Mark className="sticky" />
+                    <input
+                      onChange={onJobCompanyNameChange}
+                      value={inputs.jobCompanyName}
+                      placeholder="שם מקום עבודה"
+                      className="register-content"
+                      type="text"
+                      required
+                    />
+                  </div>
+                )}
+                {checked && (
+                  <div className="input-div">
+                    <Mark className="sticky" />
+                    <input
+                      onChange={onJobStartYearChange}
+                      value={inputs.jobStartYear}
+                      placeholder="שנת התחלת עבודה"
+                      className="register-content"
+                      type="number"
+                      max={currentDate.getFullYear()}
+                      min="1900"
+                      required
+                    />
+                  </div>
+                )}
+                {checked && (
+                  <div className="input-div">
+                    <Mark className="sticky" />
+                    <textarea
+                      onChange={onJobDescriptionChange}
+                      value={inputs.jobDescription}
+                      placeholder="תיאור של מקום העבודה"
+                      className="register-content  register-description"
+                      type="text"
+                      required
+                    />
+                  </div>
+                )}
                 <div>
                   <ImageUpload
+                    file="users"
                     content="אנא בחר/י תמונה"
                     onUserImageChange={onUserImageChange}
                   />

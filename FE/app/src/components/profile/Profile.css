@@ -1,0 +1,221 @@
+.profile-page {
+  height: 90vh;
+  position: relative;
+  overflow: hidden;
+}
+/***** Saved JOBS *****/
+.saved-jobs {
+  height: 87vh;
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  gap: 1rem;
+}
+.user-savedJobs {
+  /* height: 80vh; */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.profileJob-card {
+  position: relative;
+}
+.delete-saveJob {
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  font-weight: 500;
+  padding: 0 0.5rem;
+  position: absolute;
+  /* top: 1rem; */
+  left: 1rem;
+}
+.delete-saveJob :hover {
+  background-color: rgb(56, 115, 163);
+}
+.delete-saveJob .garbageICN {
+  width: 25px;
+  height: 25px;
+}
+
+.profile {
+  position: absolute;
+  width: 120rem;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 0;
+  overflow: hidden;
+  top: 0rem;
+  left: 3rem;
+}
+/* 
+.profile {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 0;
+  overflow: hidden; */
+
+.profile-section {
+  justify-self: center;
+  width: 60rem;
+}
+.card {
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.profile-card div {
+  width: 240px;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+.profile-card .profile-icon {
+  width: 40px;
+  height: 40px;
+}
+/***** OPEN/CLOSE *****/
+.card.close {
+  display: none;
+}
+.card.open .close {
+  display: none;
+}
+/***** USER CARD *****/
+
+.userCard header {
+  width: 100%;
+  position: relative;
+
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: 2fr 1fr;
+  justify-content: center;
+  align-items: flex-start;
+}
+.userCard-section {
+  width: 100%;
+}
+.userCard-buttons {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.userCard .edit-icon {
+  width: 25px;
+  height: 25px;
+}
+.create-CV-btn {
+  border-radius: 5px;
+  width: fit-content;
+  padding: 0 0.5rem;
+}
+.userCard .edit-icon path {
+  fill: #0a416e !important;
+}
+.userCard .fields {
+  padding: 0 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.userCard header h2 {
+  text-align: left;
+  font-size: 40px;
+  font-weight: 750;
+  color: #2e43c0;
+
+  text-shadow: #efe9e9 5px 5px 5px, #000 5px 5px 5px, #0c5fb8 5px 0px 55px,
+    #6583d0 5px 5px 5px, #5722f6 0px 0px 1px, #000000 5px 5px 15px;
+  margin-bottom: 1%;
+  margin-right: 10%;
+}
+.userCard-fields {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+.userCard-fields span {
+  font-weight: bold;
+  color: #0a416e;
+}
+.profile-icon {
+  color: #0a416e;
+  width: 25px;
+  height: 25px;
+}
+.profile-img img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid white;
+}
+.profile-img div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userCard .job-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1rem 6rem;
+}
+.userCard .job-details p {
+  padding-right: 35px;
+  margin: 0;
+  text-align: right;
+  font-weight: bold;
+  color: #0a416e;
+}
+.edit-content {
+  resize: none;
+  width: 50%;
+  text-align: center;
+  font: inherit;
+  border-color: #ccc;
+  border-radius: 6px;
+  border-width: 2px;
+  border-width: 2px;
+}
+.edit-actions {
+  justify-content: center;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0 0 0;
+}
+.edit-btn {
+  border-radius: 5px;
+  width: fit-content;
+}
+/***** POSTS *****/
+.userPosts {
+}
+.userPost-posts {
+  padding: 1rem;
+  width: 100%;
+  overflow-x: scroll;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/***** JOBS *****/
+.userJob-jobs {
+  padding: 1rem;
+  width: 100%;
+  overflow-x: scroll;
+  display: flex;
+  gap: 0.5rem;
+}

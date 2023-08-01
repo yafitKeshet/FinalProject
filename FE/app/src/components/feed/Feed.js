@@ -4,10 +4,10 @@ import Post from "../post/Post";
 import axios from "axios";
 import UploadPost from "../post/UploadPost";
 import Card from "../UI/Card";
-import { getUserFromJWT } from "../../generalFunctions.ts";
 import Button from "../UI/Button";
+import { getConfig, getUserProfile } from "../user/user.ts";
+
 const Feed = (props) => {
-  const userData = getUserFromJWT(sessionStorage.getItem("token"));
   const [posts, setPosts] = useState({});
   const [filter, setFilter] = useState(false);
 
@@ -25,27 +25,42 @@ const Feed = (props) => {
     }
   }, [filter]);
 
-  const filterPosts = () => {
+  const filterPosts = async () => {
     let filtered = posts;
+    let user = await getUserProfile(sessionStorage.getItem("token"));
     filtered = filtered.filter((post) => {
-      return post.author.faculty === userData.faculty;
+      return post.faculty === user.faculty;
     });
 
     setPosts(filtered);
   };
 
+  // Calculate Date
+  let date = new Date();
+  date.setHours(date.getHours() - 3);
+  date = date.getTime();
+
   const getPosts = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      };
+      const config = getConfig(props.user.token);
 
       let postsRequest = await axios.get("http://localhost:8080/feed", config);
       if (postsRequest !== undefined && postsRequest.status === 200) {
-        console.log("posts: ", postsRequest.data);
-        setPosts(postsRequest.data);
+        // Filtering posts for 24h ago.
+        let filtered = postsRequest.data;
+        filtered = filtered.filter((post) => {
+          return (
+            Math.floor(
+              new Date(
+                date - new Date(Date.parse(post.published_time)).getTime()
+              ) /
+                (1000 * 60 * 60 * 24)
+            ) < 1
+          );
+        });
+
+        setPosts(filtered);
+        // setPosts(postsRequest.data);
       }
     } catch (err) {
       alert("משהו השתבש אנא נסה/נסי שנית");
@@ -53,15 +68,11 @@ const Feed = (props) => {
     }
   };
 
-  const cancelUploadPost = () => {
-    console.log("post cancel");
-  };
-
   return (
     <div className="feed">
       <Card className="feed-card">
         <UploadPost
-          onCancel={cancelUploadPost}
+          user={props.user}
           moveToProfile={props.moveToProfile}
           onSubmit={getPosts}
         />
@@ -70,8 +81,9 @@ const Feed = (props) => {
         </div>
         {Object.values(posts).map((post) => (
           <Post
+            user={props.user}
             authorMail={post.author.user_email}
-            date="19/06/2023"
+            date={post.published_time.substr(0, 10).split("-")}
             img={post.author.user_image}
             likes={post.likes}
             id={post.post_id}
@@ -80,6 +92,13 @@ const Feed = (props) => {
             content={post.content}
             key={Math.random()}
             onDeletePost={getPosts}
+            hoursRemaining={Math.floor(
+              (new Date(
+                date - new Date(Date.parse(post.published_time)).getTime()
+              ) %
+                (1000 * 60 * 60 * 24)) /
+                (1000 * 60 * 60)
+            )}
           />
         ))}
       </Card>

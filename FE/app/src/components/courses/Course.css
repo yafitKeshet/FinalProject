@@ -1,0 +1,78 @@
+.course-outer {
+  position: relative;
+}
+.course-faculty {
+  position: absolute;
+  right: 1rem;
+  top: -1.5rem;
+  color: white;
+  padding: 0 0.5rem;
+  border-radius: 5px 5px 0 0;
+}
+
+.course {
+  position: relative;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 30rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.course-icn {
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  transform: rotate(-25deg);
+  left: 0rem;
+  top: 0rem;
+}
+.course ul {
+  list-style: none;
+  text-align: right;
+  margin: 0;
+}
+.course div header,
+.course header div header {
+  display: flex;
+  gap: 0.3rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+.recommendations {
+  position: relative;
+}
+.recommendations-header {
+  padding-bottom: 0.5rem;
+}
+.add-recommend {
+  position: absolute;
+  width: fit-content;
+  padding: 0 0.5rem;
+  border-radius: 5px;
+  background-color: #27997b;
+  border-color: #27997b;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.add-recommend:hover {
+  background-color: #1ccb9c;
+  border-color: hwb(164 11% 20%);
+}
+.recommendations h3 {
+  margin: 0;
+}
+.course-list-icn {
+  height: 2rem;
+  width: 2rem;
+}
+
+.course-rating {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.recommend-item {
+  padding-bottom: 0.5rem;
+}
