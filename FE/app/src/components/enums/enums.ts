@@ -35,7 +35,7 @@ export const getFaculty = (faculty) => {
     case Faculty.Social:
       return "סוציולוגיה";
     default:
-      return "";
+      return "בחירה";
   }
 };
 
