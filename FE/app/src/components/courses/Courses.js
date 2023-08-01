@@ -6,7 +6,7 @@ import Button from "../UI/Button.js";
 import Course from "./Course";
 import CoursesIcn from "../UI/SVG/CoursesIcn";
 import AddCourse from "./AddCourse";
-import { getUserProfile } from "../user/user.ts";
+import { getUserProfile, getConfig } from "../user/user.ts";
 
 // const tempCourses = [
 //   {
@@ -180,15 +180,20 @@ const Courses = (props) => {
     });
   };
 
-  useEffect(() => {
-    // Fetch courses data from the API
-    getCoursesData();
-    // setCourses(tempCourses);
-  }, []);
+  // useEffect(() => {
+  //   // Fetch courses data from the API
+  //   getCoursesData();
+  //   // setCourses(tempCourses);
+  // }, []);
 
   const getCoursesData = async () => {
     try {
-      let coursesRequest = await axios.get("http://localhost:8080/courses");
+      let config = await getConfig(sessionStorage.getItem("token"));
+
+      let coursesRequest = await axios.get(
+        "http://localhost:8080/courses",
+        config
+      );
       if (coursesRequest !== undefined && coursesRequest.status === 200) {
         let courses = coursesRequest.data; // array of courses
         console.log("courses: ", courses);
