@@ -35,11 +35,11 @@ const Recommendation = (props) => {
 
   return (
     <div className="recommendation">
-      {isAuthor && (
+      {/* {isAuthor && (
         <Button className="recommend-delete" onClick={onDelete}>
           מחק
         </Button>
-      )}
+      )} */}
       {isOpen && <MiniProfile onCancel={onCancelAuthorProfile} user={author} />}
       <header>
         <div className="recommend-author">
@@ -66,9 +66,3 @@ const Recommendation = (props) => {
 };
 
 export default Recommendation;
-
-/*      description: "לא אהבתי בלה בלה",
-        Rating: 1,
-        title: "לא לא אהבתי אהבתי",
-        author_email: "yafitmi@mta.ac.il",
-*/

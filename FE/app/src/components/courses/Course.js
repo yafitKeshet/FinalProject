@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Course.css";
 import RatingStar from "./RatingStar";
 import Card from "../UI/Card";
@@ -9,15 +9,23 @@ import CourseDescription from "../UI/SVG/CourseDescription";
 import RecommendationIcn from "../UI/SVG/RecommendationIcn";
 import RatingIcn from "../UI/SVG/RatingIcn";
 import Button from "../UI/Button";
+import AddRecommend from "./AddRecommend";
+import { getFaculty } from "../enums/enums.ts";
 
 const Course = (props) => {
-  const teachers = props.teachers.split(",");
-  const addRecommend = () => {
-    //TODO
+  const [addRecommendOpen, setAddRecommendOPen] = useState(false);
+
+  const toggleAddRecommend = () => {
+    setAddRecommendOPen((prev) => {
+      return !prev;
+    });
   };
+  console.log(props.courseId, props.rating_avg);
+
+  const teachers = props.teachers.split(",");
 
   const getColorLabel = (faculty) => {
-    switch (faculty) {
+    switch (getFaculty(faculty)) {
       case "מדעי המחשב":
         return "#f08080";
       case "פסיכולוגיה":
@@ -25,20 +33,27 @@ const Course = (props) => {
       case "כלכלה":
         return "#90ee90";
       case "בחירה":
-        return "#778899";
       default:
-        return "#ffffff";
+        return "#778899";
     }
   };
+
   return (
     <div className="course-outer">
+      {addRecommendOpen && (
+        <AddRecommend
+          onCancel={toggleAddRecommend}
+          onAddRecommend={props.onChange}
+          courseId={props.courseId}
+        />
+      )}
       <label
         className="course-faculty"
         style={{
           backgroundColor: `${getColorLabel(props.relevant_faculty)}`,
         }}
       >
-        {props.relevant_faculty}
+        {getFaculty(props.relevant_faculty)}
       </label>
       <Card className="course">
         <CourseIcn className="course-icn" />
@@ -74,7 +89,7 @@ const Course = (props) => {
         </div>
         <div className="recommendations">
           <header className="recommendations-header">
-            <Button className="add-recommend" onClick={addRecommend}>
+            <Button className="add-recommend" onClick={toggleAddRecommend}>
               הוסף חוות דעת
             </Button>
 
